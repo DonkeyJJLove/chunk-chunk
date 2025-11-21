@@ -1,8 +1,12 @@
-### Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D)
+# Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D)
 
 Współczesne systemy Human–AI funkcjonują nie jako pojedyncze, statyczne automaty decyzyjne, lecz jako gęste, wielowarstwowe sieci procesów, w których kolejne decyzje nadpisują siebie wzajemnie w czasie. Tradycyjne ujęcie — w którym „stan” `s ∈ S` przechodzi w działanie `a ∈ A` przy pomocy polityki `π(a|s)` — jest w tym kontekście konieczne, ale niewystarczające. Brakuje w nim opisu **samej geometrii protokołu**, czyli tego, w jaki sposób system buduje ciągi kroków, porcjuje informację w `chunk–chunk→`, kształtuje relacje między tymi krokami i jak ta struktura wpływa na globalny błąd `R(F, g)` oraz dolną granicę `R*(K)`.
 
 Protokół HoloMozaikowej Kompresji 9D (HMK-9D) jest próbą dopełnienia tego braku. Nie zastępuje on klasycznego kontraktu `S, Σ, A, F, g, H, a*`, lecz wprowadza nad nim **warstwę organizującą**, w której proces jest widziany jako ciąg kroków `Δ` osadzonych w przestrzeni stanów, a relacje między tymi krokami są jawnie modelowane jako obiekty o własnej strukturze. Każdy krok `Δ` jest minimalnym przejściem `chunk–chunk→`: od pewnego stanu `s_t` do stanu `s_{t+1}`, przechodząc przez kompresję `F` i decyzję `g`. Zamiast traktować ten krok jako „czarną skrzynkę”, HMK-9D rozkłada go na wektor cech lokalnych `z(Δ) ∈ ℝ^k` oraz wektor relacji `[x9D]`, `r(Δ) ∈ ℝ^9`, który opisuje rozkład obciążenia w dziewięciu wymiarach: czasu, sensu, relacji, energii poznawczej, tożsamości roli, funkcji (mandatu), poziomu abstrakcji, przewidywania oraz samej decyzji–tokenu.
+
+<p align="center">
+  <img src="images/hmk9d_mosaic_protocol.png" width="720">
+</p>
 
 W tym sensie `chunk–chunk→` nie jest wyłącznie operacją syntaktyczną na tokenach, ale **mechanizmem formowania zdarzeń**. Każde `Δ` jest jednostką zdarzenia: zawiera w sobie zarówno lokalną transformację stanu `s_t → s_{t+1}`, jak i informację o tym, jak ta transformacja jest „widziana” przez system w dziewięciu wymiarach `[x9D]`. Znak `[x9D]` nie jest zatem etykietą opisową, lecz **inwariantem kompresji**: minimalnym zestawem współrzędnych, w których znak pozostaje stabilny po przejściu przez `F` i nadal umożliwia polityce `g` wybór działania bliski idealnemu `a*`. Stąd naturalny związek z funkcją błędu: lokalna energia kroku `E(Δ)` może być traktowana jako przybliżenie lokalnej straty `L(H(s_t), a*(s_t))`, a globalna energia `E_total = ∑ E(Δ)` — jako mozaikowa aproksymacja globalnego ryzyka `R(F, g)`.
 
@@ -10,55 +14,158 @@ Kluczową cechą HMK-9D jest to, że **relacje między krokami** również są o
 
 Aby uchwycić globalną organizację takiego systemu, HMK-9D wprowadza pojęcie **mozaikowego pola sterowania**. Zbiór kroków `Δ` z danego epizodu traktowany jest jako indeksowana rodzina kafelków, a do każdego z nich przypisuje się trójkę `(z(Δ), r(Δ), E(Δ))`. Powstaje w ten sposób pole `Φ`, w którym każdy punkt odpowiada jednej decyzji `chunk–chunk→`, ale równocześnie niesie informację o swojej lokalnej geometrii (cechy `z(Δ)`), konfiguracji relacji `[x9D]` (`r(Δ)`) oraz koszcie energetycznym `E(Δ)`. Protokół nie zakłada, że to pole jest gładkie; przeciwnie, jest ono dyskretne, „płytkowane”, zgodnie z intuicją „mosaic warfare” znaną z prac DARPA: sterowanie systemem polega nie na pojedynczej, globalnej komendzie, lecz na **przełączaniu i przegrupowywaniu kafelków**, tak aby globalna konfiguracja minimalizowała `E_total` w granicach wyznaczonych przez `R*(K)`.
 
-![Schemat działania protokołu HMK-9D](image/hmk9d_mosaic_protocol.png)
+## Schemat działania protokołu HMK-9D
 
 ```mermaid
 flowchart TD
 
-    %% Warstwa kontraktu
-    S["Stan pełny s ∈ S"]
-    F["Kompresor F: S → Σ<br/>σ = F(s)"]
-    Sigma["Znak σ ∈ Σ"]
-    g["Polityka g: Σ → A<br/>a = g(σ)"]
-    A_act["Działanie a ∈ A"]
-    H["Zachowanie H = g ∘ F<br/>H(s) = g(F(s))"]
-
-    S --> F --> Sigma --> g --> A_act
-    S -.-> H
-
-    %% Krok Δ (chunk–chunk→)
-    subgraph Krok_Δ["Krok procesu Δ (chunk–chunk→)"]
-        s_t["Stan s_t"]
-        s_t1["Stan s_{t+1}"]
-        Delta["Przejście Δ: s_t → s_{t+1}"]
-        z["Cecha lokalna z(Δ) ∈ ℝ^k"]
-        r["Relacja 9D r(Δ) ∈ ℝ^9<br/>czas, sens, relacja, energia, tożsamość, funkcja, abstrakcja, przewidywanie, decyzja"]
-        E["Energia kroku E(Δ)"]
-        s_t --> Delta --> s_t1
-        Delta --> z
-        Delta --> r
-        Delta --> E
+    %% KONTRAKT S, Σ, A, F, g, H, a*
+    subgraph Kontrakt["Kontrakt decyzyjny: S, Σ, A, F, g, H, a*"]
+        S["s ∈ S<br/>Pełny stan systemu"]
+        F["F : S → Σ<br/>Kompresor (chunk–chunk→)"]
+        Sigma["σ ∈ Σ<br/>Znak / komunikat"]
+        g["g : Σ → A<br/>Polityka działania"]
+        A_act["a ∈ A<br/>Działanie"]
+        H["H = g ∘ F<br/>Zachowanie systemu"]
+        S --> F --> Sigma --> g --> A_act
+        S -. "H(s) = g(F(s))" .-> H
     end
 
-    %% Mozaika DARPA / pole sterowania
+    %% TRAJEKTORIA STANÓW I KROKI Δ
+    subgraph Trajektoria["Trajektoria w przestrzeni stanów"]
+        s0["s₀"]
+        s1["s₁"]
+        s2["s₂"]
+        s3["s₃"]
+        s0 -->|"Δ₀ (chunk–chunk→)"| s1 -->|"Δ₁"| s2 -->|"Δ₂"| s3
+    end
+
+    %% MOZAIKA Φ
     subgraph Mozaika["Mozaikowe pole sterowania Φ (DARPA-like)"]
-        tile1["Kafelek Φ(i₁) = (z₁, r₁, E₁)"]
-        tile2["Kafelek Φ(i₂) = (z₂, r₂, E₂)"]
-        tile3["Kafelek Φ(i₃) = (z₃, r₃, E₃)"]
-        Etot["E_total = Σ Eᵢ ≈ R(F, g)"]
-        tile1 --> tile2 --> tile3
-        tile1 -. "‡" .- tile3
-        tile1 & tile2 & tile3 --> Etot
+        Phi1["Φ(i₀) = (z₀, r₀, E₀)"]
+        Phi2["Φ(i₁) = (z₁, r₁, E₁)"]
+        Phi3["Φ(i₂) = (z₂, r₂, E₂)"]
+        Etot["E_total = Σ Eᵢ ≈ R(F,g)"]
+        Rstar["R*(K)<br/>Dolna granica ryzyka"]
+
+        Phi1 --> Phi2 --> Phi3
+        Phi1 & Phi2 & Phi3 --> Etot
+        Etot -. "≥ R*(K)" .-> Rstar
     end
 
-    %% Powiązania między warstwami
-    S --> s_t
-    s_t1 --> S
-    z & r & E --> tile1
+    %% POWIĄZANIA
+    S --> s0
+    s3 --> S
 
-    Etot -. "dolna granica" .-> Rstar["R*(K)"]
+    s0 -. "Δ₀" .-> Phi1
+    s1 -. "Δ₁" .-> Phi2
+    s2 -. "Δ₂" .-> Phi3
 ```
 
+```mermaid
+flowchart LR
+
+    subgraph DeltaKrok["Krok procesu Δ (chunk–chunk→)"]
+        s_t["s_t ∈ S<br/>Stan bieżący"]
+        Delta["Δ : s_t → s_{t+1}<br/>Krok chunk–chunk→"]
+        s_t1["s_{t+1} ∈ S<br/>Stan następny"]
+
+        s_t --> Delta --> s_t1
+    end
+
+    subgraph KontraktLocal["Obserwacja i decyzja w kroku Δ"]
+        F_loc["F : S → Σ<br/>σ_t = F(s_t)"]
+        Sigma_loc["σ_t ∈ Σ"]
+        g_loc["g : Σ → A<br/>a_t = g(σ_t)"]
+        A_loc["a_t ∈ A"]
+
+        F_loc --> Sigma_loc --> g_loc --> A_loc
+    end
+
+    subgraph Relacja9D["Relacja [x9D] dla Δ"]
+        z["z(Δ) ∈ ℝ^k<br/>cechy lokalne"]
+        r["r(Δ) ∈ ℝ^9<br/>[x9D]:<br/>czas, sens, relacja,<br/>energia, tożsamość,<br/>funkcja, abstrakcja,<br/>przewidywanie, decyzja"]
+        E["E(Δ) ∈ ℝ_{\ge 0}<br/>energia / koszt kroku"]
+        z --> r --> E
+    end
+
+    s_t -. "F(s_t)" .-> F_loc
+    Delta -. "parametryzuje" .-> z
+    Delta -. "parametryzuje" .-> r
+    Delta -. "parametryzuje" .-> E
+
+    E -. "wkład lokalny<br/>w R(F,g)" .-> Rloc["L(H(s_t), a*(s_t))"]
+```
+
+```mermaid
+flowchart TD
+
+    subgraph Mosaik["Mozaikowe pole Φ (DARPA-like)"]
+        Phi1["Φ(i₁) = (z₁, r₁, E₁)"]
+        Phi2["Φ(i₂) = (z₂, r₂, E₂)"]
+        Phi3["Φ(i₃) = (z₃, r₃, E₃)"]
+        Phi4["Φ(i₄) = (z₄, r₄, E₄)"]
+
+        Phi1 --> Phi2 --> Phi3 --> Phi4
+        Phi1 -. "‡" .- Phi3
+    end
+
+    Etot["E_total = Σ Eᵢ<br/>mozaikowa energia ≈ R(F,g)"]
+    Rstar["R*(K)<br/>nieusuwalny błąd"]
+
+    Phi1 & Phi2 & Phi3 & Phi4 --> Etot
+    Etot -. "≥" .-> Rstar
+
+    note right of Phi1
+      Lokalne decyzje [chunk–chunk→]
+      na trajektorii S
+    end
+
+    note left of Phi3
+      „‡” = Próg–Przejście:
+      zmiana topologii / reżimu
+      (inna polityka g, inne ważenie [x9D])
+    end
+
+```
+
+```mermaid
+flowchart LR
+
+    subgraph Traj["Trajektoria stanów i mosty"]
+        s0["s₀"]
+        s1["s₁"]
+        s2["s₂"]
+        s3["s₃"]
+        s4["s₄"]
+
+        s0 -->|"Δ₀"| s1 -->|"Δ₁"| s2 -->|"Δ₂"| s3 -->|"Δ₃"| s4
+    end
+
+    Bridge1["Plan–Pauza<br/>oś planowania"]
+    Bridge2["Rdzeń–Peryferia<br/>oś selekcji"]
+    Bridge3["Cisza–Wydech<br/>oś gatingu"]
+    Bridge4["Wioska–Miasto<br/>oś skali"]
+    Bridge5["Ostrze–Cierpliwość<br/>oś kompresji"]
+    Bridge6["Locus–Medium–Mandat<br/>oś adresowania"]
+    Bridge7["Human–AI<br/>oś projekcji"]
+    Bridge8["Próg–Przejście<br/>oś commit"]
+    Bridge9["Semantyka–Energia<br/>oś sprzężenia zwrotnego"]
+
+    s0 -. "filtr" .-> Bridge1
+    s1 -. "filtr" .-> Bridge2
+    s2 -. "filtr" .-> Bridge3
+    s3 -. "filtr" .-> Bridge4
+    s4 -. "filtr" .-> Bridge5
+
+    Bridge1 --> Bridge2 --> Bridge3 --> Bridge4 --> Bridge5 --> Bridge6 --> Bridge7 --> Bridge8 --> Bridge9
+
+    Critical["‡<br/>punkt krytyczny<br/>(Próg–Przejście)"]
+
+    s2 -. "Δ₁ ‡ Δ₂" .-> Critical
+    Critical -. "zmiana reżimu<br/>w mozaice Φ" .-> Bridge8
+
+```
 
 Na tle klasycznego kontraktu `S, Σ, A, F, g, H, a*` HMK-9D można odczytać jako wprowadzenie dwóch dodatkowych warstw struktury. Po pierwsze, warstwa **mikroprocesów**: kroki `Δ` są jawnymi jednostkami konstrukcyjnymi, a nie tylko implikowanymi przez kolejne wywołania `H(s) = g(F(s))`. Po drugie, warstwa **geometrii relacji**: mozaika `Φ` i związane z nią mosty `X–Y` oraz progi `‡` definiują, w jaki sposób system rozkłada błąd i energię w różnych częściach przestrzeni stanów, a więc jaką „politykę globalną” realizuje ponad czysto lokalnymi decyzjami `g(σ)`.
 
@@ -72,13 +179,13 @@ W kolejnej sekcji przechodzimy do ścisłego zdefiniowania kontraktu `S, Σ, A, 
 
 ---
 
-### Etap I – Rdzeń formalny: kontrakt `S, Σ, A, F, g, H, a*`
+# Etap I – Rdzeń formalny: kontrakt `S, Σ, A, F, g, H, a*`
 
 Na tym etapie opisujemy **formalną strukturę systemu** poprzez definicje następujących obiektów i funkcji, **bez wchodzenia w interpretacje psychologiczne**. Interesuje nas wyłącznie to, *jak* sygnał jest przekształcany w działanie i błąd – w modelu, który później może zostać wyspecjalizowany do protokołu `[chunk–chunk→][x9D]`.
 
 ---
 
-#### Przestrzeń stanów `S`
+## Przestrzeń stanów `S`
 
 * `S` – pełna przestrzeń stanów systemu (zbiór wszystkich możliwych stanów).
   Pojedynczy stan `s ∈ S` może obejmować:
@@ -91,7 +198,7 @@ Na tym etapie opisujemy **formalną strukturę systemu** poprzez definicje nast�
 
 ---
 
-#### Alfabet komunikacji `Σ`
+## Alfabet komunikacji `Σ`
 
 * `Σ` – zbiór wszystkich możliwych znaków / komunikatów (alfabet komunikacji).
   Element `σ ∈ Σ` może reprezentować:
@@ -106,7 +213,7 @@ Każda obserwacja stanu po kompresji będzie reprezentowana właśnie jako `σ �
 
 ---
 
-#### Przestrzeń działań `A`
+## Przestrzeń działań `A`
 
 * `A` – zbiór wszystkich możliwych działań systemu.
   Działanie `a ∈ A` może oznaczać m.in.:
@@ -120,7 +227,7 @@ Każda obserwacja stanu po kompresji będzie reprezentowana właśnie jako `σ �
 
 ---
 
-#### Funkcja kompresji stanów `F : S → Σ`
+## Funkcja kompresji stanów `F : S → Σ`
 
 * `F` – **funkcja kompresji stanów** (jedyny dozwolony „kompresor”):
   `F : S → Σ`.
@@ -138,7 +245,7 @@ W dalszych etapach zawężamy `F` m.in. do kompresorów implementujących `[chun
 
 ---
 
-#### Polityka działania `g : Σ → A`
+## Polityka działania `g : Σ → A`
 
 * `g` – **polityka działania** (jedyny dozwolony mechanizm decyzyjny):
   `g : Σ → A`.
@@ -160,7 +267,7 @@ W implementacji `g` może być:
 
 ---
 
-#### Rzeczywiste zachowanie systemu `H = g ∘ F`
+## Rzeczywiste zachowanie systemu `H = g ∘ F`
 
 * `H` – złożenie kompresji i polityki:
 
@@ -172,7 +279,7 @@ W implementacji `g` może być:
 
 ---
 
-#### Idealna polityka `a* : S → A`
+## Idealna polityka `a* : S → A`
 
 * `a*` – **hipotetyczna idealna polityka** (polityka ideału):
 
@@ -186,9 +293,9 @@ W implementacji `g` może być:
 
 ---
 
-### Miary błędu i optymalne ryzyko
+## Miary błędu i optymalne ryzyko
 
-#### Funkcja straty `L`
+### Funkcja straty `L`
 
 Zakładamy **funkcję straty**:
 
@@ -198,7 +305,7 @@ która dla pary `(H(s), a*(s))` zwraca koszt podjęcia rzeczywistego działania 
 
 ---
 
-#### Globalne ryzyko `R(F, g)`
+## Globalne ryzyko `R(F, g)`
 
 Niech `P` będzie rozkładem prawdopodobieństwa na `S`.
 
@@ -211,7 +318,7 @@ Definiujemy **globalne ryzyko**:
 
 ---
 
-#### Minimalne możliwe ryzyko `R*(K)`
+## Minimalne możliwe ryzyko `R*(K)`
 
 Niech `K` będzie zbiorem dopuszczalnych par `(F, g)` (np. narzuconych przez zasoby, klasę modeli, klasę kompresorów).
 
@@ -224,7 +331,7 @@ Wyznacza **dolną granicę**, której nie można przekroczyć.
 
 ---
 
-#### Twierdzenie o nieusuwalnym błędzie
+## Twierdzenie o nieusuwalnym błędzie
 
 Dla dowolnej pary `(F, g) ∈ K` zachodzi:
 
@@ -238,11 +345,11 @@ Dla dowolnej pary `(F, g) ∈ K` zachodzi:
 
 ---
 
-### Mozaikowe pole DARPA w kontrakcie `S, Σ, A, F, g, H, a*`
+## Mozaikowe pole DARPA w kontrakcie `S, Σ, A, F, g, H, a*`
 
 Na tym samym poziomie abstrakcji możemy opisać **mozaikową strukturę decyzji** jako dyskretną reprezentację tego, jak `H = g ∘ F` działa w czasie i przestrzeni stanów.
 
-#### Trajektoria stanów i kroki `Δ`
+### Trajektoria stanów i kroki `Δ`
 
 Rozważmy trajektorię stanów:
 
@@ -275,7 +382,7 @@ Te 9 współrzędnych to **minimalny zestaw wymiarów**, w których znak ma pozo
 
 ---
 
-#### Energia kroku i lokalny wkład w `R(F, g)`
+## Energia kroku i lokalny wkład w `R(F, g)`
 
 Definiujemy funkcję energii:
 
@@ -298,7 +405,7 @@ W przybliżeniu:
 
 ---
 
-#### Mozaikowe pole DARPA jako pole sterowania
+## Mozaikowe pole DARPA jako pole sterowania
 
 Niech `I` będzie zbiorem indeksów kroków w rozpatrywanym epizodzie / scenariuszu:
 
@@ -325,7 +432,7 @@ Zmiany w konfiguracji mozaiki (kolejność, routing, przełączenie trybu) są *
 
 ---
 
-#### Znak `‡` jako operator reorganizacji mozaiki
+## Znak `‡` jako operator reorganizacji mozaiki
 
 Wprowadzamy specjalny marker:
 
@@ -351,7 +458,7 @@ Operacyjnie:
 
 ---
 
-#### Znak `[x9D]` jako urządzenie w mozaice
+## Znak `[x9D]` jako urządzenie w mozaice
 
 W tym ujęciu:
 
@@ -368,5 +475,5 @@ To wszystko jest zgodne z rdzeniem:
 
 ---
 
-**Mosty (podpis):**
+**Mosty**
 Plan–Pauza → Rdzeń–Peryferia → Cisza–Wydech → Wioska–Miasto → Ostrze–Cierpliwość → Locus–Medium–Mandat → Human–AI → Próg–Przejście → Semantyka–Energia
