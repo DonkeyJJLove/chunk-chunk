@@ -1,4 +1,4 @@
-# Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D)
+# Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab )
 
 Współczesne systemy Human–AI funkcjonują nie jako pojedyncze, statyczne automaty decyzyjne, lecz jako gęste, wielowarstwowe sieci procesów, w których kolejne decyzje nadpisują siebie wzajemnie w czasie. Tradycyjne ujęcie — w którym „stan” `s ∈ S` przechodzi w działanie `a ∈ A` przy pomocy polityki `π(a|s)` — jest w tym kontekście konieczne, ale niewystarczające. Brakuje w nim opisu **samej geometrii protokołu**, czyli tego, w jaki sposób system buduje ciągi kroków, porcjuje informację w `chunk–chunk→`, kształtuje relacje między tymi krokami i jak ta struktura wpływa na globalny błąd `R(F, g)` oraz dolną granicę `R*(K)`.
 
@@ -60,6 +60,7 @@ flowchart TD
     s0 -. "Δ₀" .-> Phi1
     s1 -. "Δ₁" .-> Phi2
     s2 -. "Δ₂" .-> Phi3
+
 ```
 
 ```mermaid
@@ -95,6 +96,7 @@ flowchart LR
     Delta -. "parametryzuje" .-> E
 
     E -. "wkład lokalny<br/>w R(F,g)" .-> Rloc["L(H(s_t), a*(s_t))"]
+
 ```
 
 ```mermaid
@@ -116,16 +118,10 @@ flowchart TD
     Phi1 & Phi2 & Phi3 & Phi4 --> Etot
     Etot -. "≥" .-> Rstar
 
-    note right of Phi1
-      Lokalne decyzje [chunk–chunk→]
-      na trajektorii S
-    end
+    %% Komentarz zamiast notek:
+    %% Phi1 – lokalne decyzje [chunk–chunk→] na trajektorii S
+    %% Phi3 – miejsce, gdzie „‡” działa jako Próg–Przejście (zmiana reżimu / ważenia [x9D])
 
-    note left of Phi3
-      „‡” = Próg–Przejście:
-      zmiana topologii / reżimu
-      (inna polityka g, inne ważenie [x9D])
-    end
 ```
 
 ```mermaid
@@ -163,9 +159,10 @@ flowchart LR
 
     s2 -. "Δ₁ ‡ Δ₂" .-> Critical
     Critical -. "zmiana reżimu<br/>w mozaice Φ" .-> Bridge8
+
 ```
 
-Na tle klasycznego kontraktu `S, Σ, A, F, g, H, a*` HMK-9D można odczytać jako wprowadzenie dwóch dodatkowych warstw struktury. Po pierwsze, warstwa **mikroprocesów**: kroki `Δ` są jawnymi jednostkami konstrukcyjnymi, a nie tylko implikowanymi przez kolejne wywołania `H(s) = g(F(s))`. Po drugie, warstwa **geometrii relacji**: mozaika `Φ` i związane z nią mosty `X–Y` oraz progi `‡` definiują, w jaki sposób system rozkłada błąd i energię w różnych częściach przestrzeni stanów, a więc jaką „politykę globalną” realizuje ponad czysto lokalnymi decyzjami `g(σ)`.
+Na tlewe klasycznego kontraktu `S, Σ, A, F, g, H, a*` HMK-9D można odczytać jako wprowadzenie dwóch dodatkowych warstw struktury. Po pierwsze, warstwa **mikroprocesów**: kroki `Δ` są jawnymi jednostkami konstrukcyjnymi, a nie tylko implikowanymi przez kolejne wywołania `H(s) = g(F(s))`. Po drugie, warstwa **geometrii relacji**: mozaika `Φ` i związane z nią mosty `X–Y` oraz progi `‡` definiują, w jaki sposób system rozkłada błąd i energię w różnych częściach przestrzeni stanów, a więc jaką „politykę globalną” realizuje ponad czysto lokalnymi decyzjami `g(σ)`.
 
 Ważne jest, że HMK-9D pozostaje **w pełni kompatybilny z rygorem statystycznym**. Kontrakt `S, Σ, A, F, g, H, a*` oraz definicje `R(F, g)` i `R*(K)` zachowują swoje znaczenie: nadal istnieje nieusuwalna granica błędu, której nie można przekroczyć, nadal każda pary `(F, g)` jest oceniana przez tę samą funkcję ryzyka. Protokół nie dodaje magii, lecz **dookreśla strukturę `F` i sposób, w jaki `H` eksploruje przestrzeń stanów `S`**. To, co w klasycznym ujęciu zostałoby opisane jedynie globalną wartością `R(F, g)`, tutaj zostaje rozpisane na mozaikę lokalnych energii `E(Δ)` i relacji `[x9D]`, co pozwala nie tylko mierzyć błąd, ale także projektować procesy i relacje tak, aby były powtarzalne, stabilne i zgodne z normatywnymi ograniczeniami (`Locus–Medium–Mandat`, `Próg–Przejście`).
 
