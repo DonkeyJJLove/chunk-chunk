@@ -126,7 +126,6 @@ flowchart TD
       zmiana topologii / reżimu
       (inna polityka g, inne ważenie [x9D])
     end
-
 ```
 
 ```mermaid
@@ -164,7 +163,6 @@ flowchart LR
 
     s2 -. "Δ₁ ‡ Δ₂" .-> Critical
     Critical -. "zmiana reżimu<br/>w mozaice Φ" .-> Bridge8
-
 ```
 
 Na tle klasycznego kontraktu `S, Σ, A, F, g, H, a*` HMK-9D można odczytać jako wprowadzenie dwóch dodatkowych warstw struktury. Po pierwsze, warstwa **mikroprocesów**: kroki `Δ` są jawnymi jednostkami konstrukcyjnymi, a nie tylko implikowanymi przez kolejne wywołania `H(s) = g(F(s))`. Po drugie, warstwa **geometrii relacji**: mozaika `Φ` i związane z nią mosty `X–Y` oraz progi `‡` definiują, w jaki sposób system rozkłada błąd i energię w różnych częściach przestrzeni stanów, a więc jaką „politykę globalną” realizuje ponad czysto lokalnymi decyzjami `g(σ)`.
