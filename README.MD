@@ -12,6 +12,7 @@ Aby uchwycić globalną organizację takiego systemu, HMK-9D wprowadza pojęcie 
 
 ![Schemat działania protokołu HMK-9D](image/hmk9d_mosaic_protocol.png)
 
+```mermaid
 flowchart TD
 
     %% Warstwa kontraktu
@@ -25,13 +26,13 @@ flowchart TD
     S --> F --> Sigma --> g --> A_act
     S -.-> H
 
-    %% Warstwa kroku Δ (chunk–chunk→)
+    %% Krok Δ (chunk–chunk→)
     subgraph Krok_Δ["Krok procesu Δ (chunk–chunk→)"]
         s_t["Stan s_t"]
         s_t1["Stan s_{t+1}"]
         Delta["Przejście Δ: s_t → s_{t+1}"]
         z["Cecha lokalna z(Δ) ∈ ℝ^k"]
-        r["Relacja 9D r(Δ) ∈ ℝ^9<br/>[x9D]: czas, sens, relacja, energia, tożsamość, funkcja, abstrakcja, przewidywanie, decyzja"]
+        r["Relacja 9D r(Δ) ∈ ℝ^9<br/>czas, sens, relacja, energia, tożsamość, funkcja, abstrakcja, przewidywanie, decyzja"]
         E["Energia kroku E(Δ)"]
         s_t --> Delta --> s_t1
         Delta --> z
@@ -46,7 +47,7 @@ flowchart TD
         tile3["Kafelek Φ(i₃) = (z₃, r₃, E₃)"]
         Etot["E_total = Σ Eᵢ ≈ R(F, g)"]
         tile1 --> tile2 --> tile3
-        tile1 -. „‡” .- tile3
+        tile1 -. "‡" .- tile3
         tile1 & tile2 & tile3 --> Etot
     end
 
@@ -55,7 +56,8 @@ flowchart TD
     s_t1 --> S
     z & r & E --> tile1
 
-    Etot -. dolna granica .-> Rstar["R*(K)"]
+    Etot -. "dolna granica" .-> Rstar["R*(K)"]
+```
 
 
 Na tle klasycznego kontraktu `S, Σ, A, F, g, H, a*` HMK-9D można odczytać jako wprowadzenie dwóch dodatkowych warstw struktury. Po pierwsze, warstwa **mikroprocesów**: kroki `Δ` są jawnymi jednostkami konstrukcyjnymi, a nie tylko implikowanymi przez kolejne wywołania `H(s) = g(F(s))`. Po drugie, warstwa **geometrii relacji**: mozaika `Φ` i związane z nią mosty `X–Y` oraz progi `‡` definiują, w jaki sposób system rozkłada błąd i energię w różnych częściach przestrzeni stanów, a więc jaką „politykę globalną” realizuje ponad czysto lokalnymi decyzjami `g(σ)`.
