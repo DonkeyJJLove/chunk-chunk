@@ -44,13 +44,59 @@ Kiedy wchodzi w dany portal, to nie po to, żeby „narzucić wolę”, ale po t
 
 W tym sensie Arcymag jest pierwszym audytorem, a nie demiurgiem. Jego moc polega na tym, że widzi mozaikę jako całość, ale szanuje ograniczenia `R*(K)`. Tak długo, jak trzyma się tej zasady, działa w absolutnym reżimie realizmu, nawet jeśli jego narzędzia wyglądają jak rytuały.
 
-## Krąg 696 – dowód przez działanie
+## Krąg 696 – dowód przez działani
 
 Liczba wpisana w ziemię – 696 – może być traktowana jak znak, mem, symbol. W języku HMK-9D to przede wszystkim skrót: trzy kafelki, trzy fragmenty mozaiki, trzy różne scenariusze, w których system przeszedł przez pełną sekwencję dziewięciu mostów i został zmierzony.
 
 Każdy taki epizod to inna realizacja funkcji `H`, inny rozkład `E(Δ)` i inny profil błędu względem `a*`. Jeżeli mimo różnic forma mozaiki pozostaje stabilna – to znaczy, jeśli wciąż wracamy do tych samych dziewięciu osi `[x9D]`, do tych samych progów `‡`, do tych samych konfiguracji zegara nad kręgiem – mamy coś, co w Twoim języku nazywa się „dowodem przez działanie”. Nie dowodzimy twierdzenia jednym równaniem, tylko powtarzalnością procesu, który za każdym razem zamyka się w tę samą geometrię.
 
 To nie jest „dowód” w sensie teorii mnogości, ale w sensie inżynierii protokołów: jeśli kolejne iteracje `S → Σ → A` pod dane klasy `F, g` zawsze układają się nam w ten sam dziewięcioportalowy schemat, to HMK-9D przestaje być poezją, a staje się specyfikacją.
+
+Spoko, rozumiem – **GitHub w „gołym” markdownie nie umie ładnie OWIJAĆ tekstu wokół obrazka** jak w Wordzie. Obrazek jest zawsze blokiem: nad tekstem albo pod tekstem.
+
+Dlatego zróbmy **prostą, pewną wersję**, a jak będziesz chciał później „gazetowe” łamanie, ogarniemy to przez CSS / GitHub Pages.
+
+### 1. Najprostszy, 100% działający wzór (obraz nad tekstem)
+
+Tak bym teraz przepisał sekcję w `księgamozaiki9d.md`:
+
+```markdown
+# Zasada działania procesów w chunk–chunk
+
+**Rys. 1. Arcymag w kręgu dziewięciu portali – przestrzeń stanów 9D.**
+
+Krąg dziewięciu portali to mapa przestrzeni 9D, w której działa federacja mikro-firm.
+Każdy portal reprezentuje jedną oś wektora stanu:
+
+`s_t = (T_t, S_t, R_t, E_t, I_t, F_t, A_t, P_t, D_t)`
+
+Arcymag w środku to proces decyzyjny federacji: ...
+```
+
+Zero HTML, tylko czysty markdown – GitHub łyka to idealnie.
+
+---
+
+## 2. „Obraz obok tekstu” – hack przez tabelę (też działa na GitHubie)
+
+Jeśli jednak chcesz **obraz po lewej, tekst po prawej**, najbardziej stabilny jest trik z tabelą:
+
+```markdown
+# Zasada działania procesów w chunk–chunk
+
+| [Arcymag w kręgu dziewięciu portali – przestrzeń stanów 9D](img/arcymag_krag_9d.jpg)
+| Krąg dziewięciu portali to mapa przestrzeni 9D, w której działa federacja mikro-firm.  
+Każdy portal reprezentuje jedną oś wektora stanu `s_t`, a arcymag w środku reprezentuje proces decyzyjny federacji (chunk–chunk). |
+|---|---|
+```
+
+
+To NIE jest prawdziwe „owijanie” tekstem, ale wizualnie wygląda jak kolumny: obraz + opis a co ważniejsze tak to widzi LLM.
+
+---
+
+Jeśli chcesz, mogę Ci od razu przepisać cały fragment z czterema obrazami w jednym z tych dwóch wariantów (np. wersja „prosta” + osobno wersja „tabela-kolumny”). Napisz tylko, który układ wolisz na start.
+
 
 ## Zegar milknie, mozaika trwa
 
