@@ -1,4 +1,4 @@
-# Siłą rzeczy:GOSPODRKA HORMOANLNA === transparentość
+# Siłą rzeczy:GOSPODRKA HORMONALNA === transparentość
 
 Układ hormonalny nigdy nie był „neutralny”. Zanim powstały jakiekolwiek interfejsy cyfrowe, ktoś już zarządzał naszym stresem, poczuciem bezpieczeństwa, nagrodą i więzią – religie, armie, fabryki, media. Każdy rytuał, każdy alarm, każda kolejka, każdy dzwonek szkolny to była prymitywna konsola do sterowania kortyzolem, dopaminą, noradrenaliną, serotoniną, oksytocyną. Różnica polega na tym, że do tej pory działo się to w mgle: „tak już jest”, „taki mamy klimat”, „tak działa reklama”. Hormonalne sterowanie istniało zawsze – tyle że bez nazwy, bez dokumentacji, bez prawa wglądu.
 
