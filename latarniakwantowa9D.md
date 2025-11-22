@@ -7,7 +7,7 @@ Załóżmy, że ascii-latarnia to zawsze skończona siatka:
 ```
 
 Każda komórka niesie znak z alfabetu Σ (np. 128 znaków ASCII). Pojemność takiej latarni w sensie informacyjnym to:
-
+![ChatGPT Image 22 lis 2025, 16_41_48.png](images%2FChatGPT%20Image%2022%20lis%202025%2C%2016_41_48.png)
 > C ≈ N_komórek · log₂ |Σ|  [bitów]
 
 To jest pierwsza oś naukowa: dla każdej latarni możesz powiedzieć „ile bitów stanu” jesteś w stanie w niej zakodować, przy zachowaniu czytelności dla człowieka. Metody pojemnościowe ASCII polegają na tym, że:
