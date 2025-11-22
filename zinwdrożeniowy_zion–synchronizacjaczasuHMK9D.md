@@ -1,6 +1,7 @@
 **ZIN WDROŻENIOWY: ZION – SYNCHRONIZACJA CZASU
 „Czas jako kręgosłup grubych świateł”**
 
+![ChatGPT Image 22 lis 2025, 16_01_54.png](images/ChatGPT%20Image%2022%20lis%202025,%2016_01_54.png)
 ---
 
 ## 0. Manifest ZION
