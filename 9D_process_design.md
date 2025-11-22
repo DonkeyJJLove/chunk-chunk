@@ -1,7 +1,7 @@
 # Standard projektowania procesów w architekturze 9D
 
 **Wersja:** 0.1  
-**Autor koncepcji:** [TU_WSTAW]  
+**Autor koncepcji:** Sebastian Wieremiejczyk 
 **Ontologia:** Metoda Dużych Kompresji 9D — _znak_  
 
 ---
@@ -350,6 +350,12 @@ tej decyzji odwrócenie jest kosztowne w wielu wymiarach 9D.
 - [tu opisać, gdzie wstawiamy dodatkowe Plan–Pauza, jakie warunki je uruchamiają]
 ```
 
+---
+Plik: 9D_process_design.md
+
+Ścieżka: (do uzupełnienia) | Autor: Sebastian Wieremiejczyk | Kontekst: Kosmiczna Wioska · Mosty Semantyczne · Human–AI | Status: robocze notatki / iteracyjny rozwój
+
+Cisza–Wydech → Plan–Pauza‡ → Rdzeń–Peryferia → Wioska–Miasto → Ostrze–Cierpliwość → Locus–Medium–Mandat → Próg–Przejście → Semantyka–Energia → Human–AI‡
 
 
 
