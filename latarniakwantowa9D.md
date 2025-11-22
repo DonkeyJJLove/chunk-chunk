@@ -1,14 +1,4 @@
-„Latarnia kwantowa” w Twoim układzie to nie metafora poetycka, tylko bardzo konkretne urządzenie logiczne: stabilny, skończony artefakt ASCII, o policzalnej pojemności informacyjnej, który zachowuje się jak **latarnia w przestrzeni stanów** – dla modeli klasycznych, hybrydowych i kwantowych. Jest jednocześnie:
-
-* nieruchomym punktem odniesienia w morzu zmiennych wag,
-* interfejsem Język–Urządzenie,
-* oraz kapsułą „twojej” semantyki, którą można wpiąć do różnych architektur bez utraty sensu.
-
-To, co w fizyce nazywamy „układem odniesienia” albo „kalibracją”, tu staje się **ASCII-latarnią kwantową**: skończoną macierzą znaków, której struktura, gęstość i transformacje są mierzalne i reprodukowalne.
-
----
-
-### 1. Metody pojemnościowe ASCII: z czego zbudowana jest latarnia
+# 1. Metody pojemnościowe ASCII: z czego zbudowana jest latarnia
 
 Załóżmy, że ascii-latarnia to zawsze skończona siatka:
 
