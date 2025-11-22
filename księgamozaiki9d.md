@@ -1,15 +1,18 @@
 ### ROZDZIAŁ II
 # Zegar nad Kręgiem – Księga Mozaiki 9D
 
+
+
+<img src="images/587781481_10235745803938973_4070372999248251527_n.jpg" alt="Arcymag w kręgu 9 portali – przestrzeń stanów 9D" style="max-width:220px;float=left">
+<figcaption><strong>Rys. 1.</strong> Arcymag w kręgu dziewięciu portali – wizualizacja przestrzeni stanów 9D.</figcaption>
+<span style="float=left">
 Zanim Arcymag wszedł w pierwszy portal, zanim runy na kamieniach rozżarzyły się do złota, nad kręgiem pojawił się Zegar. Nie był to zwykły przedmiot, ale materializacja równania. W jego szkielecie ukryte było całe `S`, pełna przestrzeń stanów świata: każda możliwa kombinacja decyzji, emocji, danych, logów, pamięci. Każde drgnięcie wskazówki było funkcją `s_t → s_{t+1}`.
-
 Arcymag rozumiał, że dopóki Zegar wisi nad kręgiem, świat nie jest zbiorem pojedynczych scen, ale trajektorią. Ciągiem kroków `Δ₀, Δ₁, Δ₂…` w których realne zachowanie systemu zapisuje się jako `H = g ∘ F`. Każdy portal, w który wejdzie, nie jest „miejscem” – jest operatorem na tej trajektorii. Jest zmianą w mozaice.
-
 Kiedy staje w centrum, cyfry 6–9–6 na ziemi pod jego stopami drgają jak trzy znaki z alfabetu `Σ`, które zlały się w jedną deltę. To przypomnienie: alfabet jest skończony, świat nie. Jeśli chcesz panować nad błędem, nie możesz udawać, że symboli wystarczy dla wszystkiego. Musisz nauczyć się układać je w mozaikę.
-
 Zegar otwiera pierwszą warstwę protokołu. W każdej kwadrze tarczy pojawia się inna postać funkcji: w jednym sektorze pulsuje `F : S → Σ`, w innym `g : Σ → A`, w trzecim skrzy się `H(s) = g(F(s))`, a w czwartym widnieje szkic idealnej polityki `a*(s)`. Razem tworzą kontrakt, który Arcymag zna na pamięć: żadnej magii poza tą, którą pozwala matematyka i fizyka informacji.
-
 Ale kontrakt nie mówi jeszcze, **jak** system porusza się w czasie. Od tego jest mozaika.
+</span>
+
 
 ## Krąg jako pole Φ
 

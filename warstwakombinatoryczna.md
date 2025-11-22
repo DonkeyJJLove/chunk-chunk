@@ -1,7 +1,5 @@
 # Warstwa kombinatoryczna mostów semantycznych 9D
 
-OK, to dołóżmy teraz **warstwę kombinatoryki**: nie pojedyncze mosty, tylko **sekwencje mostów**, które zmieniają kierunek procesu – zwłaszcza te, które „kierują w dół” (w głąb systemu, w commit, w archiwum, w nieświadomość).
-
 ---
 
 ## 1. Kierunek: co znaczy „w dół”
