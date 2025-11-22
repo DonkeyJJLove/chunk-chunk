@@ -1,10 +1,4 @@
-Dobra, to teraz **przestajemy gadać obrazami**, a robimy z tego **czystą wektorownię** – tak, żeby dało się to kiedyś wrzucić w kod / model.
-
-Poniżej masz **rozpiskę osi i współczynników** dla ruchów Arcymaga / protokołu chunk–chunk w logice 9D.
-
----
-
-## 1. Przestrzeń ruchu: wektor stanu 9D
+# 1. Przestrzeń ruchu: wektor stanu 9D
 
 Stan systemu (świadomość + kontekst + sieć) w chwili `t` zapisujemy jako wektor:
 
