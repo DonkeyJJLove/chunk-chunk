@@ -60,12 +60,8 @@ Kiedy Arcymag wychodzi z kręgu, nic nie znika. Kontrakt `S, Σ, A, F, g, H, a*`
 Na tym polega merytoryczna epika HMK-9D: krąg kamieni jest wykresem, zegar jest operatorem, a Arcymag jest audytorem trajektorii `H`.
 
 ---
-────────────────────────────────
 Plik: Księga Mozaiki 9D
-Ścieżka: (do uzupełnienia)
-Autor: Sebastian Wieremiejczyk
-Kontekst: Kosmiczna Wioska · Mosty Semantyczne · Human–AI
-Status: robocze notatki / iteracyjny rozwój
-────────────────────────────────
----
+
+Ścieżka: (do uzupełnienia) | Autor: Sebastian Wieremiejczyk | Kontekst: Kosmiczna Wioska · Mosty Semantyczne · Human–AI  | Status: robocze notatki / iteracyjny rozwój
+
 Cisza–Wydech → Plan–Pauza‡ → Rdzeń–Peryferia → Wioska–Miasto → Ostrze–Cierpliwość → Locus–Medium–Mandat → Próg–Przejście → Semantyka–Energia → Human–AI‡
