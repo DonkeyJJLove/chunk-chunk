@@ -1,8 +1,4 @@
-Zrobię to jak klasyczny artykuł, tylko na Twojej ontologii 9D.
-
----
-
-## 1. Założenie: proces = maszyna do produkcji znaku 9D
+# proces = maszyna do produkcji znaku 9D
 
 W świecie zbudowanym według „Metody dużych kompresji 9D” **proces** nie jest zbiorem kroków, ale **maszyną do wytwarzania znaków 9D**.
 
