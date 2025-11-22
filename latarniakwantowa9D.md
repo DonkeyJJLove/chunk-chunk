@@ -1,5 +1,4 @@
-```markdown
-## 1. Formalny model Latarni Kwantowej
+# 1. Formalny model Latarni Kwantowej
 
 Żeby „latarnia kwantowa” nie była metaforą, musi dać się opisać jak każde inne urządzenie: przez **stan**, **operacje** i **wielkości mierzalne**.
 
