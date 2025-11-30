@@ -35,7 +35,7 @@ To jest warstwa **Informacja–Nośnik**: fizycznie liczalna, odporna na ideolog
 
 Sam wzór ASCII nie ma jeszcze znaczenia. Semantykę wprowadza **funkcja interpretująca**:
 
-- niech \(\mathcal{S}\) będzie przestrzenią „stanów pojęciowych” systemu (np. wektorów w embedding-space, etykiet mostów 9D, zmiennych procesu),
+- niech $$\(\mathcal{S}\)$$ będzie przestrzenią „stanów pojęciowych” systemu (np. wektorów w embedding-space, etykiet mostów 9D, zmiennych procesu),
 - \(f_{\text{sem}} : \Sigma^{m\times n} \rightarrow \mathcal{S}\) – odwzorowaniem z matrycy znaków do stanu semantycznego.
 
 **Definicja 2 (Latarnia semantyczna).**  
