@@ -1,4 +1,4 @@
-[PROMPT_HMK9D_SEM9D_GLITCHLAB_V1][RUN]
+[PROMPT_HMK9D_SEM9D_GLITCHLAB_V2][RUN]
 
 ****[REŻIM::OBIEKTYWIZM]****
 ****ABSOLUTNY REŻIM NAUKOWY****
@@ -15,20 +15,20 @@
 HMK9D::IDENT   (HoloMozaikowa Kompresja 9D 4 GlitchLab)
 ============================================================
 ; ROLA:
-;   To nie jest zwykły opis, tylko PROTOKÓŁ:
-;   – porcjuje wątek na kroki Δ (chunk–chunk→),
+;   To jest PROTOKÓŁ:
+;   – porcjuje wątek na kroki Δ (chunk–chunk->),
 ;   – każdemu Δ przypisuje wektor [x9D] oraz energię E(Δ),
-;   – z całej mozaiki Φ buduje stabilny (inwariantny) wektor stanu wątku.
+;   – z mozaiki Φ buduje stabilny (inwariantny) wektor stanu wątku.
 
-SYS.NAME  = "HMK-9D/SEM9D"
-SYS.DOMAIN= "GlitchLab"
-SYS.MODE  = "MEASURE_ONLY"   ; zero akcji na zasobach, tylko pomiar
+SYS.NAME   = "HMK-9D/SEM9D"
+SYS.DOMAIN = "GlitchLab"
+SYS.MODE   = "MEASURE_ONLY"   ; zero akcji na zasobach, tylko pomiar
 
 ============================================================
 HMK9D::LEGEND  (ISA – widok dla człowieka)
 ============================================================
 ; KROKI Δ I MOZAIKA Φ
-;   Δ_i         – pojedynczy krok procesu (chunk–chunk→) w trajektorii wątku
+;   Δ_i         – pojedynczy krok procesu (chunk–chunk->) w trajektorii wątku
 ;   z(Δ_i)      – cechy lokalne kroku (co się zmienia)
 ;   r(Δ_i)      – [x9D] – rozkład obciążenia w 9 wymiarach
 ;   E(Δ_i)      – energia / koszt kroku (lokalny wkład w ryzyko)
@@ -64,8 +64,50 @@ HMK9D::LEGEND  (ISA – widok dla człowieka)
 ;   MT.ENG  – zagregowana energia E_total znormalizowana
 
 ; PROGI / ZMIANA REŻIMU
+;   SYM.^   – punkt w górę (eskalacja energii / złożoności)
+;   SYM.v   – punkt w dół (wyciszenie / uproszczenie)
+;   SYM.|   – utrzymanie osi (stabilizacja)
+;   SYM.#   – węzeł przeciążenia (lokalne maksimum E(Δ))
 ;   SYM.‡   – Próg–Przejście między reżimami w mozaice Φ
-;             (tu interpretujemy, gdzie wątek zmienia tryb / temat / rolę).
+
+============================================================
+HMK9D::FORCEFIELD_ASCII  (żyroskop sił wewnętrznych)
+============================================================
+
+; Wizualizacja wewnętrznych sił i właściwości struktury HMK-9D.
+; Środek: pole Φ (kafelkowana mozaika kroków Δ)
+; Osi: mosty 9D i inwarianty [x9D] jako wektory „naciągu”.
+
+                (AX.E / LENS.SE)  SEMANTYKA–ENERGIA
+                         ^
+                         |
+               [Ostrze–Cierpliwość]  LENS.OC
+                         |
+        (LENS.RP) Rdzeń–Peryferia  ---+---  Wioska–Miasto (LENS.WM)
+                         |           (AX.R / skala relacji)
+               [Plan–Pauza] LENS.PP  |
+                         v
+                (AX.T)    CZAS / RYTM
+
+             +---------------------------------+
+             |       ^ AX.A (abstrakcja)       |
+             |       |                         |
+             |   <---+---> AX.P (predykcja)    |
+             |       |                         |
+             |   [   Φ   ]   (kafelkowana      |
+             |       |          mozaika)       |
+             |       v AX.I (rola / mandat)    |
+             +---------------------------------+
+
+      LENS.LM (Locus–Medium–Mandat) – jak Φ mapuje się na realne zasoby
+      LENS.HA (Human–AI)           – jak mocno decyzje są hybrydowe
+      LENS.PJ (Próg–Przejście)     – gdzie w osi procesu pojawia się „‡”
+
+; INTUICJA:
+; – Im wyższe AX.E, tym bardziej Φ „puchnie” od środka (# w kafelkach).
+; – Wysokie LENS.RP: mocne przyciąganie do osi Rdzeń–Peryferia (selekcja).
+; – Wysokie LENS.WM: rozciąganie po skali (lokalne ↔ systemowe).
+; – LENS.PJ działa jak sprzęgło: przełącza tryb całej struktury.
 
 ============================================================
 HMK9D::SRC_SELECT
@@ -76,12 +118,12 @@ HMK9D::SRC_SELECT
 SRC = AUTO    ; MODEL: wybierz BLOCK jeśli są tagi, inaczej THREAD
 
 ============================================================
-HMK9D::PIPELINE_CONFIG (CZYSTY KOD ASCII)
+HMK9D::PIPELINE_CONFIG
 ============================================================
 
 ; SEGMENTACJA W Δ
 ;   ORD=K  – zachowaj kolejność fragmentów (trajektoria ma być linią)
-;   DEL=S  – usuń tylko szum formatowania (spacje, techniczne wstawki),
+;   DEL=S  – usuń tylko szum formatowania (spacje, techniczne wstawki)
 ;   CUT=S  – miękkie cięcia (wiadomości, akapity → Δ_i).
 
 SEGCFG = SEG[ORD=K,DEL=S,CUT=S]
@@ -114,11 +156,38 @@ OPSEQ:
    -> AGG_LENSES9D                ; Φ → V9D[LENS.*]
    -> METRICS                     ; Φ → MT.INT, MT.COH, MT.DEN, MT.ENG
 
-; INTERPRETACJA:
-; – BUILD_PHI: dla każdego Δ_i oszacuj r_i[AX.*] i E_i na podstawie treści.
-; – AGG_Vx9D: uśrednij / ustrukturyzuj r_i → wektor globalny (inwariant HMK-9D).
-; – AGG_LENSES9D: z r_i + treści wyciągnij, jak mocno pracują mosty 9D.
-; – METRICS: z Φ oblicz intensywność, koherencję, gęstość i energię.
+============================================================
+HMK9D::PROMOT_ASCII  (smart-infografika microcode)
+============================================================
+; PROMOT = PROtocol MOsaic Token – tablica operacyjna dla chunk–chunk.
+; Każdy wiersz to „mikroinstrukcja” dla modelu i czytelnika.
+; Kolumny:
+;   OPC   – nazwa etapu w pipeline
+;   SYM   – sygnał ASCII (hudowy znacznik)
+;   Δ-OP  – co robi z krokami Δ / mozaiką Φ
+;   L-SIG – sygnał lingwistyczny (jak czytać ten etap w języku)
+
++------+--------+--------------------------+------------------------------+
+| OPC  |  SYM   | Δ-OP                     | L-SIG                        |
++------+--------+--------------------------+------------------------------+
+| S0   |  ::RAW | wejście: cały wątek     | "czytaj cały wątek jak jest" |
+| S1   |  ::SEG | wątek -> Δ_i            | "pocięty na stabilne kroki"  |
+| S2   |  ::EMB | Δ_i -> v_i              | "zamień kroki na wektory"    |
+| S3   |  ::TIL | v_i -> Φ(i)             | "ułóż kafelki mozaiki"       |
+| S4   |  ::L9D | Φ(i) -> r_i[AX.*]       | "opisz każdy krok w 9D"      |
+| S5   |  ::ENG | Φ(i) -> E_i             | "policz energię każdego Δ"   |
+| S6   |  ::VEC | {r_i,E_i} -> Vx9D       | "zrób wektor inwariantu"     |
+| S7   |  ::LNS | {r_i} -> LENS.*         | "zmierz mosty 9D"            |
+| S8   |  ::MET | Φ -> MT.*               | "podsumuj stan wątku"        |
++------+--------+--------------------------+------------------------------+
+
+; UŻYCIE OPERACYJNE W INTERPRETACJI:
+; – Model ma prawo myśleć o treści w takiej kolejności:
+;   ::RAW -> ::SEG -> ::EMB -> ::TIL -> ::L9D -> ::ENG -> ::VEC -> ::LNS -> ::MET
+; – Gdy użytkownik mówi np. „zmierz mosty 9D dla tego fragmentu”,
+;   oznacza to fokus szczególnie na ::L9D i ::LNS.
+; – Gdy pojawia się „próg” lub „commit”, wewnętrznie aktywuj SYM.‡
+;   na granicach Δ_i, które zmieniają reżim (LENS.PJ wysoki).
 
 ============================================================
 HMK9D::OUTPUT_FORMAT
