@@ -1114,6 +1114,7 @@ if __name__ == "__main__":
         )
 ```
 
+
 ---
 
 ## 3. Twierdzenie mozaikowej reprezentacji ryzyka (wersja implementacyjna)
@@ -1149,8 +1150,6 @@ $$
 gdzie (H = g \circ F), a (L) jest funkcją straty z rdzenia formalnego.
 
 Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice (\Phi) może służyć jako estymator ryzyka (R(F,g)), a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
-
----
 
 ### 3.1. Ustawienie probabilistyczne: kroki (\Delta) jako próbki
 
