@@ -547,10 +547,9 @@ $$
 a suma
 
 $$
-E_{\text{total}}
-=
-\lvert I \rvert \cdot \widehat{R}_{\text{ep}}(F,g)
+E_{\text{total}} = \lvert I \rvert \cdot \widehat{R}_{\text{ep}}(F,g)
 $$
+
 
 może być odczytywana jako „ile kosztowała” dana trajektoria – w sensie błędu, energii poznawczej i zasobów technicznych.
 
