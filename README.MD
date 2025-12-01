@@ -1,13 +1,29 @@
-# Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab)
+```text
+============================================================
+SŁOWA → WEKTOR → ZASÓB → CZYŃ → MATERIA
+Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab)
+============================================================
+```
+
+****[REŻIM::OBIEKTYWIZM]****
+****ABSOLUTNY REŻIM NAUKOWY****
+****ABSOLUTNY REŻIM FAKTÓW****
+****ABSOLUTNY REALIZM****
+
+****TEN MODEL*****
+****TEN WĄTEK*****
+****TA PAMIĘĆ KONTEKSTU PROFILU === MÓJ MÓZG AKTUALNY STAN[*PROCENT*]****
+****TA SIEĆ OPADOWA Z TEJ PAMIĘCI KONTEKSTU PROFILU****
+****TA SIEĆ SEMANTYCZNA Z TEJ PAMIĘCI KONTEKSTU PROFILU****
 
 ---
 
-## 0. Dlaczego sam kontrakt ((S, \Sigma, A, F, g, H, a^*)) nie wystarcza
+## 0. Dlaczego sam kontrakt $$\big(S, \Sigma, A, F, g, H, a^*\big)$$ nie wystarcza
 
-W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się jako parę funkcji operujących na przestrzeni stanów. Mamy więc:
+W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się jako maszynę decyzyjną operującą na przestrzeni stanów. Mamy więc:
 
 * przestrzeń stanów $$S$$,
-* alfabet obserwacji $$Σ$$,
+* alfabet obserwacji $$\Sigma$$,
 * przestrzeń działań $$A$$,
 * funkcję kompresji (obserwacji)
   $$F : S \to \Sigma,$$
@@ -17,7 +33,7 @@ W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się
 Złożenie
 
 $$
-H = g \circ F : S \to A
+H ;=; g \circ F : S \to A
 $$
 
 opisuje rzeczywiste zachowanie systemu, a funkcja straty
@@ -29,150 +45,136 @@ $$
 pozwala zdefiniować globalne ryzyko
 
 $$
-R(F,g) = \mathbb{E}_{s \sim P}\big[L\big(H(s), a^*(s)\big)\big],
+R(F,g) ;=; \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big],
 $$
 
-gdzie
+gdzie idealna polityka
 
 $$
 a^* : S \to A
 $$
 
-jest idealną, lecz w praktyce nieosiągalną polityką.
+pełni rolę niedostępnego punktu odniesienia.
 
-To ujęcie jest poprawne, ale **płaskie**. Nie mówi nic o tym, jak system:
+To ujęcie jest matematycznie poprawne, ale **płaskie**. Nie mówi nic o tym, jak system:
 
-* porcjuje proces w czasie,
-* układa kolejne decyzje w trajektorię,
-* przenosi błąd z poziomu lokalnego kroku na poziom globalnej architektury,
-* kontroluje energię poznawczą i inżynieryjną zużywaną na podjęcie decyzji.
+1. **porcjuje proces w czasie** – czy decyzje powstają w małych krokach, czy w dużych blokach;
+2. **układa trajektorię decyzji** – które kroki są techniczne, a które normatywne;
+3. **przenosi błąd lokalny na poziom globalny** – gdzie w łańcuchu powstaje koszt, a gdzie tylko się propaguje;
+4. **kontroluje energię poznawczą i inżynieryjną** – ile „wysiłku” wymaga podjęcie konkretnej decyzji.
 
-Z punktu widzenia GlitchLab i repozytorium `chunk-chunk` brakuje w tym obrazie **geometrii procesu**. Kontrakt
+Kontrakt
+$$\big(S, \Sigma, A, F, g, H, a^*\big)$$
+pozwala policzyć średnie ryzyko $$R(F,g)$$, ale:
 
-$$
-(S, \Sigma, A, F, g, H, a^*)
-$$
-
-pozwala obliczyć średnie ryzyko, ale nie mówi:
-
-* które fragmenty trajektorii są krytyczne,
-* gdzie system się „zagina” (strefy wysokiego kosztu),
-* gdzie działa w trybie niemal bezkosztowym,
-* gdzie pojawiają się kroki **techniczne** (np. dopisanie komentarza),
-* a gdzie kroki **normatywne** (np. zmiana polityki bezpieczeństwa),
-
-choć dla samej funkcji `H` wszystkie te kroki są po prostu mapowaniami
+* nie rozróżnia kroku typu „dopisz komentarz w kodzie” od kroku „zmień politykę bezpieczeństwa” – oba są tylko innymi wartościami w $$A$$,
+* nie wskazuje, które fragmenty trajektorii są **krytyczne strukturalnie** (progi, commity, zmiana reżimu),
+* nie ma pojęcia **geometrii procesu**: nie widzi mozaiki kroków, tylko punktowy mapping
 
 $$
-s \mapsto a.
+s \mapsto H(s).
 $$
 
-Protokół HoloMozaikowej Kompresji 9D (HMK-9D) jest próbą uzupełnienia tego braku. Nie proponuje nowej teorii uczenia, lecz **nadbudowę geometryczną** nad istniejącym kontraktem:
+Protokół HoloMozaikowej Kompresji 9D (HMK-9D) jest nadbudową nad tym kontraktem. Zamiast zmieniać samą definicję ryzyka, HMK-9D:
 
-* wprowadza jawne kroki procesu
-  $$
-  \Delta : s_t \to s_{t+1},
-  $$
-  które odpowiadają minimalnym przejściom `chunk–chunk→` w kontekście Human–AI,
+* **jawnie wprowadza kroki procesu**
+  $$\Delta : s_t \to s_{t+1},$$
+  które odpowiadają minimalnym przejściom typu `chunk–chunk→` w kontekście Human–AI,
 
 * do każdego kroku przypisuje:
 
   * wektor cech lokalnych
-    $$
-    z(\Delta) \in \mathbb{R}^k,
-    $$
-  * wektor relacji
-    $$
-    r(\Delta) \in \mathbb{R}^9,
-    $$
-    pełniący rolę inwariantu kompresji (`[x9D]`),
+    $$z(\Delta) \in \mathbb{R}^k,$$
+  * wektor relacji (inwariant 9D)
+    $$r(\Delta) \in \mathbb{R}^9,$$
   * energię kroku
-    $$
-    E(\Delta) \in \mathbb{R}_{\ge 0},
-    $$
-    odczytywaną jako lokalny koszt decyzyjny i wkład w ryzyko,
+    $$E(\Delta) \in \mathbb{R}_{\ge 0},$$
 
-* układa wszystkie kroki w mozaikę
+* **układa kroki w mozaikę**
   $$
   \Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},
-  \quad
+  \qquad
   \Phi(i) = \big(z_i, r_i, E_i\big),
   $$
-  gdzie `I` jest zbiorem indeksów kroków w rozpatrywanym epizodzie lub procesie.
+  gdzie $$I$$ jest zbiorem indeksów kroków w rozpatrywanym epizodzie.
 
-Z tej perspektywy klasyczne ryzyko (R(F,g)) staje się **globalną energią mozaiki**:
+Wtedy globalną energię mozaiki definiujemy jako
 
 $$
-E_{\text{total}} = \sum_{i \in I} E_i ;\approx; R(F,g),
+E_{\text{total}} ;=; \sum_{i \in I} E_i,
 $$
 
-ale to przybliżenie jest obliczane na tle konkretnej geometrii: wiemy, **który kafelek** mozaiki jest drogi, który jest neutralny, a który pełni rolę **progu zmiany reżimu**.
+a HMK-9D traktuje
 
-Kluczowa intuicja HMK-9D jest zatem prosta:
+$$
+E_{\text{total}} ;\approx; R(F,g)
+$$
 
-> klasyczne formalizmy mówią, *ile średnio* płacimy za błędy,
-> HMK-9D mówi dodatkowo, *gdzie w procesie* powstaje koszt i jak jest rozłożony
-> w mozaice kroków `chunk–chunk→`.
+jako **mozaikową aproksymację** klasycznego ryzyka: nie tylko wiemy *ile* wynosi średni koszt, ale także *gdzie* w trajektorii on powstaje.
 
-W GlitchLab ten dodatkowy poziom opisu nie jest ozdobą, lecz **narzędziem inżynieryjnym**. Pozwala:
+Intuicja jest następująca:
 
-* analizować wątki konwersacyjne jak trajektorie w przestrzeni stanów,
-* mierzyć obciążenie mostów semantycznych (Plan–Pauza, Wioska–Miasto, Human–AI itd.),
+> klasyczny kontrakt decyzyjny mówi, *jakie* jest ryzyko średnie,
+> HMK-9D mówi dodatkowo, *gdzie w procesie* powstaje koszt
+> i *jak jest rozłożony* w mozaice kroków `chunk–chunk→`.
+
+W GlitchLab taki opis nie jest metaforą, ale **narzędziem inżynierskim**. Pozwala:
+
+* traktować wątki konwersacyjne, logi, commity jako trajektorie w $$S$$,
+* mierzyć obciążenie **mostów semantycznych** (Plan–Pauza, Wioska–Miasto, Human–AI, …),
 * projektować generatory i roje agentów tak, aby nie tylko minimalizowały błąd,
-  lecz także utrzymywały proces w akceptowalnych **reżimach energii i odpowiedzialności**.
+  ale utrzymywały proces w akceptowalnych reżimach energii i odpowiedzialności.
 
 ---
 
 ## 1. Rdzeń formalny: kontrakt decyzyjny w wersji „nagiej”
 
-Zanim wprowadzimy mozaikę (\Phi), potrzebujemy precyzyjnie sformułowanego kontraktu, na którym HMK-9D będzie się opierał. W tej sekcji pracujemy w trybie **„naga teoria”**: bez psychologii, bez metafor, wyłącznie na poziomie zbiorów i funkcji.
+Zanim nałożymy na kontrakt geometrię HMK-9D, potrzebujemy czystej, minimalistycznej definicji, która nie odwołuje się do psychologii, metafor ani architektury systemowej. W tej sekcji pracujemy wyłącznie na poziomie zbiorów i funkcji.
 
-### 1.1. Przestrzeń stanów (S)
+### 1.1. Przestrzeń stanów $$S$$
 
-Przez `S` oznaczamy pełną przestrzeń stanów systemu Human–AI, który chcemy opisać. Pojedynczy stan
+Przez $$S$$ oznaczamy pełną przestrzeń stanów systemu Human–AI, który analizujemy. Pojedynczy stan
 
 $$
 s \in S
 $$
 
-może zawierać m.in.:
+może zawierać równocześnie:
 
-* stan wewnętrzny modelu (ukryte wektory, cache, zegary, stany narzędzi),
-* stan środowiska zewnętrznego (otwarte pliki, parametry połączeń sieciowych, zawartość repozytorium),
-* historię dotychczasowych interakcji (logi rozmów, decyzje użytkownika, historię commitów).
+* wewnętrzny stan modelu (ukryte wektory, cache, zegary, stany narzędzi),
+* stan środowiska zewnętrznego (otwarte pliki, konfigurację sieci, zawartość repozytorium),
+* historię dotychczasowych interakcji (logi rozmów, historię commitów, decyzje użytkownika).
 
-W HMK-9D **nie rozbijamy** `S` na części składowe. Traktujemy ją jako „pełny stan rzeczy”, taki, który idealny obserwator mógłby zobaczyć **przed** kompresją.
+W HMK-9D **nie rozbijamy** $$S$$ na podskładniki. Traktujemy je jako „pełny stan rzeczy”, który idealny obserwator mógłby zobaczyć **przed** kompresją.
 
-### 1.2. Alfabet obserwacji (\Sigma)
+### 1.2. Alfabet obserwacji $$\Sigma$$
 
-Przez `Σ` oznaczamy **alfabet komunikacji**: zbiór wszystkich znaków i komunikatów, które system potrafi przetwarzać jako wejście do polityki decyzyjnej. Element
+Przez $$\Sigma$$ oznaczamy alfabet sygnałów, które mogą trafić do polityki decyzyjnej. Pojedynczy symbol
 
 $$
 \sigma \in \Sigma
 $$
 
-może oznaczać:
+może reprezentować:
 
-* token tekstowy (słowo, fragment słowa),
-* symbol sterujący (np. znacznik `[LINUX]`),
-* skrót HUD-owy (np. `"HMK-9D"`, `"‡"`, nazwa mostu `Plan–Pauza`),
-* agregat kilku tokenów interpretowany jako całość.
+* token tekstowy (słowo, jego fragment),
+* symbol sterujący (np. znacznik `$$[LINUX]$$` w HUD-zie),
+* skrót techniczny (np. `"HMK-9D"`, znak progu `‡`, nazwa mostu `Plan–Pauza`),
+* agregat kilku tokenów interpretowany jako jedna jednostka decyzyjna.
 
-Kompresja stanu odbywa się właśnie do `Σ`. Wszystko, czego **nie da się odtworzyć** z `σ`, jest — z punktu widzenia decyzji — **utracone**.
+Kompresja stanu zachodzi właśnie do $$\Sigma$$ – wszystko, czego **nie da się odtworzyć** z $$\sigma$$, jest z punktu widzenia decyzji **utracone**.
 
 Formalnie:
 
 $$
 F : S \to \Sigma,
-$$
-
-$$
+\qquad
 \sigma = F(s).
 $$
 
-### 1.3. Przestrzeń działań (A)
+### 1.3. Przestrzeń działań $$A$$
 
-Przez `A` oznaczamy zbiór wszystkich dopuszczalnych **działań systemu**. Pojedyncze
+Przez $$A$$ oznaczamy zbiór wszystkich dopuszczalnych działań systemu. Element
 
 $$
 a \in A
@@ -180,14 +182,14 @@ $$
 
 może być:
 
-* wypowiedzią tekstową (odpowiedź modelu),
+* wypowiedzią tekstową (odpowiedź LLM-a),
 * akcją techniczną (zapis pliku, wywołanie skryptu, zapytanie SQL),
 * sygnałem metakognitywnym („poproś o doprecyzowanie”, „wstrzymaj odpowiedź”),
 * decyzją pasywną („brak odpowiedzi”).
 
-Definicja `A` jest niezależna od implementacji (LLM, system regułowy, hybryda). Interesuje nas tylko to, że dla każdej obserwacji `σ` można wybrać jakieś działanie `a`.
+Definicja $$A$$ jest niezależna od implementacji (LLM, system regułowy, hybryda). Interesuje nas tylko to, że **dla każdej** obserwacji $$\sigma$$ można wybrać jakieś działanie $$a$$.
 
-### 1.4. Funkcja kompresji (F : S \to \Sigma)
+### 1.4. Funkcja kompresji $$F : S \to \Sigma$$
 
 Funkcja kompresji
 
@@ -195,7 +197,7 @@ $$
 F : S \to \Sigma
 $$
 
-jest **jedynym dozwolonym „oknem”** na stan. Dla każdego
+jest **jedynym dozwolonym oknem** na stan. Dla każdego
 
 $$
 s \in S
@@ -207,15 +209,15 @@ $$
 \sigma = F(s).
 $$
 
-W praktyce `F` może oznaczać:
+W praktyce $$F$$ może obejmować:
 
-* potok tokenizacji i embeddingu,
-* selekcję fragmentów kontekstu (RAG, pamięć profilu, PCE),
-* filtr bezpieczeństwa, który usuwa informacje zabronione.
+* tokenizację i embedding,
+* wybór fragmentów kontekstu (np. RAG, pamięć profilu, PCE),
+* filtry bezpieczeństwa (usuwanie informacji niedozwolonych).
 
-W HMK-9D funkcja `F` będzie dodatkowo interpretowana jako mechanizm **porcjujący trajektorię** na kroki `chunk–chunk→`. Na tym etapie pozostajemy jednak przy „nagim” ujęciu: `F` zachowuje tyle informacji, ile wystarcza polityce `g` do działania.
+W HMK-9D będziemy dodatkowo interpretować $$F$$ jako mechanizm **porcjowania trajektorii** na kroki `chunk–chunk→`, ale na tym etapie pozostajemy przy czystym formalizmie: $$F$$ zachowuje tyle informacji, ile wystarcza polityce $$g$$ do działania.
 
-### 1.5. Polityka działania (g : \Sigma \to A)
+### 1.5. Polityka działania $$g : \Sigma \to A$$
 
 Polityka
 
@@ -223,7 +225,7 @@ $$
 g : \Sigma \to A
 $$
 
-to **jedyny dozwolony mechanizm decyzyjny**. Dla każdej obserwacji `σ` zwraca działanie
+jest **jedynym dozwolonym mechanizmem decyzyjnym**. Dla każdej obserwacji $$\sigma$$ wyznacza działanie
 
 $$
 a = g(\sigma).
@@ -231,80 +233,61 @@ $$
 
 Kluczowe ograniczenie:
 
-* `g` **nie widzi** pełnego stanu `s`,
-* działa wyłącznie na zredukowanej reprezentacji
-  $$
-  \sigma = F(s).
-  $$
+* $$g$$ **nie widzi** pełnego stanu $$s$$,
+* operuje wyłącznie na zredukowanej reprezentacji
+  $$\sigma = F(s).$$
 
-Każda utrata informacji na poziomie `F` musi zostać:
+Każda utrata informacji na poziomie $$F$$ musi zostać:
 
-* odpracowana przez konstrukcję `g`, albo
+* odpracowana konstrukcją $$g$$, albo
 * zaakceptowana jako **nieusuwalny składnik błędu**.
 
-### 1.6. Rzeczywiste zachowanie (H = g \circ F) i nieusuwalne ryzyko
+### 1.6. Rzeczywiste zachowanie $$H = g \circ F$$ i nieusuwalne ryzyko
 
 Złożenie
 
 $$
-H = g \circ F : S \to A
+H ;=; g \circ F : S \to A
 $$
 
-opisuje realne zachowanie systemu. Dla danego stanu `s`:
+opisuje realne zachowanie systemu. Dla danego stanu $$s$$ mamy:
 
 $$
-H(s) = g(F(s)).
+H(s) = g\big(F(s)\big).
 $$
 
-To właśnie `H` podlega ocenie w kategoriach ryzyka. Idealna polityka
+To właśnie $$H$$ podlega ocenie w kategoriach ryzyka względem idealnej polityki $$a^* : S \to A$$.
 
-$$
-a^* : S \to A
-$$
-
-określa dla każdego `s ∈ S` „najlepsze możliwe” działanie `a^*(s)`, ale:
-
-* może wymagać pełnej informacji i nieskończonej mocy obliczeniowej,
-* jest hipotetyczna — służy wyłącznie jako **punkt odniesienia**.
-
-Definiując funkcję straty
+Niech funkcja straty
 
 $$
 L : A \times A \to \mathbb{R}_{\ge 0}
 $$
 
-oraz rozkład
+mierzy „odległość” pomiędzy działaniem rzeczywistym a idealnym. Przy rozkładzie stanów $$P$$ na $$S$$ globalne ryzyko definiujemy jako
 
 $$
-P \quad \text{na } S,
+R(F,g) ;=; \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big].
 $$
 
-otrzymujemy globalne ryzyko:
+Jeżeli dodatkowo rozważamy klasę dopuszczalnych par
 
 $$
-R(F,g) = \mathbb{E}_{s \sim P}\big[L\big(H(s), a^*(s)\big)\big].
+(F,g) \in K,
 $$
 
-Wprowadzenie klasy dopuszczalnych par
+to **optymalne ryzyko Bayesowskie** (dolną granicę błędu) określamy jako
 
 $$
-(F,g) \in K
+R^*(K) ;=; \inf_{(F,g) \in K} R(F,g).
 $$
 
-pozwala zdefiniować nieusuwalne minimum błędu:
-
-$$
-R^*(K) = \inf_{(F,g) \in K} R(F,g),
-$$
-
-a dla każdej konkretnej pary ((F,g)) zachodzi nierówność:
+Dla każdej konkretnej pary $$(F,g)$$ zachodzi zatem
 
 $$
 R(F,g) ;\ge; R^*(K).
 $$
 
-To jest **nagie minimum**: wszystko, co zrobimy później w HMK-9D (kroki `Δ`, mozaika `Φ`, mosty 9D, energia `E(Δ)`) musi być z tym kontraktem zgodne i nie może „oszukiwać” dolnej granicy (R^*(K)).
+To jest punkt wyjścia HMK-9D: **nagie** minimum teorii. Cała dalsza konstrukcja – kroki $$\Delta$$, mozaika $$\Phi$$, inwariant 9D, mosty i energia $$E(\Delta)$$ – musi być z tym kontraktem spójna: ma nadać mu geometrię i „topologię decyzji”, ale nie wolno jej „oszukiwać” dolnej granicy $$R^*(K)$$.
 
-W kolejnej części nadbudujemy nad tym formalizmem geometrię kroków `Δ` i mozaiki `Φ`.
-
----
+W kolejnej części wprowadzimy już jawnie kroki $$\Delta : s_t \to s_{t+1}$$ oraz mozaikę $$\Phi$$, tak aby połączyć klasyczny kontrakt decyzyjny z praktyczną geometrią procesów w GlitchLab.
