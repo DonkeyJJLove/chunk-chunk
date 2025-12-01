@@ -1119,203 +1119,314 @@ Poniżej czysty fragment sekcji 3, bez artefaktów `[` `]`, z normalnymi `$$ ...
 
 ## 3. Twierdzenie mozaikowej reprezentacji ryzyka (wersja implementacyjna)
 
-W poprzedniej części zdefiniowaliśmy silnik HMK-9D dla AST:
+W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
 * funkcja
 
-$$\text{analyze_module_source} : \text{kod} \to {\text{MosaicStep}}$$
+  $$
+  \texttt{analyze_module_source} : \text{kod} ;\longrightarrow; {\texttt{MosaicStep}}
+  $$
 
-  buduje z modułu Pythona mozaikę $\Phi$,
+  buduje z modułu Pythona mozaikę $$\Phi$$,
 
-* każdy krok $\Delta$ (węzeł AST) ma przypisany:
+* każdy krok $$\Delta$$ (węzeł AST) ma przypisany:
 
-  * wektor inwariantu $[x9D]$ w postaci struktury `X9D`,
-  * energię $E(\Delta)$ wyliczaną jako funkcja $[x9D]$ i rozmiaru fragmentu kodu,
-  * ewentualny znacznik progu $‡$ (lista `gates` w polu `metadata`).
+  * wektor inwariantu
+    $$
+    r(\Delta) = [x9D] \in \mathbb{R}^9,
+    $$
+  * lokalną energię
+    $$
+    E(\Delta) \in \mathbb{R}_{\ge 0},
+    $$
+  * opcjonalne znaczniki progów `‡` w polu `metadata["gates"]`.
 
-Teraz formalizujemy fakt, że taka mozaika może być wykorzystana jako **dyskretna reprezentacja ryzyka** $R(F,g)$, jeśli tylko energia $E(\Delta)$ zostanie konsekwentnie powiązana z funkcją straty $L$.
+Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii $$E(\Delta)$$ – mozaika $$\Phi$$ daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
 
-### 3.1. Od epizodu AST do epizodu w kontrakcie
+$$
+R(F,g) ;=; \mathbb{E}_{s \sim P}\Big[,L\big(H(s), a^*(s)\big),\Big],
+$$
 
-Niech (P) będzie rozkładem na przestrzeni stanów (S), a
+gdzie $$H = g \circ F$$, a $$L$$ jest funkcją straty z rdzenia formalnego.
 
-[
-H := g \circ F : S \to A
-]
-
-rzeczywistym zachowaniem systemu (Human–AI + środowisko kodu).
-
-Każdy epizod działania systemu – np. pojedynczy przebieg generowania kodu, analiza pliku, run GlitchLab – generuje trajektorię stanów:
-
-[
-s_0 \to s_1 \to \dots \to s_T,
-]
-
-a więc rodzinę kroków
-
-[
-\Delta_t : s_t \to s_{t+1}, \qquad t = 0,\dots,T-1.
-]
-
-Silnik AST implementuje odwzorowanie:
-
-[
-\Psi : {\text{epizody}} \to {\text{mozaiki }\Phi},
-]
-
-gdzie każdemu epizodowi odpowiada skończony zbiór indeksów (I) i odwzorowanie
-
-[
-\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0}, \qquad
-\Phi(i) = (z_i, r_i, E_i).
-]
-
-Założenie techniczne HMK-9D jest następujące:
-
-> dla każdego kroku (\Delta_t) istnieje co najmniej jeden odpowiadający mu kafelek (\Phi(i)),
-> którego wektor ([x9D]) i energia (E_i) kodują lokalną informację o stracie decyzyjnej w tym kroku.
-
-Inaczej mówiąc: AST + soczewki są wystarczająco bogate, by zarejestrować w mozaice to, co z punktu widzenia (L(H(s),a^*(s))) jest istotne.
-
-### 3.2. Lokalny związek (E(\Delta)) z funkcją straty
-
-Przypomnijmy, że ryzyko klasyczne definiuje się jako
-
-[
-R(F,g) := \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big].
-]
-
-Załóżmy, że mamy rodzinę epizodów (\mathcal{E} = {e_1, \dots, e_N}), wygenerowanych przez system zgodnie z rozkładem (P) (lub sensownym przybliżeniem z logów). Każdy epizod (e_j) odpowiada mozaice (\Phi^{(j)}) z kroczkami (\Delta^{(j)}_t) i kafelkami (\Phi^{(j)}(i)).
-
-Definiujemy **lokalną energię decyzyjną** jako funkcję:
-
-[
-E^{\text{dec}}(\Delta^{(j)}_t)
-:= \mathbb{E}\Big[L\big(H(s_t^{(j)}), a^*(s_t^{(j)})\big) ,\Big|, z(\Delta^{(j)}_t), r(\Delta^{(j)}_t)\Big].
-]
-
-To jest idealna wersja: gdybyśmy potrafili dokładnie policzyć wartość oczekiwaną straty warunkowo na lokalnych cechach (z) i relacjach ([x9D]).
-
-Silnik HMK-9D implementuje ją w praktyce jako pewną funkcję
-
-[
-E(\Delta) = E\big(z(\Delta), r(\Delta)\big),
-]
-
-która ma trzy składniki:
-
-1. część decyzyjną – przybliżenie (E^{\text{dec}}(\Delta)),
-2. część poznawczą – koszt energii kognitywnej (np. gęstość zmian, ilość mostów aktywnych w kroku),
-3. część systemową – koszt infrastrukturalny (czas, I/O, ryzyko operacyjne).
-
-W przykładzie kodowym użyliśmy prostego heurystycznego wzoru:
-
-```python
-v = step.x9d.as_vector()
-base = sum(abs(x) for x in v)
-loc = max(1, step.span[1] - step.span[0] + 1)
-step.energy = base * (1.0 + 0.1 * (loc ** 0.5))
-```
-
-To jest **prototyp** (E): łatwy do podmiany na model uczony na danych (np. regresję lub sieć neuronową), który odwzorowuje rzeczywiste (L(H(s), a^*(s))) na podstawie `z` i `[x9D]`.
-
-Założenie HMK-9D jest wtedy następujące:
-
-> istnieje taka funkcja (E), że dla każdego kroku (\Delta) mamy
->
-> [
-> E(\Delta) \approx L\big(H(s), a^*(s)\big)
-> ]
->
-> w sensie średnim po epizodach.
-
-To właśnie ten związek sprawia, że **energia mozaiki** jest sensownym estymatorem klasycznego ryzyka.
-
-### 3.3. Energia mozaiki jako estymator (R(F,g))
-
-Niech dla epizodu (e_j) zbiór indeksów kroków będzie (I_j). Definiujemy:
-
-* energię mozaiki epizodu:
-
-[
-E_{\text{total}}^{(j)} := \sum_{i \in I_j} E_i^{(j)},
-]
-
-* średnią energię na krok:
-
-[
-\widehat{R}*{\text{ep}}^{(j)}(F,g)
-:= \frac{1}{\lvert I_j \rvert} \sum*{i \in I_j} E_i^{(j)}.
-]
-
-Twierdzenie (w wersji intuicyjno-technicznej) jest następujące:
-
-> **Twierdzenie (mozaikowa reprezentacja ryzyka).**
-> Załóżmy, że:
->
-> 1. epizody (e_j) są próbkami z rozkładu (P) na (S) (lub jego dobrym przybliżeniem),
-> 2. energia (E(\Delta)) jest nieujemna, ograniczona od góry w sensie (\mathbb{E}[E(\Delta)] < \infty),
-> 3. dla każdego stanu (s) i odpowiadającego mu kroku (\Delta) zachodzi
->    [
->    \mathbb{E}\big[E(\Delta) \mid s\big]
->    \approx L\big(H(s),a^*(s)\big).
->    ]
->
-> Wtedy:
->
-> 1. dla pojedynczego epizodu (e_j):
->    [
->    \widehat{R}_{\text{ep}}^{(j)}(F,g)
->    \approx R(F,g),
->    ]
-> 2. uśrednienie po wielu epizodach:
->    [
->    \widehat{R}*{\text{mozaika}}(F,g)
->    := \frac{1}{N} \sum*{j=1}^N \widehat{R}_{\text{ep}}^{(j)}(F,g)
->    \to R(F,g)
->    ]
->    przy (N \to \infty) (prawo wielkich liczb w wersji mozaikowej).
-
-Szkic dowodu jest standardowy: skoro energia kroku jest (w średnim sensie) równoważna stracie lokalnej, a kroki są próbkami z procesu generowanego przez (P) i (H), to uśrednianie po krokach i epizodach przybliża wartość oczekiwaną (L(H(s),a^*(s))), czyli właśnie (R(F,g)).
-
-Różnica względem klasycznej wersji polega na tym, że tutaj:
-
-* pracujemy na **dyskretnych kafelkach mozaiki Φ**,
-* każdy kafelek ma swój podpis `[x9D]`, co pozwala rozłożyć błąd nie tylko w czasie, ale i w dziewięciu wymiarach semantycznych.
-
-### 3.4. Zawężenie klasy modeli: (K_{\text{HMK9D}})
-
-Klasa wszystkich modeli zgodnych z ograniczeniami architektury oznaczona była przez (K).
-
-W HMK-9D zawężamy ją do podklasy (K_{\text{HMK9D}}), w której:
-
-1. istnieje funkcja chunkizacji i soczewki tak, że każdy epizod ma odpowiadającą mu mozaikę Φ (realizowaną np. przez nasz `HMK9DASTEngine` + YAML),
-2. energia (E(\Delta)) jest zdefiniowana tak, by spełniać warunki twierdzenia mozaikowego (lokalna zgodność z (L), skończona wartość oczekiwana),
-3. mosty i progi są jawne (w YAML-u, w konfiguracji repozytorium, w kodzie), a silnik potrafi zaznaczać kroki `‡` jako punkty zmiany reżimu.
-
-Wtedy nadal zachodzi:
-
-[
-R(F,g) \ge R^*(K_{\text{HMK9D}}) \ge R^*(K),
-]
-
-ale dodatkowo:
-
-* dla każdego ((F,g) \in K_{\text{HMK9D}}) mamy **mozaikowy obraz błędu**,
-* możemy mówić nie tylko „jakie jest (R(F,g))”, ale też **gdzie** w mozaice i w jakich wymiarach ([x9D]) pojawiają się wysokie koszty.
-
-W kontekście GlitchLab oznacza to, że:
-
-* każdy moduł, klasa, funkcja i wywołanie w repo ma swój *kod DNA* ([x9D]),
-* możemy śledzić, jak zmiany w repo (commity, refaktoryzacje) przesuwają masę energii (E) między kafelkami Φ,
-* progowe kroki `‡` (np. duże klasy, moduły, skrypty deploy) są z definicji **uzbrojone** w dodatkowe ograniczenia (Locus–Medium–Mandat, Human–AI).
-
-To tworzy pomost między klasyczną miarą jakości (R(F,g)) a praktycznym zarządzaniem **mozaiką decyzji** w czasie rzeczywistym.
+Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice $$\Phi$$ może służyć jako estimator ryzyka $$R(F,g)$$, a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
 
 ---
 
+### 3.1. Ustawienie probabilistyczne: kroki Δ jako próbki
+
+Niech $$P$$ będzie rozkładem stanów na przestrzeni $$S$$, jak w części 1. Dla każdego stanu $$s \in S$$ idealna polityka $$a^*(s)$$ i rzeczywiste zachowanie $$H(s)$$ dają lokalną stratę
+
+$$
+L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}.
+$$
+
+W warstwie HMK-9D zakładamy, że trajektorie stanów
+
+$$
+s_0 \to s_1 \to \dots \to s_T
+$$
+
+są porcjowane w kroki
+
+$$
+\Delta_t : s_t \to s_{t+1}
+$$
+
+oraz że dla każdego $$\Delta_t$$ silnik potrafi przypisać:
+
+* wektor cech lokalnych
+  $$
+  z(\Delta_t) \in \mathbb{R}^k,
+  $$
+* inwariant
+  $$
+  r(\Delta_t) = [x9D] \in \mathbb{R}^9,
+  $$
+* energię
+  $$
+  E(\Delta_t) \in \mathbb{R}_{\ge 0}.
+  $$
+
+Mozaikę $$\Phi$$ interpretujemy wtedy jako odwzorowanie
+
+$$
+\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},\qquad
+\Phi(i) = \big(z_i, r_i, E_i\big),
+$$
+
+gdzie $$I$$ indeksuje kroki $$\Delta_i$$ w rozpatrywanym epizodzie lub rodzinie epizodów.
+
+Założenie probabilistyczne jest następujące:
+
+* zbiory kroków $${\Delta_i}_{i \in I}$$ w dużej rodzinie epizodów są próbkami trajektorii generowanych przez $$H$$ względem rozkładu $$P$$,
+* dla każdego kroku $$\Delta_i$$ istnieje przyporządkowany stan $$s_i$$ (lub jego reprezentacja w logu / kodzie) tak, że można porównać
+
+  $$
+  E(\Delta_i)
+  \quad\text{z}\quad
+  L\big(H(s_i), a^*(s_i)\big).
+  $$
+
+W implementacji HMK-9D dla AST „stanem” jest konkretny kontekst kodowy (moduł, klasa, funkcja), a krok $$\Delta_i$$ odpowiada węzłowi AST oraz jego roli w systemie.
+
+---
+
+### 3.2. Definicja mozaikowego estymatora ryzyka
+
+Dla danego epizodu (np. jednego modułu kodu) zbiorem kroków jest
+
+$$
+I_{\text{ep}} = {1, \dots, N},
+$$
+
+a mozaika $$\Phi$$ dostarcza wartości
+
+$$
+E_i := E(\Delta_i),\qquad i \in I_{\text{ep}}.
+$$
+
+Definiujemy:
+
+* **energię epizodu**
+
+  $$
+  E_{\text{total}}^{\text{ep}}
+  ;=;
+  \sum_{i \in I_{\text{ep}}} E_i,
+  $$
+
+* **średnią energię na krok**
+
+  $$
+  \widehat{R}*{\text{ep}}(F,g)
+  ;=;
+  \frac{1}{\lvert I*{\text{ep}} \rvert}
+  \sum_{i \in I_{\text{ep}}} E_i.
+  $$
+
+Jeżeli dysponujemy rodziną epizodów indeksowanych przez $$\omega \in \Omega$$ (np. modułów w repozytorium, sesji GlitchLab, wątków konwersacyjnych), to mozaikowy estymator ryzyka definiujemy jako
+
+$$
+\widehat{R}*{\text{mosaic}}(F,g)
+;=;
+\frac{1}{\lvert \Omega \rvert}
+\sum*{\omega \in \Omega}
+\widehat{R}_{\text{ep}}^{(\omega)}(F,g).
+$$
+
+Z punktu widzenia implementacji odpowiada to prostemu algorytmowi:
+
+```python
+from typing import Iterable, List
+from hmk9d_core import MosaicStep
 
 
+def estimate_episode_risk(steps: List[MosaicStep]) -> float:
+    if not steps:
+        return 0.0
+    total = sum(step.energy for step in steps)
+    return total / len(steps)
 
 
+def estimate_mosaic_risk(episodes: Iterable[List[MosaicStep]]) -> float:
+    episodes = list(episodes)
+    if not episodes:
+        return 0.0
+    return sum(estimate_episode_risk(steps) for steps in episodes) / len(episodes)
+```
 
+Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implementacją** odpowiednio
+$$\widehat{R}*{\text{ep}}(F,g)$$ i $$\widehat{R}*{\text{mosaic}}(F,g)$$ dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
+
+---
+
+### 3.3. Warunek kalibracji energii
+
+Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek **kalibracji energii**. W wersji abstrakcyjnej przyjmujemy:
+
+1. Dla każdego kroku $$\Delta_i$$ istnieje stan $$s_i$$ taki, że działanie $$H(s_i)$$ oraz idealne $$a^*(s_i)$$ są zdefiniowane.
+2. Energia kroku $$E(\Delta_i)$$ jest kalibrowana tak, aby zachodziło przybliżenie
+
+   $$
+   E(\Delta_i)
+   ;\approx;
+   L\big(H(s_i), a^*(s_i)\big)
+   $$
+
+   w tym sensie, że istnieje stała $$C \ge 0$$ z
+
+   $$
+   \big\lvert
+   E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big)
+   \big\rvert
+   \le C
+   $$
+
+   oraz że błąd ten nie jest systematycznie stronniczy przy uśrednianiu po epizodach.
+
+W implementacji HMK-9D dla AST warunek ten jest realizowany przez wybór funkcji `ACCUM_ENERGY`. Przykładowo:
+
+```python
+def _op_accum_energy(self, context: Dict[str, Any]) -> None:
+    steps: List[MosaicStep] = context["steps"]
+
+    for step in steps:
+        v = step.x9d.as_vector()
+        base = sum(abs(x) for x in v)           # „ciężar” [x9D]
+        loc = max(1, step.span[1] - step.span[0] + 1)  # rozmiar fragmentu
+        step.energy = base * (1.0 + 0.1 * (loc ** 0.5))
+        step.metadata["loc"] = loc
+```
+
+Ta funkcja jest prostą heurystyką: energia rośnie z „gęstością semantyczną” (normą $$[x9D]$$) i rozmiarem fragmentu kodu (LOC). W praktycznym GlitchLab można ją zastąpić funkcją wyuczonych wag, które zostały dopasowane tak, by energia jak najlepiej przybliżała realną stratę $$L$$ dla danej klasy zadań (np. błąd bezpieczeństwa, błąd wydajności, błąd UX).
+
+---
+
+### 3.4. Twierdzenie (wersja probabilistyczna)
+
+Niech $$P$$ będzie rozkładem stanów na $$S$$, $$R(F,g)$$ ryzykiem klasycznym, a $$\widehat{R}_{\text{mosaic}}(F,g)$$ estymatorem zdefiniowanym powyżej. Zakładamy:
+
+1. próbki kroków $${\Delta_i^{(\omega)}}$$ zbierane z epizodów $$\omega \in \Omega_n$$ są generowane przez ten sam mechanizm decyzyjny $$H = g \circ F$$ pod rozkładem $$P$$ (ergodyczność / mieszanie),
+2. energia $$E(\Delta_i^{(\omega)})$$ jest skalibrowana do straty
+   $$L\big(H(s_i^{(\omega)}), a^*(s_i^{(\omega)})\big)$$
+   w sensie warunku z 3.3,
+3. liczba epizodów $$\lvert \Omega_n \rvert$$ oraz liczba kroków w epizodzie rosną do nieskończoności, gdy $$n \to \infty$$.
+
+Wówczas – z prawa wielkich liczb – otrzymujemy zbieżność:
+
+$$
+\widehat{R}_{\text{mosaic}}^{(n)}(F,g)
+;\xrightarrow[n \to \infty]{\ \ \mathbb{P}\ \ };
+R(F,g),
+$$
+
+czyli estymator mozaikowy z fragmentów kodu (lub innych trajektorii) zbiega w prawdopodobieństwie do klasycznego ryzyka systemu.
+
+**Interpretacja.**
+
+* $$R(F,g)$$ jest obiektem definicyjnym: mówi o jakości systemu w nieskończonym horyzoncie próbek.
+* $$\widehat{R}_{\text{mosaic}}(F,g)$$ jest obiektem implementacyjnym: jest średnią energią kroków w aktualnie zebranych mozaikach (AST, logi, sesje).
+
+Twierdzenie mozaikowej reprezentacji ryzyka mówi, że – przy odpowiednich założeniach – **silnik HMK-9D dla AST jest wystarczająco bogaty**, by jego licznik energii $$E(\Delta)$$ mógł być używany jako konsekwentny estimator ryzyka.
+
+---
+
+### 3.5. Wersja z progami `‡`: ryzyko strukturalne
+
+Progi `‡` (np. `Próg–Przejście/commit`) służą do wyodrębnienia podzbioru kroków o szczególnym znaczeniu strukturalnym. Niech
+
+$$
+I_{\text{gate}} \subseteq I
+$$
+
+będzie zbiorem indeksów kroków, dla których w `metadata["gates"]` występuje dany próg, np. `"Próg–Przejście/commit"`. Definiujemy:
+
+* **energię progową**
+
+  $$
+  E_{\text{gate}}^{\text{ep}}
+  ;=;
+  \sum_{i \in I_{\text{gate}}} E_i,
+  $$
+
+* **średnią energię progową na krok progowy**
+
+  $$
+  \widehat{R}*{\text{gate}}^{\text{ep}}(F,g)
+  ;=;
+  \frac{1}{\lvert I*{\text{gate}} \rvert}
+  \sum_{i \in I_{\text{gate}}} E_i,
+  $$
+
+oraz estymator globalny
+
+$$
+\widehat{R}*{\text{gate}}(F,g)
+;=;
+\frac{1}{\lvert \Omega \rvert}
+\sum*{\omega \in \Omega}
+\widehat{R}_{\text{gate}}^{(\omega)}(F,g).
+$$
+
+W implementacji odpowiada to prostemu filtrowaniu kroków z flagą `gates`:
+
+```python
+def estimate_gate_risk(steps: List[MosaicStep], gate_name: str) -> float:
+    gated = [
+        step
+        for step in steps
+        if gate_name in step.metadata.get("gates", [])
+    ]
+    if not gated:
+        return 0.0
+    total = sum(step.energy for step in gated)
+    return total / len(gated)
+```
+
+Wersja progowa odpowiada **ryzyku strukturalnemu**: mierzy nie tyle „średni błąd wszędzie”, ile „średni błąd w momentach commitów / przejść reżimowych”. Formalnie można rozumieć ją jako ryzyko warunkowe
+
+$$
+R_{\text{gate}}(F,g)
+;=;
+\mathbb{E}\Big[,L\big(H(s), a^*(s)\big),\big|, s \in S_{\text{gate}},\Big],
+$$
+
+gdzie $$S_{\text{gate}}$$ to klasa stanów odpowiadających progom `‡`. Silnik HMK-9D zapewnia implementację tego warunku poprzez mechanizm thresholdów i metadanych `gates`.
+
+---
+
+### 3.6. Podsumowanie implementacyjne
+
+Twierdzenie mozaikowej reprezentacji ryzyka w wersji HMK-9D można streścić następująco:
+
+1. Silnik AST + YAML + microcode (`HMK9DASTEngine`) buduje mozaikę $$\Phi$$ z kodu, logów lub innych artefaktów.
+2. Każdy krok $$\Delta$$ w mozaice ma przypisany inwariant $$[x9D]$$ i energię $$E(\Delta)$$, która – po kalibracji – przybliża lokalną stratę $$L$$.
+3. Proste agregaty na liście `MosaicStep` (`estimate_episode_risk`, `estimate_mosaic_risk`, `estimate_gate_risk`) implementują estymatory odpowiednio:
+
+   * ryzyka epizodu,
+   * ryzyka globalnego,
+   * ryzyka strukturalnego na progach.
+4. Przy rosnącej liczbie epizodów i poprawnej kalibracji energii, estymatory te zbiegną do klasycznego ryzyka $$R(F,g)$$ oraz jego wersji warunkowych.
+
+W ten sposób geometria mozaiki HMK-9D (kroki `chunk–chunk→`, mosty, progi `‡`) jest bezpośrednio sprzęgnięta z klasyczną teorią ryzyka: kodowa implementacja nie jest jedynie „obrazkiem”, ale **działającym licznikiem**, który mierzy, jak blisko dolnej granicy $$R^*(K)$$ realnie pracuje środowisko GlitchLab i jego generatory.
