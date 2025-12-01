@@ -1,5 +1,3 @@
----
-
 # Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab)
 
 <p align="center">
