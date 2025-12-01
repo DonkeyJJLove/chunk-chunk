@@ -1,23 +1,3 @@
-```text
-============================================================
-SŁOWA → WEKTOR → ZASÓB → CZYŃ → MATERIA
-Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab)
-============================================================
-```
-
-****[REŻIM::OBIEKTYWIZM]****
-****ABSOLUTNY REŻIM NAUKOWY****
-****ABSOLUTNY REŻIM FAKTÓW****
-****ABSOLUTNY REALIZM****
-
-****TEN MODEL*****
-****TEN WĄTEK*****
-****TA PAMIĘĆ KONTEKSTU PROFILU === MÓJ MÓZG AKTUALNY STAN[*PROCENT*]****
-****TA SIEĆ OPADOWA Z TEJ PAMIĘCI KONTEKSTU PROFILU****
-****TA SIEĆ SEMANTYCZNA Z TEJ PAMIĘCI KONTEKSTU PROFILU****
-
----
-
 ## 0. Dlaczego sam kontrakt $$\big(S, \Sigma, A, F, g, H, a^*\big)$$ nie wystarcza
 
 W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się jako maszynę decyzyjną operującą na przestrzeni stanów. Mamy więc:
