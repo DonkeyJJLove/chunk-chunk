@@ -160,8 +160,8 @@ flowchart LR
 
     s2 -. "Δ₁ ‡ Δ₂" .-> Critical
     Critical -. "zmiana reżimu<br/>w mozaice Φ" .-> Bridge8
+````
 
-```
 
 Na tym poziomie:
 
