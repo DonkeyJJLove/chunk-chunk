@@ -1123,7 +1123,7 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
 * funkcja
 
-  text```
+  ```text
     analyze_module_source : kod  → {MosaicStep}
   ```
 
