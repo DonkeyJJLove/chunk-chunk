@@ -19,17 +19,13 @@ w której stan $$s \in S$$ przechodzi w działanie $$a \in A$$ zgodnie z ustalon
 
 Protokół HoloMozaikowej Kompresji 9D (HMK-9D) dopełnia ten brak. Nie zastępuje kontraktu
 
-$$
-\big(S, \Sigma, A, F, g, H, a^*\big),
-$$
+$$ \big(S, \Sigma, A, F, g, H, a^*\big),$$
 
 lecz wprowadza nad nim **warstwę organizującą**, w której proces jest widziany jako ciąg kroków $$\Delta$$ osadzonych w przestrzeni stanów, z jawnie modelowaną strukturą relacji między nimi.
 
 Każdy krok
 
-$$
-\Delta : s_t \to s_{t+1}
-$$
+$$\Delta : s_t \to s_{t+1} $$
 
 jest minimalnym przejściem typu `chunk–chunk→`: stan $$s_t$$ zostaje skompresowany przez $$F : S \to \Sigma$$, przetworzony przez politykę $$g : \Sigma \to A$$, a wynikowe działanie aktualizuje stan do $$s_{t+1}$$. Zamiast traktować ten krok jako czarną skrzynkę, HMK-9D rozkłada go na:
 
@@ -42,31 +38,23 @@ jest minimalnym przejściem typu `chunk–chunk→`: stan $$s_t$$ zostaje skompr
 
 Wektor
 
-$$
-r(\Delta) = [x9D]
-$$
+$$r(\Delta) = [x9D]$$
 
 opisuje rozkład obciążenia w dziewięciu wymiarach: czasu, sensu, relacji, energii poznawczej, tożsamości roli, funkcji (mandatu), poziomu abstrakcji, przewidywania oraz decyzji–tokenu. Znak $$[x9D]$$ jest **inwariantem kompresji**: minimalnym zestawem współrzędnych, które pozostają stabilne po przejściu przez $$F$$ i nadal pozwalają polityce $$g$$ wybrać działanie bliskie idealnemu $$a^*$$.
 
 Lokalna energia kroku może być odczytywana jako przybliżenie lokalnej straty:
 
-$$
-E(\Delta) ;\approx; L\big(H(s_t), a^*(s_t)\big),
-$$
+$$E(\Delta) ;\approx; L\big(H(s_t), a^*(s_t)\big),$$
 
 a globalna energia mozaiki
 
-$$
-E_{\text{total}} ;=; \sum_{\Delta} E(\Delta)
-$$
+$$E_{\text{total}} ;=; \sum_{\Delta} E(\Delta)$$
 
 staje się mozaikową aproksymacją globalnego ryzyka $$R(F,g)$$ — ale już **z informacją o tym, gdzie** w trajektorii ten koszt powstaje.
 
 Relacje między krokami są w HMK-9D obiektami pierwszej klasy. Trajektoria
 
-$$
-s_0 \to s_1 \to s_2 \to \dots
-$$
+$$s_0 \to s_1 \to s_2 \to \dots$$
 
 jest widziana jako szereg kroków $$\Delta_0, \Delta_1, \dots$$, połączonych nie tylko strzałkami czasowymi, ale także:
 
@@ -76,15 +64,11 @@ jest widziana jako szereg kroków $$\Delta_0, \Delta_1, \dots$$, połączonych n
 
 Zbiór kroków z danego epizodu tworzy **mozaikowe pole sterowania**: do każdego indeksu $$i \in I$$ przypisujemy trójkę
 
-$$
-\Phi(i) = \big(z_i, r_i, E_i\big),
-$$
+$$\Phi(i) = \big(z_i, r_i, E_i\big),$$
 
 co daje dyskretne pole
 
-$$
-\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0}.
-$$
+$$\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0}.$$
 
 Sterowanie systemem polega wtedy nie na pojedynczej globalnej komendzie, lecz na **przełączaniu i przegrupowywaniu kafelków mozaiki** tak, aby konfiguracja minimalizowała $$E_{\text{total}}$$ w granicach wyznaczonych przez $$R^*(K)$$. Intuicja jest bliska „mosaic warfare”: sterujesz strukturą kafelków, a nie tylko lokalnymi ruchami.
 
