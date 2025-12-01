@@ -6,9 +6,9 @@
 
 W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się jako parę funkcji operujących na przestrzeni stanów. Mamy więc:
 
-* przestrzeń stanów `S`,
-* alfabet obserwacji `Σ`,
-* przestrzeń działań `A`,
+* przestrzeń stanów $$S$$,
+* alfabet obserwacji $$Σ$$,
+* przestrzeń działań $$A$$,
 * funkcję kompresji (obserwacji)
   $$F : S \to \Sigma,$$
 * politykę decyzyjną
