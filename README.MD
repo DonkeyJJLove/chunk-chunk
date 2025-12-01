@@ -12,9 +12,7 @@ W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się
 * funkcję kompresji (obserwacji)
   $$F : S \to \Sigma,$$
 * politykę decyzyjną
-  $$
-  g : \Sigma \to A.
-  $$
+  $$g : \Sigma \to A.$$
 
 Złożenie
 
