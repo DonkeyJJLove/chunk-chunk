@@ -126,11 +126,12 @@ flowchart LR
      $$g : \Sigma \to A,$$
    * zachowanie
      $$H = g \circ F,$$
-   * idealna polityka $$a^ {*}$$
-   i ryzyko 
-   $$R(F,g)$$
-   z dolną granicą
-   $$R^*(K).$$
+   * idealna polityka 
+     $$a^{\ast}$$ 
+     i ryzyko 
+     $$R(F,g)$$ 
+     z dolną granicą 
+     $$R^{\ast}(K).$$
 
 2. **Poziom kroków Δ (chunk–chunk→).**
    Strumień stanów jest porcjowany na minimalne przejścia
