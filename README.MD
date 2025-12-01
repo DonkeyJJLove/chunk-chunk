@@ -587,6 +587,530 @@ $$
 
 zbliżała się do $$R^*(K)$$, zamiast dryfować w stronę chaotycznego, niekontrolowanego wzrostu energii.
 
+## 2. Dowód przez konstrukcję: HMK-9D jako warstwa AST + microcode + YAML
+
+W tej części przechodzimy od czystej teorii do **dowodu przez konstrukcję**: pokazujemy, że protokół HMK-9D można zrealizować jako konkretny silnik Pythona, który:
+
+1. czyta **kod źródłowy** (repozytorium) i buduje z niego **AST**,
+2. interpretuje ten AST przez **soczewki HMK-9D** opisane w YAML,
+3. wykonuje **program microcode** (HMK9D_VM), który steruje chunkizacją, mapowaniem `[x9D]`, wyznaczaniem progów `‡` i liczeniem energii `E(Δ)`,
+4. emituje **mozaikę Φ** jako uporządkowany zbiór kroków `Δ`, z których każdy ma swój wektor `[x9D]` i energię `E(Δ)`.
+
+W ten sposób każdemu obiektowi w repozytorium (funkcji, klasie, plikowi, modułowi) można przypisać **kod DNA HMK-9D**: podpis `[x9D]`, typ roli (Plan–Pauza, Wioska–Miasto, Human–AI, …) i miejsce w mozaice Φ.
+
+To, że taki silnik da się zdefiniować, stanowi **dowód konstruktywny**, że HMK-9D nie jest tylko metaforą, ale implementowalną geometrią dla środowiska, które samo siebie postrzega i ewoluuje.
+
+---
+
+### 2.1. Rdzeń danych: `[x9D]`, soczewki i kroki mozaiki
+
+Zaczynamy od zdefiniowania podstawowych typów danych HMK-9D: wektora `[x9D]`, „soczewki” (lensa) oraz kroku `Δ` w mozaice kodu.
+
+```python
+# hmk9d_core.py
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Dict, Any, List, Tuple, Optional
+from uuid import uuid4
+
+
+@dataclass(frozen=True)
+class X9D:
+    """Inwariant 9D [x9D] dla pojedynczego kroku Δ."""
+    time: float              # czas / rytm
+    meaning: float           # sens / semantyka
+    relation: float          # relacyjność
+    cognitive_energy: float  # energia poznawcza
+    identity: float          # tożsamość / rola
+    mandate: float           # mandat / funkcja
+    abstraction: float       # poziom abstrakcji
+    prediction: float        # przewidywanie
+    decision: float          # decyzja–token
+
+    def as_vector(self) -> Tuple[float, ...]:
+        return (
+            self.time, self.meaning, self.relation, self.cognitive_energy,
+            self.identity, self.mandate, self.abstraction,
+            self.prediction, self.decision,
+        )
+
+
+@dataclass
+class Lens:
+    """
+    Soczewka HMK-9D: opisuje jak interpretować dany fragment AST
+    w kategoriach [x9D] oraz jaką rolę mostu pełni.
+    """
+    name: str                      # np. "Plan–Pauza"
+    applies_to: List[str]          # typy AST: ["FunctionDef", "AsyncFunctionDef"]
+    base_x9d: X9D                  # bazowy wektor [x9D]
+    weight: float = 1.0            # waga soczewki w mieszance
+    description: str = ""          # opis roli w systemie
+    tags: List[str] = field(default_factory=list)
+
+
+@dataclass
+class MosaicStep:
+    """
+    Pojedynczy krok Δ w mozaice AST: fragment kodu + [x9D] + energia E(Δ).
+    """
+    id: str
+    module: str
+    filename: str
+    node_type: str
+    lineno: int
+    col_offset: int
+    span: Tuple[int, int]          # (początek, koniec w pliku)
+    x9d: X9D
+    energy: float
+    lenses: List[str]              # nazwy aktywnych soczewek
+    metadata: Dict[str, Any] = field(default_factory=dict)
+
+    def as_record(self) -> Dict[str, Any]:
+        return {
+            "id": self.id,
+            "module": self.module,
+            "filename": self.filename,
+            "node_type": self.node_type,
+            "lineno": self.lineno,
+            "col_offset": self.col_offset,
+            "span": self.span,
+            "x9d": list(self.x9d.as_vector()),
+            "energy": self.energy,
+            "lenses": self.lenses,
+            "metadata": self.metadata,
+        }
+```
+
+Na tym poziomie:
+
+* `[x9D]` jest **konkretnym wektorem liczb** przypisanym do kroku `Δ`,
+* `Lens` jest **implementacją mostu** (np. `Plan–Pauza`) na poziomie kodu – mówi, jakie typy AST „widzi” i jak domyślnie ustawia `[x9D]`,
+* `MosaicStep` jest **jednostką mozaiki Φ**: odpowiada fragmentowi AST, ma swój `[x9D]`, energię `E(Δ)` i listę soczewek, przez które został zobaczony.
+
+---
+
+### 2.2. YAML: soczewki, progi i program microcode
+
+Definicje soczewek, progów `‡` oraz programu microcode trzymamy w pliku YAML – to jest warstwa, którą można modyfikować bez ruszania kodu.
+
+```yaml
+# hmk9d_config.yaml
+hmk9d:
+  lenses:
+    - name: "Plan–Pauza"
+      applies_to: ["FunctionDef", "AsyncFunctionDef"]
+      description: "Soczewka planowania / pauzy: definicje funkcji => plan."
+      tags: ["planowanie", "architektura"]
+      x9d:
+        time: 0.8
+        meaning: 0.9
+        relation: 0.4
+        cognitive_energy: 0.7
+        identity: 0.6
+        mandate: 0.9
+        abstraction: 0.8
+        prediction: 0.5
+        decision: 0.6
+
+    - name: "Wioska–Miasto"
+      applies_to: ["ClassDef", "Module"]
+      description: "Soczewka skali: klasy / moduły jako wioska/miasto."
+      tags: ["skala", "organizacja"]
+      x9d:
+        time: 0.5
+        meaning: 0.8
+        relation: 0.7
+        cognitive_energy: 0.6
+        identity: 0.9
+        mandate: 0.7
+        abstraction: 0.9
+        prediction: 0.4
+        decision: 0.6
+
+    - name: "Human–AI"
+      applies_to: ["Call"]
+      description: "Wezwania do AI / API / IO jako oś Human–AI."
+      tags: ["interakcja", "wejście-wyjście"]
+      x9d:
+        time: 0.6
+        meaning: 0.8
+        relation: 0.9
+        cognitive_energy: 0.7
+        identity: 0.7
+        mandate: 0.8
+        abstraction: 0.6
+        prediction: 0.8
+        decision: 0.9
+
+  thresholds:
+    - name: "Próg–Przejście/commit"
+      description: "Commit strukturalny: duże klasy / moduły."
+      condition: "node_type in ['ClassDef','Module'] and loc >= 50"
+      action: "mark_gate"
+
+  microcode:
+    - op: "CHUNK_AST"
+      args:
+        granularity: "stmt"   # "stmt" | "def" | "block"
+    - op: "MAP_LENSES"
+    - op: "ACCUM_ENERGY"
+    - op: "MARK_GATES"
+    - op: "EMIT_MOSAIC"
+```
+
+W tym YAML-u:
+
+* sekcja `lenses` definiuje **platformowe soczewki** (`Plan–Pauza`, `Wioska–Miasto`, `Human–AI`) wraz z ich `[x9D]`,
+* sekcja `thresholds` koduje **progi `‡`** – tu: duże klasy / moduły są oznaczane jako punkty `Próg–Przejście`,
+* sekcja `microcode` jest **programem HMK9D_VM**: mówi, w jakiej kolejności AST ma być chunkizowany, przepuszczany przez soczewki i zamieniany w mozaikę Φ.
+
+---
+
+### 2.3. Microcode jako PROMOT ASCII dla AST
+
+Program microcode możemy przedstawić także jako tablicę PROMOT ASCII – to jest „mikroinstrukcja” dla HMK9D_VM:
+
+```text
++----------+-----------+----------------------------------------+------------------------------------------+
+| OPC      | SYM       | Δ-OP                                   | L-SIG                                    |
++----------+-----------+----------------------------------------+------------------------------------------+
+| S0       | ::CHUNK   | zamień AST na kroki Δ (węzły/stmt)     | "potnij kod na stabilne kroki"          |
+| S1       | ::LENS    | do Δ przypisz soczewki i [x9D]         | "przepuść przez soczewki HMK-9D"        |
+| S2       | ::ENERGY  | policz E(Δ) dla każdego kroku          | "zmierz koszt kroku w 9D"               |
+| S3       | ::GATE    | oznacz progi ‡ wg reguł z thresholdów  | "zaznacz commit / Próg–Przejście"       |
+| S4       | ::EMIT    | wyemituj mozaikę Φ jako strukturę danych| "zapisz pole sterowania dla GlitchLab" |
++----------+-----------+----------------------------------------+------------------------------------------+
+```
+
+To dokładnie odpowiada sekcji `microcode` w YAML; HMK9D_VM odczytuje YAML i wykonuje kolejne operacje `S0 → S1 → S2 → S3 → S4`.
+
+---
+
+### 2.4. Silnik HMK-9D dla AST: ładowanie YAML i budowa Φ
+
+Kolejny krok dowodu to zdefiniowanie silnika, który:
+
+1. ładuje YAML,
+2. kompiluje soczewki i progi,
+3. przetwarza AST Pythona,
+4. generuje listę `MosaicStep` – czyli **mozaikę Φ kodu**.
+
+```python
+# hmk9d_ast_engine.py
+from __future__ import annotations
+
+import ast
+import inspect
+import textwrap
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List
+
+import yaml
+
+from hmk9d_core import X9D, Lens, MosaicStep
+
+
+@dataclass
+class Threshold:
+    name: str
+    description: str
+    condition: str   # wyrażenie w mini-DSL (eval na kontekście kroku)
+    action: str      # np. "mark_gate"
+
+
+@dataclass
+class MicroOp:
+    op: str
+    args: Dict[str, Any]
+
+
+@dataclass
+class HMK9DConfig:
+    lenses: List[Lens]
+    thresholds: List[Threshold]
+    microcode: List[MicroOp]
+
+
+class HMK9DASTEngine:
+    """
+    Silnik HMK-9D dla AST: realizuje microcode na drzewie składniowym Pythona.
+    """
+
+    def __init__(self, config: HMK9DConfig) -> None:
+        self.config = config
+
+    @classmethod
+    def from_yaml(cls, path: Path) -> "HMK9DASTEngine":
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))["hmk9d"]
+
+        lenses: List[Lens] = []
+        for raw in data.get("lenses", []):
+            x9 = raw["x9d"]
+            lens = Lens(
+                name=raw["name"],
+                applies_to=raw["applies_to"],
+                description=raw.get("description", ""),
+                tags=raw.get("tags", []),
+                base_x9d=X9D(
+                    time=x9["time"],
+                    meaning=x9["meaning"],
+                    relation=x9["relation"],
+                    cognitive_energy=x9["cognitive_energy"],
+                    identity=x9["identity"],
+                    mandate=x9["mandate"],
+                    abstraction=x9["abstraction"],
+                    prediction=x9["prediction"],
+                    decision=x9["decision"],
+                ),
+            )
+            lenses.append(lens)
+
+        thresholds: List[Threshold] = []
+        for raw in data.get("thresholds", []):
+            thresholds.append(
+                Threshold(
+                    name=raw["name"],
+                    description=raw.get("description", ""),
+                    condition=raw["condition"],
+                    action=raw["action"],
+                )
+            )
+
+        microcode: List[MicroOp] = []
+        for raw in data.get("microcode", []):
+            microcode.append(
+                MicroOp(
+                    op=raw["op"],
+                    args=raw.get("args", {}),
+                )
+            )
+
+        return cls(HMK9DConfig(lenses=lenses, thresholds=thresholds, microcode=microcode))
+
+    # -------------------- Główne API --------------------
+
+    def analyze_module_source(
+        self,
+        source: str,
+        filename: str = "<memory>",
+        module: str = "<module>",
+    ) -> List[MosaicStep]:
+        """
+        Główna funkcja: bierze kod źródłowy, wykonuje program microcode
+        i zwraca listę kroków Δ, czyli mozaikę Φ.
+        """
+        tree = ast.parse(source, filename=filename)
+        context: Dict[str, Any] = {
+            "tree": tree,
+            "filename": filename,
+            "module": module,
+            "steps": [],  # zostanie wypełnione przez microcode
+        }
+
+        for micro_op in self.config.microcode:
+            if micro_op.op == "CHUNK_AST":
+                self._op_chunk_ast(context, **micro_op.args)
+            elif micro_op.op == "MAP_LENSES":
+                self._op_map_lenses(context)
+            elif micro_op.op == "ACCUM_ENERGY":
+                self._op_accum_energy(context)
+            elif micro_op.op == "MARK_GATES":
+                self._op_mark_gates(context)
+            elif micro_op.op == "EMIT_MOSAIC":
+                # nic nie robi, steps są już gotowe
+                pass
+            else:
+                raise ValueError(f"Nieznana operacja microcode: {micro_op.op}")
+
+        return context["steps"]
+
+    # -------------------- Operacje microcode --------------------
+
+    def _op_chunk_ast(self, context: Dict[str, Any], granularity: str = "stmt") -> None:
+        """
+        CHUNK_AST: zamienia AST na kroki Δ (węzły).
+        Można sterować granulacją (instrukcje, definicje, bloki).
+        """
+        tree: ast.AST = context["tree"]
+        filename: str = context["filename"]
+        module: str = context["module"]
+
+        steps: List[MosaicStep] = []
+
+        for node in ast.walk(tree):
+            node_type = type(node).__name__
+            if not hasattr(node, "lineno"):
+                continue
+
+            lineno = getattr(node, "lineno", 0)
+            col = getattr(node, "col_offset", 0)
+            end_lineno = getattr(node, "end_lineno", lineno)
+            span = (lineno, end_lineno)
+
+            # placeholder [x9D] – zostanie wypełniony przez MAP_LENSES
+            zero = X9D(
+                time=0.0,
+                meaning=0.0,
+                relation=0.0,
+                cognitive_energy=0.0,
+                identity=0.0,
+                mandate=0.0,
+                abstraction=0.0,
+                prediction=0.0,
+                decision=0.0,
+            )
+
+            step = MosaicStep(
+                id=str(uuid4()),
+                module=module,
+                filename=filename,
+                node_type=node_type,
+                lineno=lineno,
+                col_offset=col,
+                span=span,
+                x9d=zero,
+                energy=0.0,
+                lenses=[],
+                metadata={"node_repr": ast.dump(node, annotate_fields=False, include_attributes=False)},
+            )
+            steps.append(step)
+
+        context["steps"] = steps
+
+    def _op_map_lenses(self, context: Dict[str, Any]) -> None:
+        """
+        MAP_LENSES: dla każdego kroku Δ wybiera soczewki i wylicza [x9D].
+        """
+        steps: List[MosaicStep] = context["steps"]
+        lenses = self.config.lenses
+
+        for step in steps:
+            active: List[Lens] = [
+                lens for lens in lenses if step.node_type in lens.applies_to
+            ]
+            if not active:
+                continue
+
+            # średnia ważona [x9D] ze wszystkich aktywnych soczewek
+            acc = [0.0] * 9
+            total_w = 0.0
+            for lens in active:
+                vec = lens.base_x9d.as_vector()
+                w = lens.weight
+                total_w += w
+                for i, v in enumerate(vec):
+                    acc[i] += w * v
+
+            if total_w > 0:
+                acc = [v / total_w for v in acc]
+
+            step.x9d = X9D(*acc)
+            step.lenses = [lens.name for lens in active]
+
+    def _op_accum_energy(self, context: Dict[str, Any]) -> None:
+        """
+        ACCUM_ENERGY: definiuje energię E(Δ) jako prostą funkcję [x9D] + rozmiaru węzła.
+        W produkcji można ją zastąpić modelowaną funkcją straty.
+        """
+        steps: List[MosaicStep] = context["steps"]
+
+        for step in steps:
+            v = step.x9d.as_vector()
+            # heurystyka: energia = norma L1 [x9D] * log(rozmiar fragmentu)
+            base = sum(abs(x) for x in v)
+            loc = max(1, step.span[1] - step.span[0] + 1)
+            step.energy = base * (1.0 + 0.1 * (loc ** 0.5))
+            step.metadata["loc"] = loc
+
+    def _op_mark_gates(self, context: Dict[str, Any]) -> None:
+        """
+        MARK_GATES: stosuje progi ‡ (thresholdy) do kroków i oznacza je jako bramki.
+        """
+        steps: List[MosaicStep] = context["steps"]
+        thresholds = self.config.thresholds
+
+        for step in steps:
+            env = {
+                "node_type": step.node_type,
+                "loc": step.metadata.get("loc", 1),
+                "energy": step.energy,
+                "lenses": step.lenses,
+            }
+            for thr in thresholds:
+                if eval(thr.condition, {}, env):
+                    # oznaczamy ten krok jako Próg–Przejście
+                    step.metadata.setdefault("gates", []).append(thr.name)
+```
+
+W tym silniku:
+
+* `CHUNK_AST` buduje z AST listę kroków `Δ` (po jednym na węzeł),
+* `MAP_LENSES` przypisuje każdemu krokowi `[x9D]` na podstawie soczewek z YAML-a,
+* `ACCUM_ENERGY` definiuje energię `E(Δ)` jako prostą funkcję `[x9D]` i rozmiaru fragmentu,
+* `MARK_GATES` używa progów (`thresholds`) do oznaczenia kroków, które są **progami `‡`**.
+
+Zwrócona lista `MosaicStep` jest już **konkretną mozaiką Φ**: każdym elementem można sterować, logować go, wizualizować, uczyć na nim modele.
+
+---
+
+### 2.5. Przykład: analiza modułu z „systemem obiektywów”
+
+Na koniec pokazujemy, jak użyć silnika HMK-9D w praktyce – wprost na kodzie. To jest fragment, który można wkleić do narzędzia typu `glitchlab/hmk9d_demo.py` albo do notebooka.
+
+```python
+# hmk9d_demo.py
+from pathlib import Path
+import inspect
+
+from hmk9d_ast_engine import HMK9DASTEngine
+
+
+# Przykładowy moduł, który chcemy „obejrzeć” przez soczewki HMK-9D
+def example_module():
+    class CodeGenerator:
+        def __init__(self, repo_root: str) -> None:
+            self.repo_root = repo_root
+
+        def generate_file(self, name: str, content: str) -> None:
+            # Plan–Pauza: projektowanie pliku
+            # Wioska–Miasto: wpięcie w strukturę repo
+            # Human–AI: interakcja z użytkownikiem / systemem plików
+            path = f"{self.repo_root}/{name}"
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+
+    return CodeGenerator
+
+
+if __name__ == "__main__":
+    # 1. Ładujemy konfigurację YAML (soczewki, progi, microcode)
+    cfg_path = Path("hmk9d_config.yaml")
+    engine = HMK9DASTEngine.from_yaml(cfg_path)
+
+    # 2. Bierzemy źródło przykładowego modułu (tu: z bieżącego pliku)
+    source = inspect.getsource(example_module)
+
+    # 3. Analizujemy moduł przez AST + HMK-9D
+    steps = engine.analyze_module_source(
+        source=source,
+        filename="example_module.py",
+        module="example_module",
+    )
+
+    # 4. Renderujemy mozaikę Φ jako prostą tabelę tekstową
+    print("ID\tlinia\ttyp\tE(Δ)\tsoczewki\tgates")
+    for step in steps:
+        gates = ",".join(step.metadata.get("gates", []))
+        print(
+            f"{step.id[:8]}\t{step.lineno}\t{step.node_type}\t"
+            f"{step.energy:.2f}\t{step.lenses}\t{gates}"
+        )
+```
+
+
 
 
 
