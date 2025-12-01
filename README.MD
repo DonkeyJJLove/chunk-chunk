@@ -1123,7 +1123,7 @@ W poprzedniej części zdefiniowaliśmy silnik HMK-9D dla AST:
 
 * funkcja
 
-$$\texttt{analyze_module_source} : \text{kod} \to {\text{MosaicStep}}$$
+$$\text{analyze_module_source} : \text{kod} \to {\text{MosaicStep}}$$
 
   buduje z modułu Pythona mozaikę $\Phi$,
 
