@@ -52,30 +52,6 @@ flowchart LR
 
 ```
 
-```mermaid
-flowchart TD
-
-    subgraph Mosaik["Mozaikowe pole Φ (DARPA-like)"]
-        Phi1["Φ(i₁) = (z₁, r₁, E₁)"]
-        Phi2["Φ(i₂) = (z₂, r₂, E₂)"]
-        Phi3["Φ(i₃) = (z₃, r₃, E₃)"]
-        Phi4["Φ(i₄) = (z₄, r₄, E₄)"]
-
-        Phi1 --> Phi2 --> Phi3 --> Phi4
-        Phi1 -. "‡" .- Phi3
-    end
-
-    Etot["E_total = Σ Eᵢ<br/>mozaikowa energia ≈ R(F,g)"]
-    Rstar["R*(K)<br/>nieusuwalny błąd"]
-
-    Phi1 & Phi2 & Phi3 & Phi4 --> Etot
-    Etot -. "≥" .-> Rstar
-
-    %% Komentarz zamiast notek:
-    %% Phi1 – lokalne decyzje [chunk–chunk→] na trajektorii S
-    %% Phi3 – miejsce, gdzie „‡” działa jako Próg–Przejście (zmiana reżimu / ważenia [x9D])
-
-```
 
 ```mermaid
 flowchart LR
@@ -341,6 +317,31 @@ Dla dowolnej pary `(F, g) ∈ K` zachodzi:
 ## Mozaikowe pole DARPA w kontrakcie `S, Σ, A, F, g, H, a*`
 
 Na tym samym poziomie abstrakcji możemy opisać **mozaikową strukturę decyzji** jako dyskretną reprezentację tego, jak `H = g ∘ F` działa w czasie i przestrzeni stanów.
+
+```mermaid
+flowchart TD
+
+    subgraph Mosaik["Mozaikowe pole Φ (DARPA-like)"]
+        Phi1["Φ(i₁) = (z₁, r₁, E₁)"]
+        Phi2["Φ(i₂) = (z₂, r₂, E₂)"]
+        Phi3["Φ(i₃) = (z₃, r₃, E₃)"]
+        Phi4["Φ(i₄) = (z₄, r₄, E₄)"]
+
+        Phi1 --> Phi2 --> Phi3 --> Phi4
+        Phi1 -. "‡" .- Phi3
+    end
+
+    Etot["E_total = Σ Eᵢ<br/>mozaikowa energia ≈ R(F,g)"]
+    Rstar["R*(K)<br/>nieusuwalny błąd"]
+
+    Phi1 & Phi2 & Phi3 & Phi4 --> Etot
+    Etot -. "≥" .-> Rstar
+
+    %% Komentarz zamiast notek:
+    %% Phi1 – lokalne decyzje [chunk–chunk→] na trajektorii S
+    %% Phi3 – miejsce, gdzie „‡” działa jako Próg–Przejście (zmiana reżimu / ważenia [x9D])
+
+```
 
 ### Trajektoria stanów i kroki `Δ`
 
