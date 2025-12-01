@@ -1121,7 +1121,11 @@ if __name__ == "__main__":
 
 W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
-* funkcja $$\texttt{analyze_module_source} : \text{kod} \longrightarrow \texttt{MosaicStep}$$
+* funkcja
+
+  ```text
+  analyze_module_source : kod  → {MosaicStep}
+  ```
 
   buduje z modułu Pythona mozaikę (\Phi),
 
