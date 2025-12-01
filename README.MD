@@ -414,8 +414,14 @@ Każda utrata informacji na poziomie $$F$$ musi zostać:
 Złożenie
 
 $$
-H := g \circ F : S \to A
+H : S \to A,
+\qquad
+H := g \circ F.
 $$
+
+H : S \to A,
+\qquad
+H := g \circ F.
 
 opisuje realne zachowanie systemu. Dla danego stanu $$s$$ mamy:
 
