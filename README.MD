@@ -261,11 +261,7 @@ Protokół HoloMozaikowej Kompresji 9D (HMK-9D) jest nadbudową nad tym kontrakt
     $$E(\Delta) \in \mathbb{R}_{\ge 0},$$
 
 * **układa kroki w mozaikę**
-  $$
-  \Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},
-  \qquad
-  \Phi(i) = \big(z_i, r_i, E_i\big),
-  $$
+  $$\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},\qquad \Phi(i) = \big(z_i, r_i, E_i\big),$$
   gdzie $$I$$ jest zbiorem indeksów kroków w rozpatrywanym epizodzie.
 
 Wtedy globalną energię mozaiki definiujemy jako
