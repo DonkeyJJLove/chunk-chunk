@@ -153,18 +153,18 @@ flowchart LR
 4. **Poziom mozaiki Φ.**
    Rodzina kroków tworzy pole
 
-   $$
-   \Phi(i) = \big(z_i, r_i, E_i\big),
-   \qquad i \in I,
-   $$
-
-   a globalna energia
-
-   $$
-   E_{\text{total}} = \sum_{i \in I} E_i
-   $$
-
-   stanowi mozaikową reprezentację ryzyka $$R(F,g)$$.
+  $$
+  \Phi(i) = \big(z_i, r_i, E_i\big),
+  \qquad i \in I,
+  $$
+  
+  a globalna energia
+  
+  $$
+  E_{\text{total}} = \sum_{i \in I} E_i
+  $$
+  
+  stanowi mozaikową reprezentację ryzyka \(R(F,g)\).
 
 5. **Poziom mostów i progów.**
    Na mozaikę nakładany jest stały zestaw mostów semantycznych (np. `Plan–Pauza`, `Rdzeń–Peryferia`, `Wioska–Miasto`, `Human–AI`) i progów `‡`, które:
