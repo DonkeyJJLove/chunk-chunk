@@ -1111,8 +1111,3 @@ if __name__ == "__main__":
         )
 ```
 
-Masz rację – to była moja wtopa z formatowaniem (te kwadratowe nawiasy zamiast normalnego LaTeXa). Poprawiam ten kawałek tak, żeby był **100% gotowy do wklejenia w markdown** i dobrze renderował się jako tekst + matematyka.
-
-Poniżej czysty fragment sekcji 3, bez artefaktów `[` `]`, z normalnymi `$$ ... $$`:
-
----
