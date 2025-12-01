@@ -1147,28 +1147,37 @@ Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia imp
 
 ### 3.1. Ustawienie probabilistyczne: kroki (\Delta) jako próbki
 
-Niech (P) będzie rozkładem stanów na przestrzeni (S), jak w części 1. Dla każdego stanu $$(s \in S)$$ idealna polityka $$(a^*(s))$$ i rzeczywiste zachowanie $$(H(s))$$ dają lokalną stratę
+Niech (P) będzie rozkładem stanów na przestrzeni (S), jak w części 1. Dla każdego stanu (s \in S) idealna polityka (a^*(s)) i rzeczywiste zachowanie (H(s)) dają lokalną stratę
 
-$$L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}$$.
-
+$$
+L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}.
+$$
 
 W warstwie HMK-9D zakładamy, że trajektorie stanów
 
-$$s_0 \to s_1 \to \dots \to s_T$$
+$$
+s_0 \to s_1 \to \dots \to s_T
+$$
 
 są porcjowane w kroki
 
-$$\Delta_t : s_t \to s_{t+1}$$
+$$
+\Delta_t : s_t \to s_{t+1}
+$$
 
 oraz że dla każdego (\Delta_t) silnik potrafi przypisać:
 
 * wektor cech lokalnych
 
-z$$(\Delta_t) \in \mathbb{R}^k$$,
+  $$
+  z(\Delta_t) \in \mathbb{R}^k,
+  $$
 
 * inwariant
 
-  $$r(\Delta_t) = [x9D] \in \mathbb{R}^9$$,
+  $$
+  r(\Delta_t) = [x9D] \in \mathbb{R}^9,
+  $$
 
 * energię
 
@@ -1198,7 +1207,6 @@ Założenie probabilistyczne jest następujące:
 
 W implementacji HMK-9D dla AST „stanem” jest konkretny kontekst kodowy (moduł, klasa, funkcja), a krok (\Delta_i) odpowiada węzłowi AST oraz jego roli w systemie.
 
----
 
 ### 3.2. Definicja mozaikowego estymatora ryzyka
 
