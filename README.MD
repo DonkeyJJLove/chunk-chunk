@@ -1129,25 +1129,20 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
   buduje z modułu Pythona mozaikę (\Phi),
 
-* każdy krok (\Delta) (węzeł AST) ma przypisany:
+* każdy krok $$(\Delta)$$ (węzeł AST) ma przypisany:
 
   * wektor inwariantu
-    $$
-    r(\Delta) = [x9D] \in \mathbb{R}^9,
-    $$
+    $$r(\Delta) = [x9D] \in \mathbb{R}^9$$,
   * lokalną energię
-    $$
-    E(\Delta) \in \mathbb{R}_{\ge 0},
-    $$
+    $$ E(\Delta) \in \mathbb{R}_{\ge 0}$$,
   * opcjonalne znaczniki progów `‡` w polu `metadata["gates"]`.
 
 Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii (E(\Delta)) – mozaika (\Phi) daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
 
-$$
-R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big],
-$$
+$$R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big]$$,
 
-gdzie (H = g \circ F), a (L) jest funkcją straty z rdzenia formalnego.
+
+gdzie $$(H = g \circ F)$$, a $$(L)$$ jest funkcją straty z rdzenia formalnego.
 
 Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice (\Phi) może służyć jako estymator ryzyka (R(F,g)), a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
 
@@ -1155,9 +1150,8 @@ Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia imp
 
 Niech (P) będzie rozkładem stanów na przestrzeni (S), jak w części 1. Dla każdego stanu (s \in S) idealna polityka (a^*(s)) i rzeczywiste zachowanie (H(s)) dają lokalną stratę
 
-$$
-L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}.
-$$
+$$ L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}$$.
+
 
 W warstwie HMK-9D zakładamy, że trajektorie stanów
 
