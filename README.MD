@@ -411,7 +411,7 @@ Każda utrata informacji na poziomie $$F$$ musi zostać:
 
 ### 1.6. Rzeczywiste zachowanie $$H = g \circ F$$ i nieusuwalne ryzyko
 
-Złożenie
+Złożenie rzeczywistego zachowania systemu zapisujemy najpierw w klasycznej, „podręcznikowej” postaci typu i definicji:
 
 $$
 H : S \to A,
@@ -419,11 +419,15 @@ H : S \to A,
 H := g \circ F.
 $$
 
-H : S \to A,
-\qquad
-H := g \circ F.
+Równoważnie, w skróconym zapisie użytecznym w kontekście informatycznym możemy pisać:
 
-opisuje realne zachowanie systemu. Dla danego stanu $$s$$ mamy:
+$$
+H := g \circ F : S \to A.
+$$
+
+W obu przypadkach sens jest ten sam: funkcja $$H$$ jest złożeniem kompresji $$F : S \to \Sigma$$ i polityki $$g : \Sigma \to A$$, więc jej typ to $$S \to A$$.
+
+Dla danego stanu $$s \in S$$ mamy więc:
 
 $$
 H(s) = g\big(F(s)\big).
@@ -582,5 +586,7 @@ $$
 $$
 
 zbliżała się do $$R^*(K)$$, zamiast dryfować w stronę chaotycznego, niekontrolowanego wzrostu energii.
+
+
 
 
