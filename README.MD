@@ -414,7 +414,7 @@ Każda utrata informacji na poziomie $$F$$ musi zostać:
 Złożenie
 
 $$
-H ;=; g \circ F : S \to A
+H := g \circ F : S \to A
 $$
 
 opisuje realne zachowanie systemu. Dla danego stanu $$s$$ mamy:
@@ -434,7 +434,7 @@ $$
 mierzy „odległość” pomiędzy działaniem rzeczywistym a idealnym. Przy rozkładzie stanów $$P$$ na $$S$$ globalne ryzyko definiujemy jako
 
 $$
-R(F,g) ;=; \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big].
+R(F,g) := \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big].
 $$
 
 Jeżeli dodatkowo rozważamy klasę dopuszczalnych par
@@ -446,13 +446,13 @@ $$
 to **optymalne ryzyko Bayesowskie** (dolną granicę błędu) określamy jako
 
 $$
-R^*(K) ;=; \inf_{(F,g) \in K} R(F,g).
+R^*(K) := \inf_{(F,g) \in K} R(F,g).
 $$
 
 Dla każdej konkretnej pary $$(F,g)$$ zachodzi zatem
 
 $$
-R(F,g) ;\ge; R^*(K).
+R(F,g) \ge R^*(K).
 $$
 
 ### 1.7. Mozaikowe pole DARPA jako pole sterowania
@@ -488,9 +488,9 @@ $$
 oraz odpowiadające mu wielkości
 
 $$
-z_i ;=; z(\Delta_i), \qquad
-r_i ;=; r(\Delta_i), \qquad
-E_i ;=; E(\Delta_i).
+z_i := z(\Delta_i), \qquad
+r_i := r(\Delta_i), \qquad
+E_i := E(\Delta_i).
 $$
 
 Definiujemy wtedy **mozaikowe pole sterowania** jako odwzorowanie
@@ -498,7 +498,7 @@ Definiujemy wtedy **mozaikowe pole sterowania** jako odwzorowanie
 $$
 \Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},
 \qquad
-\Phi(i) ;=; \big(z_i, r_i, E_i\big).
+\Phi(i) := \big(z_i, r_i, E_i\big).
 $$
 
 Każdy indeks $$i$$ odpowiada pojedynczemu „kafelkowi” mozaiki – lokalnej decyzji typu `chunk–chunk→`, osadzonej w przestrzeni stanów $$S$$ i opisanej przez:
@@ -510,7 +510,7 @@ Każdy indeks $$i$$ odpowiada pojedynczemu „kafelkowi” mozaiki – lokalnej 
 Globalną energię mozaiki w epizodzie definiujemy jako sumę lokalnych wkładów:
 
 $$
-E_{\text{total}} ;=; \sum_{i \in I} E_i.
+E_{\text{total}} := \sum_{i \in I} E_i.
 $$
 
 Jeżeli część decyzyjna energii $$E_i$$ jest dobrana tak, aby przybliżać lokalną stratę
@@ -521,16 +521,17 @@ $$
 
 to średnia energia na krok
 
-\[
-\widehat{R}_{\text{ep}}(F,g) \approx R(F,g)
-\]
+$$
+\widehat{R}_{\text{ep}}(F,g)
+:=
+\frac{1}{\lvert I \rvert}
+\sum_{i \in I} E_i
+$$
 
 jest **empiryczną mozaikową aproksymacją** klasycznego ryzyka $$R(F,g)$$ w tym epizodzie:
 
 $$
-\widehat{R}_{\text{ep}}(F,g)
-;;\approx;;
-R(F,g),
+\widehat{R}_{\text{ep}}(F,g) \approx R(F,g),
 $$
 
 a suma
@@ -541,13 +542,12 @@ E_{\text{total}}
 \lvert I \rvert \cdot \widehat{R}_{\text{ep}}(F,g)
 $$
 
-
 może być odczytywana jako „ile kosztowała” dana trajektoria – w sensie błędu, energii poznawczej i zasobów technicznych.
 
 W tym sensie zależność
 
 $$
-E_{\text{total}} ;\approx; R(F,g)
+E_{\text{total}} \approx R(F,g)
 $$
 
 nie oznacza równości analitycznej, lecz **związek między dwoma poziomami opisu**:
@@ -566,7 +566,7 @@ W duchu „mosaic warfare” sterowanie systemem polega wtedy nie na pojedynczej
 tak, aby konfiguracja mozaiki minimalizowała $$E_{\text{total}}$$ w granicach wyznaczonych przez dolną granicę $$R^*(K)$$:
 
 $$
-E_{\text{total}} ;\ge; \lvert I \rvert \cdot R^*(K),
+E_{\text{total}} \ge \lvert I \rvert \cdot R^*(K),
 $$
 
 a praktycznie – aby empiryczna miara
@@ -576,4 +576,5 @@ $$
 $$
 
 zbliżała się do $$R^*(K)$$, zamiast dryfować w stronę chaotycznego, niekontrolowanego wzrostu energii.
+
 
