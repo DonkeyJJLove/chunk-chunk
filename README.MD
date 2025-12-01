@@ -1126,7 +1126,6 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
   ```text
   analyze_module_source : kod  → {MosaicStep}
   ```
-
   buduje z modułu Pythona mozaikę (\Phi),
 
 * każdy krok $$(\Delta)$$ (węzeł AST) ma przypisany:
@@ -1134,7 +1133,7 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
   * wektor inwariantu
     $$r(\Delta) = [x9D] \in \mathbb{R}^9$$,
   * lokalną energię
-    $$ E(\Delta) \in \mathbb{R}_{\ge 0}$$,
+    $$E(\Delta) \in \mathbb{R}_{\ge 0}$$,
   * opcjonalne znaczniki progów `‡` w polu `metadata["gates"]`.
 
 Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii (E(\Delta)) – mozaika (\Phi) daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
