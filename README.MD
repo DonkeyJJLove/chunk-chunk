@@ -98,7 +98,7 @@ flowchart LR
 
     E -. "lokalny wkład<br/>w błąd" .-> Rloc["≈ L(H(s_t), a*(s_t))"]
 
-````
+```
 
 Na tym diagramie:
 
