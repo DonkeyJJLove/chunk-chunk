@@ -268,14 +268,15 @@ Protokół HoloMozaikowej Kompresji 9D (HMK-9D) jest nadbudową nad tym kontrakt
 Wtedy globalną energię mozaiki definiujemy jako
 
 $$
-E_{\text{total}} ;=; \sum_{i \in I} E_i,
+E_{\text{total}} := \sum_{i \in I} E_i,
 $$
 
 a HMK-9D traktuje
 
 $$
-E_{\text{total}} ;\approx; R(F,g)
+E_{\text{total}} \approx R(F,g)
 $$
+
 
 jako **mozaikową aproksymację** klasycznego ryzyka: nie tylko wiemy *ile* wynosi średni koszt, ale także *gdzie* w trajektorii on powstaje.
 
