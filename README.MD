@@ -1,3 +1,210 @@
+---
+
+# Wprowadzenie – Protokół HoloMozaikowej Kompresji 9D (HMK-9D 4 GlitchLab)
+
+<p align="center">
+  <img src="images/hmk9d_mosaic_protocol.png" width="720">
+</p>
+
+Współczesne systemy Human–AI funkcjonują nie jako pojedyncze, statyczne automaty decyzyjne, lecz jako gęste, wielowarstwowe sieci procesów, w których kolejne decyzje nadpisują siebie wzajemnie w czasie. Klasyczny obraz opiera się na polityce
+
+$$
+\pi(a \mid s),
+$$
+
+w której stan $$s \in S$$ przechodzi w działanie $$a \in A$$ zgodnie z ustaloną regułą. Ten opis jest konieczny, ale niewystarczający: nie mówi nic o **geometrii protokołu**, czyli o tym, jak system:
+
+* porcjuje strumień zdarzeń w kroki typu `chunk–chunk→`,
+* układa te kroki w trajektorie,
+* kształtuje relacje między krokami,
+* rozkłada globalny błąd $$R(F,g)$$ względem dolnej granicy $$R^*(K)$$ na lokalne wkłady.
+
+Protokół HoloMozaikowej Kompresji 9D (HMK-9D) dopełnia ten brak. Nie zastępuje kontraktu
+
+$$
+\big(S, \Sigma, A, F, g, H, a^*\big),
+$$
+
+lecz wprowadza nad nim **warstwę organizującą**, w której proces jest widziany jako ciąg kroków $$\Delta$$ osadzonych w przestrzeni stanów, z jawnie modelowaną strukturą relacji między nimi.
+
+Każdy krok
+
+$$
+\Delta : s_t \to s_{t+1}
+$$
+
+jest minimalnym przejściem typu `chunk–chunk→`: stan $$s_t$$ zostaje skompresowany przez $$F : S \to \Sigma$$, przetworzony przez politykę $$g : \Sigma \to A$$, a wynikowe działanie aktualizuje stan do $$s_{t+1}$$. Zamiast traktować ten krok jako czarną skrzynkę, HMK-9D rozkłada go na:
+
+* wektor cech lokalnych
+  $$z(\Delta) \in \mathbb{R}^k,$$
+* wektor relacji (inwariant 9D)
+  $$r(\Delta) \in \mathbb{R}^9,$$
+* lokalną energię kroku
+  $$E(\Delta) \in \mathbb{R}_{\ge 0}.$$
+
+Wektor
+
+$$
+r(\Delta) = [x9D]
+$$
+
+opisuje rozkład obciążenia w dziewięciu wymiarach: czasu, sensu, relacji, energii poznawczej, tożsamości roli, funkcji (mandatu), poziomu abstrakcji, przewidywania oraz decyzji–tokenu. Znak $$[x9D]$$ jest **inwariantem kompresji**: minimalnym zestawem współrzędnych, które pozostają stabilne po przejściu przez $$F$$ i nadal pozwalają polityce $$g$$ wybrać działanie bliskie idealnemu $$a^*$$.
+
+Lokalna energia kroku może być odczytywana jako przybliżenie lokalnej straty:
+
+$$
+E(\Delta) ;\approx; L\big(H(s_t), a^*(s_t)\big),
+$$
+
+a globalna energia mozaiki
+
+$$
+E_{\text{total}} ;=; \sum_{\Delta} E(\Delta)
+$$
+
+staje się mozaikową aproksymacją globalnego ryzyka $$R(F,g)$$ — ale już **z informacją o tym, gdzie** w trajektorii ten koszt powstaje.
+
+Relacje między krokami są w HMK-9D obiektami pierwszej klasy. Trajektoria
+
+$$
+s_0 \to s_1 \to s_2 \to \dots
+$$
+
+jest widziana jako szereg kroków $$\Delta_0, \Delta_1, \dots$$, połączonych nie tylko strzałkami czasowymi, ale także:
+
+* **stałymi mostami semantycznymi** oznaczanymi znakiem „–”, np.
+  `Plan–Pauza`, `Rdzeń–Peryferia`, `Cisza–Wydech`, które definiują **osie kompresji** – stabilne pary biegunów, wzdłuż których porządkowane są wektory $$r(\Delta)$$,
+* **progami przejścia** oznaczanymi znakiem „‡”, które wyznaczają miejsca zmiany reżimu: inny dopuszczalny błąd, inne ważenie wymiarów $$[x9D]$$, inną interpretację energii $$E(\Delta)$$ w bilansie globalnym.
+
+Zbiór kroków z danego epizodu tworzy **mozaikowe pole sterowania**: do każdego indeksu $$i \in I$$ przypisujemy trójkę
+
+$$
+\Phi(i) = \big(z_i, r_i, E_i\big),
+$$
+
+co daje dyskretne pole
+
+$$
+\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0}.
+$$
+
+Sterowanie systemem polega wtedy nie na pojedynczej globalnej komendzie, lecz na **przełączaniu i przegrupowywaniu kafelków mozaiki** tak, aby konfiguracja minimalizowała $$E_{\text{total}}$$ w granicach wyznaczonych przez $$R^*(K)$$. Intuicja jest bliska „mosaic warfare”: sterujesz strukturą kafelków, a nie tylko lokalnymi ruchami.
+
+---
+
+## Schemat działania protokołu HMK-9D
+
+Ogólny schemat HMK-9D można zapisać jako warstwę nakładaną na klasyczny kontrakt decyzyjny:
+
+```mermaid
+flowchart LR
+
+    subgraph DeltaKrok["Krok procesu Δ (chunk–chunk→)"]
+        s_t["s_t ∈ S<br/>Stan bieżący"]
+        Delta["Δ : s_t → s_{t+1}<br/>Krok chunk–chunk→"]
+        s_t1["s_{t+1} ∈ S<br/>Stan następny"]
+
+        s_t --> Delta --> s_t1
+    end
+
+    subgraph KontraktLocal["Obserwacja i decyzja w kroku Δ"]
+        F_loc["F : S → Σ<br/>σ_t = F(s_t)"]
+        Sigma_loc["σ_t ∈ Σ"]
+        g_loc["g : Σ → A<br/>a_t = g(σ_t)"]
+        A_loc["a_t ∈ A"]
+
+        F_loc --> Sigma_loc --> g_loc --> A_loc
+    end
+
+    subgraph Relacja9D["Relacja [x9D] dla Δ"]
+        z["z(Δ) ∈ ℝ^k<br/>cechy lokalne"]
+        r["r(Δ) ∈ ℝ^9<br/>[x9D]:<br/>czas, sens, relacja,<br/>energia, tożsamość,<br/>funkcja, abstrakcja,<br/>przewidywanie, decyzja"]
+        E["E(Δ) ∈ ℝ_{\ge 0}<br/>energia / koszt kroku"]
+        z --> r --> E
+    end
+
+    s_t -. "F(s_t)" .-> F_loc
+    Delta -. "parametryzuje" .-> z
+    Delta -. "parametryzuje" .-> r
+    Delta -. "parametryzuje" .-> E
+
+    E -. "wkład lokalny<br/>w R(F,g)" .-> Rloc["L(H(s_t), a*(s_t))"]
+
+``` 
+
+Operacyjnie protokół realizuje następujące kroki:
+
+1. **Poziom kontraktu (nagie S, Σ, A, F, g, H, a*).**
+   Ustalone są:
+
+   * przestrzeń stanów $$S$$,
+   * alfabet obserwacji $$\Sigma$$,
+   * przestrzeń działań $$A$$,
+   * funkcja kompresji
+     $$F : S \to \Sigma,$$
+   * polityka decyzyjna
+     $$g : \Sigma \to A,$$
+   * zachowanie
+     $$H = g \circ F,$$
+   * idealna polityka $$a^*$$ i ryzyko $$R(F,g)$$ z dolną granicą $$R^*(K)$$.
+
+2. **Poziom kroków Δ (chunk–chunk→).**
+   Strumień stanów jest porcjowany na minimalne przejścia
+
+   $$
+   \Delta_i : s_t \to s_{t+1},
+   $$
+
+   tak aby każdy krok odpowiadał pojedynczemu zdarzeniu w sensie protokołu `chunk–chunk→`.
+
+3. **Poziom inwariantu 9D.**
+   Dla każdego kroku wyznaczane są:
+
+   * cechy lokalne $$z(\Delta_i) \in \mathbb{R}^k,$$
+   * wektor relacji $$r(\Delta_i) \in \mathbb{R}^9 = [x9D],$$
+   * lokalna energia $$E(\Delta_i) \in \mathbb{R}_{\ge 0}.$$
+
+   Wektory $$r(\Delta_i)$$ są interpretowane przez stały słownik osi 9D (czas, sens, relacja, energia, tożsamość, funkcja, abstrakcja, przewidywanie, decyzja–token).
+
+4. **Poziom mozaiki Φ.**
+   Rodzina kroków tworzy pole
+
+   $$
+   \Phi(i) = \big(z_i, r_i, E_i\big),
+   \qquad i \in I,
+   $$
+
+   a globalna energia
+
+   $$
+   E_{\text{total}} = \sum_{i \in I} E_i
+   $$
+
+   stanowi mozaikową reprezentację ryzyka $$R(F,g)$$.
+
+5. **Poziom mostów i progów.**
+   Na mozaikę nakładany jest stały zestaw mostów semantycznych (np. `Plan–Pauza`, `Rdzeń–Peryferia`, `Wioska–Miasto`, `Human–AI`) i progów `‡`, które:
+
+   * definiują preferowane kierunki zmian wektorów $$r(\Delta)$$,
+   * sterują przejściami między reżimami (różne ważenie osi $$[x9D]$$, różne limity energii),
+   * wprowadzają punkty bez powrotu (commit / zapis do historii systemu).
+
+6. **Poziom microcode / HMK9D_VM.**
+   Dla powtarzalnych procesów (np. run GlitchLab, analiza wątku, deploy) definiowane są programy microcode, które sekwencjonują:
+
+   * operacje segmentacji (`CHUNK_SEG`),
+   * zastosowanie mostów (`APPLY_BRIDGE`),
+   * akumulację energii (`ACCUM_ENERGY`),
+   * wejście w próg i commit (`ENTER_GATE`, `COMMIT_IF_OK`),
+   * sprzężenie zwrotne (`FEEDBACK_UPDATE`, `EMIT_STEP_EVENT`).
+
+   Maszyna HMK-9D aktualizuje rejestr stanu 9D, liczy $$E(\Delta)$$ oraz publikuje zdarzenia do warstwy danych (EGDB GlitchLab), gdzie mozaika Φ może być analizowana jak realne pole sterowania.
+
+Ten schemat stanowi warstwę „0-ro”: pomost między czystą teorią kontraktu decyzyjnego a szczegółową definicją kroków, energii i mostów, która pojawi się w następnych częściach.
+
+
+
+
 ## 0. Dlaczego sam kontrakt $$\big(S, \Sigma, A, F, g, H, a^*\big)$$ nie wystarcza
 
 W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się jako maszynę decyzyjną operującą na przestrzeni stanów. Mamy więc:
