@@ -1,0 +1,611 @@
+hmk9d_protocol:
+  meta:
+    id: "HMK9D_GLITCHLAB_V1"
+    version: "0.1.0"
+    status: "draft"
+    description: >
+      Protokół HoloMozaikowej Kompresji 9D – warstwa procesów 9D nad
+      kontraktem S,Σ,A,F,g,H,a* i nad EGDB GlitchLab (BUS, Δ-Algebra, Φ/Ψ).
+      Służy jako soczewka ontologiczna embeddingu oraz microcode dla AI/HUD.
+    author: "Sebastian Wieremiejczyk"
+    context:
+      project: "GlitchLab"
+      repo: "github.com/DonkeyJJLove/chunk-chunk"
+      related_docs:
+        - "docs/11_spec_glossary.md"
+        - "docs/12_invariants.md"
+        - "docs/13_delta_algebra.md"
+        - "docs/20_bus.md"
+        - "docs/21_egdb.md"
+      invariants:
+        - "I1"
+        - "I2"
+        - "I3"
+        - "I4"
+
+  contract:
+    # abstrakcyjny kontrakt decyzyjny
+    state_space:
+      id: "S"
+      type: "abstract_state"
+      description: "Pełny stan systemu (Human–AI + świat + historia)."
+    signal_space:
+      id: "Sigma"
+      type: "symbolic_signal"
+      description: "Zbiór znaków/komunikatów po kompresji F."
+    action_space:
+      id: "A"
+      type: "action"
+      description: "Zbiór działań systemu (odpowiedzi, commity, sygnały sterujące)."
+    compressor:
+      id: "F"
+      type: "S_to_Sigma"
+      description: "Kompresja stanu S do znaku Σ – implementowana jako HMK9D chunk–chunk→."
+    policy:
+      id: "g"
+      type: "Sigma_to_A"
+      description: "Polityka działania – może być LLM, reguły lub hybryda."
+    behavior:
+      id: "H"
+      type: "S_to_A"
+      definition: "H(s) = g(F(s))"
+    ideal_policy:
+      id: "a*"
+      type: "S_to_A"
+      description: "Hipotetyczna polityka idealna – punkt odniesienia dla błędu."
+    risk:
+      global_risk:
+        id: "R(F,g)"
+        type: "expected_loss"
+        description: "Średni błąd względem a* w rozkładzie P(s)."
+      bayes_limit:
+        id: "R*(K)"
+        type: "bayes_optimal_risk"
+        description: "Dolna granica ryzyka dla klasy (F,g)∈K."
+    energy_model:
+      local_energy_symbol: "E(Δ)"
+      global_energy_symbol: "E_total"
+      description: >
+        E(Δ) – lokalny koszt kroku Δ (≈ lokalna strata),
+        E_total = Σ E(Δ) – mozaikowa aproksymacja R(F,g).
+
+  axes_9d:
+    # Soczewka [x9D] – ontologia wektora stanu / znaku 9D
+    ordering: [T, S, R, E, I, F, A, P, D]
+    axes:
+      - id: "T"
+        index: 1
+        name: "czas"
+        description: "Δt, opóźnienie, rytm procesów."
+        default_metric: "lead_time_ms"
+        range: "ℝ"
+      - id: "S"
+        index: 2
+        name: "sens"
+        description: "Spójność i precyzja semantyczna."
+        default_metric: "semantic_coherence_score"
+        range: "[0,1]"
+      - id: "R"
+        index: 3
+        name: "relacja"
+        description: "Kontekst społeczny/systemowy, liczba i jakość zobowiązań."
+        default_metric: "relation_tension_index"
+        range: "ℝ"
+      - id: "E"
+        index: 4
+        name: "energia_poznawcza"
+        description: "Koszt neuronu/zespołu; obciążenie poznawcze."
+        default_metric: "cognitive_load_score"
+        range: "[0,1]"
+      - id: "I"
+        index: 5
+        name: "tozsamosc"
+        description: "Rola, locus, kto jest właścicielem decyzji."
+        default_metric: "identity_clarity_score"
+        range: "[0,1]"
+      - id: "F"
+        index: 6
+        name: "funkcja"
+        description: "Mandat operacyjny – co ta decyzja robi w systemie."
+        default_metric: "mandate_strength_score"
+        range: "[0,1]"
+      - id: "A"
+        index: 7
+        name: "abstrakcja"
+        description: "Poziom abstrakcji (chunk-size)."
+        default_metric: "abstraction_level"
+        range: "ℝ"
+      - id: "P"
+        index: 8
+        name: "przewidywanie"
+        description: "Pewność i jakość predykcji."
+        default_metric: "prediction_confidence"
+        range: "[0,1]"
+      - id: "D"
+        index: 9
+        name: "decyzja_token"
+        description: "Stopień domknięcia/commitu – jak twardy jest ten krok."
+        default_metric: "commit_hardness"
+        range: "[0,1]"
+
+  bridges:
+    # Mosty semantyczne jako operatorzy na wektorze [T,S,R,E,I,F,A,P,D]
+    # vector_delta – domyślna zmiana osi przy pojedynczym przejściu przez most (skalowalna wagą).
+    - id: "PLAN_PAUSE"
+      symbol: "Plan–Pauza"
+      category: "regulator"
+      role: "hamulec_bezpieczenstwa; ustawia ramy; zatrzymuje odruch."
+      vector_delta:
+        T: +1.0
+        S: +1.0
+        R: +0.5
+        E: -1.0
+        I: +0.5
+        F: 0.0
+        A: +0.5
+        P: +1.0
+        D: -1.0
+    - id: "CORE_PERIPH"
+      symbol: "Rdzeń–Peryferia"
+      category: "downward_driver"
+      role: "selekcja istoty problemu, redukcja szumu."
+      vector_delta:
+        T: +0.5
+        S: +2.0
+        R: +0.5
+        E: -0.5
+        I: +1.0
+        F: +1.0
+        A: +1.0
+        P: +1.0
+        D: +0.5
+    - id: "SILENCE_EXHALE"
+      symbol: "Cisza–Wydech"
+      category: "regulator"
+      role: "mikro-reset układu nerwowego; gating chunków."
+      vector_delta:
+        T: +1.0
+        S: +1.0
+        R: 0.0
+        E: -2.0
+        I: 0.0
+        F: 0.0
+        A: +0.5
+        P: +1.0
+        D: 0.0
+    - id: "VILLAGE_CITY"
+      symbol: "Wioska–Miasto"
+      category: "scale"
+      role: "zmiana skali: lokalne↔systemowe."
+      vector_delta:
+        T: +0.5
+        S: +1.0
+        R: +2.0
+        E: +1.0
+        I: +1.0
+        F: +2.0
+        A: +1.0
+        P: +1.0
+        D: +0.5
+    - id: "EDGE_PATIENCE"
+      symbol: "Ostrze–Cierpliwość"
+      category: "compression"
+      role: "regulacja chunk-size, precyzja vs cierpliwość."
+      modes:
+        - name: "EDGE"
+          description: "tnij drobno, wysoka precyzja, większa energia."
+          vector_delta:
+            T: +0.5
+            S: +1.5
+            R: +0.5
+            E: +1.0
+            I: 0.0
+            F: +1.0
+            A: -1.0
+            P: +1.0
+            D: +1.0
+        - name: "PATIENCE"
+          description: "chunkuj szerzej, mniejszy koszt, wolniejszy commit."
+          vector_delta:
+            T: +1.0
+            S: +0.5
+            R: +0.5
+            E: -0.5
+            I: 0.0
+            F: +0.5
+            A: +1.0
+            P: +0.5
+            D: -0.5
+    - id: "LOCUS_MEDIUM_MANDATE"
+      symbol: "Locus–Medium–Mandat"
+      category: "addressing"
+      role: "adresowanie: kto, w jakim kanale, z jaką władzą."
+      vector_delta:
+        T: +1.0
+        S: +0.5
+        R: +1.0
+        E: +0.5
+        I: +2.0
+        F: +2.0
+        A: 0.0
+        P: +1.0
+        D: +1.0
+    - id: "HUMAN_AI"
+      symbol: "Human–AI"
+      category: "projection"
+      role: "mapowanie reprezentacji ludzkiej ↔ modelowej."
+      vector_delta:
+        T: +1.0
+        S: +1.0
+        R: +1.0
+        E: +0.5
+        I: +0.5
+        F: +1.0
+        A: +1.0
+        P: +2.0
+        D: +0.5
+    - id: "THRESHOLD_TRANSITION"
+      symbol: "Próg–Przejście"
+      category: "commit"
+      role: "punkt bez powrotu; commit do historii/systemu."
+      vector_delta:
+        T: +1.0
+        S: +0.5
+        R: +1.0
+        E: -0.5
+        I: +1.0
+        F: +1.0
+        A: 0.0
+        P: +1.0
+        D: +3.0
+      marker: "‡"
+    - id: "SEMANTICS_ENERGY"
+      symbol: "Semantyka–Energia"
+      category: "feedback"
+      role: "zamiana sensu na siłę sterującą; sprzężenie zwrotne."
+      vector_delta:
+        T: +0.5
+        S: +1.0
+        R: +0.5
+        E: 0.0   # znak zależy od wyniku; runtime może nadpisać
+        I: +0.5
+        F: +1.0
+        A: 0.0
+        P: +1.0
+        D: +1.0
+
+  process_templates:
+    # Szkielety procesów 9D – ścieżki po mostach
+    minimal_9d:
+      id: "PROC_9D_MINIMAL"
+      description: "Minimalny proces 9D dla pojedynczej decyzji operacyjnej."
+      dominant_axis: "VILLAGE_CITY"
+      steps:
+        - order: 1
+          bridge: "PLAN_PAUSE"
+          role: "entry"
+        - order: 2
+          bridge: "CORE_PERIPH"
+        - order: 3
+          bridge: "SILENCE_EXHALE"
+        - order: 4
+          bridge: "VILLAGE_CITY"
+        - order: 5
+          bridge: "HUMAN_AI"
+        - order: 6
+          bridge: "THRESHOLD_TRANSITION"
+        - order: 7
+          bridge: "SEMANTICS_ENERGY"
+      safety:
+        extra_plan_pause_before_threshold: true
+        energy_guard:
+          metric: "E"
+          max_value: 0.8
+    glitchlab_run:
+      id: "PROC_GLITCHLAB_RUN"
+      description: "Proces 9D dla pojedynczego runu analizy w GlitchLab."
+      dominant_axis: "EDGE_PATIENCE"
+      bindings:
+        egdb:
+          run_table: "runs"
+          steps_table: "steps"
+          delta_tokens_table: "delta_tokens"
+          mosaic_table: "mosaic_deltas"
+      steps:
+        - order: 1
+          bridge: "PLAN_PAUSE"
+          role: "entry"
+          egdb_bind:
+            event_topic: "core.run.started@v1"
+        - order: 2
+          bridge: "CORE_PERIPH"
+          egdb_bind:
+            event_topic: "core.pipeline.build_ctx.finished@v1"
+        - order: 3
+          bridge: "EDGE_PATIENCE"
+          mode: "EDGE"
+          egdb_bind:
+            delta_source: "delta_tokens"
+        - order: 4
+          bridge: "LOCUS_MEDIUM_MANDATE"
+          egdb_bind:
+            invariants_source: "invariants_results"
+        - order: 5
+          bridge: "HUMAN_AI"
+          egdb_bind:
+            hud_view: "vw_delta_density_by_module"
+        - order: 6
+          bridge: "THRESHOLD_TRANSITION"
+          egdb_bind:
+            gate_source: "invariants_results"
+            gates_required: ["I1", "I2", "I3", "I4"]
+        - order: 7
+          bridge: "SEMANTICS_ENERGY"
+          egdb_bind:
+            metrics_source: ["vw_invariants_heatmap", "vw_heal_success_by_kind"]
+
+  embedding_layer:
+    # Jak z tekstu/logów/code robić wektor HMK9D + soczewki
+    tokenization:
+      mode: "chunk-chunk"
+      description: "Segmentacja strumienia S na Δ-chunki stabilne semantycznie."
+      max_chunk_tokens: 256
+      min_chunk_tokens: 16
+    feature_projection:
+      # mapowanie surowych cech na osie [T,S,R,E,I,F,A,P,D]
+      features:
+        T:
+          - "time_since_last_event_ms"
+          - "run.dt_ms"
+        S:
+          - "semantic_similarity_to_core"
+          - "topic_entropy"
+        R:
+          - "number_of_stakeholders"
+          - "cross_module_references"
+        E:
+          - "context_switch_count"
+          - "conversation_turn_rate"
+        I:
+          - "owner_role_defined"
+          - "locus_clarity_flag"
+        F:
+          - "action_type"
+          - "system_impact_level"
+        A:
+          - "ast_depth"
+          - "span_length_tokens"
+        P:
+          - "model_confidence"
+          - "historical_success_rate"
+        D:
+          - "is_commit"
+          - "rollback_cost_estimate"
+    lenses:
+      # w jakich konfiguracjach mostów używać embeddingu 9D jako soczewki
+      - id: "HMK9D_DEFAULT_LENS"
+        description: "Domyślna soczewka 9D dla tekstu/kodu."
+        axes: [T, S, R, E, I, F, A, P, D]
+        bridges_sequence:
+          - "PLAN_PAUSE"
+          - "CORE_PERIPH"
+          - "SILENCE_EXHALE"
+          - "VILLAGE_CITY"
+          - "EDGE_PATIENCE"
+          - "LOCUS_MEDIUM_MANDATE"
+          - "HUMAN_AI"
+          - "THRESHOLD_TRANSITION"
+          - "SEMANTICS_ENERGY"
+      - id: "HMK9D_DIAG_LENS"
+        description: "Soczewka diagnostyczna dla analizy błędów/anomalii."
+        axes: [T, S, E, P, D]
+        bridges_sequence:
+          - "CORE_PERIPH"
+          - "EDGE_PATIENCE"
+          - "HUMAN_AI"
+          - "SEMANTICS_ENERGY"
+
+  microcode:
+    # Abstrakcyjna maszyna HMK9D i instrukcje microcode
+    vm:
+      id: "HMK9D_VM"
+      description: "Maszyna stanów dla protokołu chunk–chunk→[x9D]."
+      registers:
+        state_vector_9d: ["T", "S", "R", "E", "I", "F", "A", "P", "D"]
+        energy_local: "E_delta"
+        energy_total: "E_total"
+        mode:
+          values: ["UPWARD", "DOWNWARD", "NEUTRAL"]
+        flags:
+          - "FLAG_GATE_OPEN"
+          - "FLAG_THRESHOLD_PENDING"
+          - "FLAG_OVERLOAD"
+      event_envelope:
+        topic_prefix: "hmk9d.step"
+        fields:
+          step_id: "ulid"
+          process_id: "text"
+          bridge_id: "text"
+          delta_vector_9d: "map[str,float]"
+          state_before_9d: "map[str,float]"
+          state_after_9d: "map[str,float]"
+          energy_local: "float"
+          egdb_refs:
+            event_id: "events.id"
+            run_id: "runs.id"
+            sha: "text"
+            mosaic_id: "mosaic_deltas.id"
+
+    instructions:
+      - opcode: "CHUNK_SEG"
+        description: "Podziel wejście S_raw na Δ-chunki według reguł tokenizacji."
+        args:
+          - name: "input_stream_id"
+            type: "text"
+          - name: "max_chunk_tokens"
+            type: "int"
+        effects:
+          - "emits Δ_i with initial state_vector_9d"
+      - opcode: "APPLY_BRIDGE"
+        description: "Zastosuj most B_i do kroku Δ – zaktualizuj wektor 9D."
+        args:
+          - name: "bridge_id"
+            type: "text"
+          - name: "mode"
+            type: "text|null"
+        effects:
+          - "state_vector_9d := state_vector_9d + bridge.vector_delta(mode)"
+      - opcode: "ACCUM_ENERGY"
+        description: "Policz lokalną energię E(Δ) na podstawie z(Δ), r(Δ)."
+        args:
+          - name: "features_local"
+            type: "map"
+        effects:
+          - "energy_local := E(features_local, state_vector_9d)"
+          - "energy_total := energy_total + energy_local"
+      - opcode: "ENTER_GATE"
+        description: "Wejście w bramkę normatywną (Próg–Przejście, ‡)."
+        args:
+          - name: "gate_type"
+            type: "text"
+        effects:
+          - "FLAG_GATE_OPEN := true"
+          - "mode := 'DOWNWARD'"
+      - opcode: "COMMIT_IF_OK"
+        description: "Jeśli warunki bramek spełnione – wykonaj commit (Próg–Przejście)."
+        args:
+          - name: "thresholds"
+            type: "map"
+        effects:
+          - "if FLAG_GATE_OPEN and invariants_ok(thresholds): FLAG_THRESHOLD_PENDING := false; emit_commit()"
+          - "else: FLAG_THRESHOLD_PENDING := true"
+      - opcode: "FEEDBACK_UPDATE"
+        description: "Zaktualizuj wagi / parametry na podstawie Semantyka–Energia."
+        args:
+          - name: "feedback_metrics"
+            type: "map"
+        effects:
+          - "update_bridge_weights(feedback_metrics)"
+          - "adjust_mode_based_on_overload()"
+      - opcode: "EMIT_STEP_EVENT"
+        description: "Zapisz krok Δ w BUS/EGDB z pełnym wektorem 9D."
+        args:
+          - name: "process_id"
+            type: "text"
+          - name: "bridge_id"
+            type: "text"
+          - name: "egdb_refs"
+            type: "map"
+        effects:
+          - "publish event hmk9d.step@v1 with envelope"
+
+    bridge_programs:
+      # Microcode dla standardowych ścieżek
+      minimal_9d:
+        process_template: "PROC_9D_MINIMAL"
+        program:
+          - "CHUNK_SEG"
+          - "APPLY_BRIDGE PLAN_PAUSE"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE CORE_PERIPH"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE SILENCE_EXHALE"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE VILLAGE_CITY"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE HUMAN_AI"
+          - "ACCUM_ENERGY"
+          - "ENTER_GATE Próg–Przejście"
+          - "COMMIT_IF_OK"
+          - "APPLY_BRIDGE SEMANTICS_ENERGY"
+          - "FEEDBACK_UPDATE"
+          - "EMIT_STEP_EVENT"
+      glitchlab_run:
+        process_template: "PROC_GLITCHLAB_RUN"
+        program:
+          - "CHUNK_SEG"
+          - "APPLY_BRIDGE PLAN_PAUSE"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE CORE_PERIPH"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE EDGE_PATIENCE mode=EDGE"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE LOCUS_MEDIUM_MANDATE"
+          - "ACCUM_ENERGY"
+          - "APPLY_BRIDGE HUMAN_AI"
+          - "ACCUM_ENERGY"
+          - "ENTER_GATE Próg–Przejście"
+          - "COMMIT_IF_OK"
+          - "APPLY_BRIDGE SEMANTICS_ENERGY"
+          - "FEEDBACK_UPDATE"
+          - "EMIT_STEP_EVENT"
+
+  integrations:
+    glitchlab:
+      description: "Powiązanie HMK9D z EGDB (BUS, Δ-Algebra, Φ/Ψ)."
+      egdb:
+        backend: "postgresql"
+        schema_version_table: "egdb_schema_version"
+        tables:
+          events: "events"
+          runs: "runs"
+          steps: "steps"
+          invariants_results: "invariants_results"
+          delta_tokens: "delta_tokens"
+          delta_fingerprints: "delta_fingerprints"
+          mosaic_deltas: "mosaic_deltas"
+          modules: "modules"
+          files: "files"
+          ast_nodes: "ast_nodes"
+          phi_links: "phi_links"
+        mappings:
+          hmk9d_step_to_event:
+            join_on:
+              - "correlation_id"
+              - "repo_sha"
+          axes_to_metrics:
+            T: "steps.dt_ms"
+            S: "delta_fingerprints.score_deltaZ"
+            R: "vw_invariants_heatmap.cnt"
+            E: "spec_drift.metric"
+            I: "invariants_results.gate"
+            F: "sast_findings.severity"
+            A: "mosaic_deltas.stats->>'density'"
+            P: "heal_candidates.confidence"
+            D: "heal_outcomes.result"
+          phi_projection:
+            ast_to_mosaic:
+              source_table: "ast_nodes"
+              target_table: "phi_links"
+              weight_field: "weight"
+          invariants_gates:
+            I1:
+              source: "invariants_results"
+              action_field: "action"
+            I2:
+              source: "invariants_results"
+              action_field: "action"
+            I3:
+              source: "invariants_results"
+              action_field: "action"
+            I4:
+              source: "invariants_results"
+              action_field: "action"
+      bus_topics:
+        hmk9d_step: "hmk9d.step@v1"
+        hmk9d_diag: "hmk9d.diagnostics@v1"
+      hud_views:
+        default:
+          - "vw_delta_density_by_module"
+          - "vw_invariants_heatmap"
+          - "vw_heal_success_by_kind"
+
+  validation:
+    schema_version: 1
+    json_schema_uri: "hmk9d_protocol.schema.json"
+    constraints:
+      - "axes_9d.axes MUST contain exactly 9 entries (T,S,R,E,I,F,A,P,D)."
+      - "Every bridge.vector_delta MUST define all 9 axes."
+      - "process_templates.*.steps MUST reference existing bridges."
+      - "microcode.bridge_programs.*.process_template MUST reference existing process_templates."
+      - "integrations.glitchlab.egdb.tables.* MUST exist in EGDB schema_version >= 1."
