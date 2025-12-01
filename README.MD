@@ -10,9 +10,7 @@ W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się
 * alfabet obserwacji `Σ`,
 * przestrzeń działań `A`,
 * funkcję kompresji (obserwacji)
-  $$
-  F : S \to \Sigma,
-  $$
+  $$F : S \to \Sigma,$$
 * politykę decyzyjną
   $$
   g : \Sigma \to A.
