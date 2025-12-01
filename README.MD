@@ -131,10 +131,9 @@ flowchart LR
 
    W całym tekście używasz już poprawnej postaci $$a^*$$ (np. $$a^*(s)$$), więc tutaj dla spójności warto mieć:
 
-   ```markdown
+
    * idealna polityka 
      $$a^*$$ i ryzyko $$R(F,g)$$ z dolną granicą $$R^*(K)$$.
-   ```
 
    (Logicznie jest OK, to tylko kwestia zapisu z nadkreśleniem, żeby nie wyglądało jak zwykłe „a z gwiazdką”.)
 
