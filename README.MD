@@ -1111,25 +1111,31 @@ if __name__ == "__main__":
         )
 ```
 
+Masz rację – to była moja wtopa z formatowaniem (te kwadratowe nawiasy zamiast normalnego LaTeXa). Poprawiam ten kawałek tak, żeby był **100% gotowy do wklejenia w markdown** i dobrze renderował się jako tekst + matematyka.
+
+Poniżej czysty fragment sekcji 3, bez artefaktów `[` `]`, z normalnymi `$$ ... $$`:
+
+---
+
 ## 3. Twierdzenie mozaikowej reprezentacji ryzyka (wersja implementacyjna)
 
 W poprzedniej części zdefiniowaliśmy silnik HMK-9D dla AST:
 
 * funkcja
 
-[
-\texttt{analyze_module_source} : \text{kod} \to {\text{MosaicStep}}
-]
+  $$
+  \texttt{analyze_module_source} : \text{kod} \to {\text{MosaicStep}}
+  $$
 
-buduje z modułu Pythona mozaikę Φ,
+  buduje z modułu Pythona mozaikę $\Phi$,
 
-* każdy krok `Δ` (węzeł AST) ma przypisany:
+* każdy krok $\Delta$ (węzeł AST) ma przypisany:
 
-  * wektor ([x9D]) w postaci `X9D`,
-  * energię `E(Δ)` wyliczaną jako funkcja ([x9D]) i rozmiaru fragmentu,
-  * ewentualny znacznik progu `‡` (lista `gates` w `metadata`).
+  * wektor inwariantu $[x9D]$ w postaci struktury `X9D`,
+  * energię $E(\Delta)$ wyliczaną jako funkcja $[x9D]$ i rozmiaru fragmentu kodu,
+  * ewentualny znacznik progu $‡$ (lista `gates` w polu `metadata`).
 
-Teraz formalizujemy fakt, że taka mozaika może być wykorzystana jako **dyskretna reprezentacja ryzyka** (R(F,g)), jeśli tylko energia `E(Δ)` zostanie powiązana z funkcją straty (L).
+Teraz formalizujemy fakt, że taka mozaika może być wykorzystana jako **dyskretna reprezentacja ryzyka** $R(F,g)$, jeśli tylko energia $E(\Delta)$ zostanie konsekwentnie powiązana z funkcją straty $L$.
 
 ### 3.1. Od epizodu AST do epizodu w kontrakcie
 
