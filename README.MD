@@ -138,7 +138,7 @@ $$
 może reprezentować:
 
 * token tekstowy (słowo, jego fragment),
-* symbol sterujący (np. znacznik `$$[LINUX]$$` w HUD-zie),
+* symbol sterujący (np. znacznik `[LINUX]` w HUD-zie),
 * skrót techniczny (np. `"HMK-9D"`, znak progu `‡`, nazwa mostu `Plan–Pauza`),
 * agregat kilku tokenów interpretowany jako jedna jednostka decyzyjna.
 
@@ -268,6 +268,3 @@ $$
 R(F,g) ;\ge; R^*(K).
 $$
 
-To jest punkt wyjścia HMK-9D: **nagie** minimum teorii. Cała dalsza konstrukcja – kroki $$\Delta$$, mozaika $$\Phi$$, inwariant 9D, mosty i energia $$E(\Delta)$$ – musi być z tym kontraktem spójna: ma nadać mu geometrię i „topologię decyzji”, ale nie wolno jej „oszukiwać” dolnej granicy $$R^*(K)$$.
-
-W kolejnej części wprowadzimy już jawnie kroki $$\Delta : s_t \to s_{t+1}$$ oraz mozaikę $$\Phi$$, tak aby połączyć klasyczny kontrakt decyzyjny z praktyczną geometrią procesów w GlitchLab.
