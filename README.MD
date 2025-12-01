@@ -522,10 +522,10 @@ $$
 to średnia energia na krok
 
 $$
-\widehat{R}*{\text{ep}}(F,g)
-;;:=;;
+\widehat{R}_{\text{ep}}(F,g)
+:= 
 \frac{1}{\lvert I \rvert}
-\sum*{i \in I} E_i
+\sum_{i \in I} E_i
 $$
 
 jest **empiryczną mozaikową aproksymacją** klasycznego ryzyka $$R(F,g)$$ w tym epizodzie:
@@ -540,9 +540,10 @@ a suma
 
 $$
 E_{\text{total}}
-;;=;;
+=
 \lvert I \rvert \cdot \widehat{R}_{\text{ep}}(F,g)
 $$
+
 
 może być odczytywana jako „ile kosztowała” dana trajektoria – w sensie błędu, energii poznawczej i zasobów technicznych.
 
