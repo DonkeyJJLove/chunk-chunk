@@ -17,53 +17,6 @@ Aby uchwycić globalną organizację takiego systemu, HMK-9D wprowadza pojęcie 
 ## Schemat działania protokołu HMK-9D
 
 ```mermaid
-flowchart TD
-
-    %% KONTRAKT S, Σ, A, F, g, H, a*
-    subgraph Kontrakt["Kontrakt decyzyjny: S, Σ, A, F, g, H, a*"]
-        S["s ∈ S<br/>Pełny stan systemu"]
-        F["F : S → Σ<br/>Kompresor (chunk–chunk→)"]
-        Sigma["σ ∈ Σ<br/>Znak / komunikat"]
-        g["g : Σ → A<br/>Polityka działania"]
-        A_act["a ∈ A<br/>Działanie"]
-        H["H = g ∘ F<br/>Zachowanie systemu"]
-        S --> F --> Sigma --> g --> A_act
-        S -. "H(s) = g(F(s))" .-> H
-    end
-
-    %% TRAJEKTORIA STANÓW I KROKI Δ
-    subgraph Trajektoria["Trajektoria w przestrzeni stanów"]
-        s0["s₀"]
-        s1["s₁"]
-        s2["s₂"]
-        s3["s₃"]
-        s0 -->|"Δ₀ (chunk–chunk→)"| s1 -->|"Δ₁"| s2 -->|"Δ₂"| s3
-    end
-
-    %% MOZAIKA Φ
-    subgraph Mozaika["Mozaikowe pole sterowania Φ (DARPA-like)"]
-        Phi1["Φ(i₀) = (z₀, r₀, E₀)"]
-        Phi2["Φ(i₁) = (z₁, r₁, E₁)"]
-        Phi3["Φ(i₂) = (z₂, r₂, E₂)"]
-        Etot["E_total = Σ Eᵢ ≈ R(F,g)"]
-        Rstar["R*(K)<br/>Dolna granica ryzyka"]
-
-        Phi1 --> Phi2 --> Phi3
-        Phi1 & Phi2 & Phi3 --> Etot
-        Etot -. "≥ R*(K)" .-> Rstar
-    end
-
-    %% POWIĄZANIA
-    S --> s0
-    s3 --> S
-
-    s0 -. "Δ₀" .-> Phi1
-    s1 -. "Δ₁" .-> Phi2
-    s2 -. "Δ₂" .-> Phi3
-
-```
-
-```mermaid
 flowchart LR
 
     subgraph DeltaKrok["Krok procesu Δ (chunk–chunk→)"]
@@ -178,7 +131,52 @@ W kolejnej sekcji przechodzimy do ścisłego zdefiniowania kontraktu `S, Σ, A, 
 
 Na tym etapie opisujemy **formalną strukturę systemu** poprzez definicje następujących obiektów i funkcji, **bez wchodzenia w interpretacje psychologiczne**. Interesuje nas wyłącznie to, *jak* sygnał jest przekształcany w działanie i błąd – w modelu, który później może zostać wyspecjalizowany do protokołu `[chunk–chunk→][x9D]`.
 
----
+```mermaid
+flowchart TD
+
+    %% KONTRAKT S, Σ, A, F, g, H, a*
+    subgraph Kontrakt["Kontrakt decyzyjny: S, Σ, A, F, g, H, a*"]
+        S["s ∈ S<br/>Pełny stan systemu"]
+        F["F : S → Σ<br/>Kompresor (chunk–chunk→)"]
+        Sigma["σ ∈ Σ<br/>Znak / komunikat"]
+        g["g : Σ → A<br/>Polityka działania"]
+        A_act["a ∈ A<br/>Działanie"]
+        H["H = g ∘ F<br/>Zachowanie systemu"]
+        S --> F --> Sigma --> g --> A_act
+        S -. "H(s) = g(F(s))" .-> H
+    end
+
+    %% TRAJEKTORIA STANÓW I KROKI Δ
+    subgraph Trajektoria["Trajektoria w przestrzeni stanów"]
+        s0["s₀"]
+        s1["s₁"]
+        s2["s₂"]
+        s3["s₃"]
+        s0 -->|"Δ₀ (chunk–chunk→)"| s1 -->|"Δ₁"| s2 -->|"Δ₂"| s3
+    end
+
+    %% MOZAIKA Φ
+    subgraph Mozaika["Mozaikowe pole sterowania Φ (DARPA-like)"]
+        Phi1["Φ(i₀) = (z₀, r₀, E₀)"]
+        Phi2["Φ(i₁) = (z₁, r₁, E₁)"]
+        Phi3["Φ(i₂) = (z₂, r₂, E₂)"]
+        Etot["E_total = Σ Eᵢ ≈ R(F,g)"]
+        Rstar["R*(K)<br/>Dolna granica ryzyka"]
+
+        Phi1 --> Phi2 --> Phi3
+        Phi1 & Phi2 & Phi3 --> Etot
+        Etot -. "≥ R*(K)" .-> Rstar
+    end
+
+    %% POWIĄZANIA
+    S --> s0
+    s3 --> S
+
+    s0 -. "Δ₀" .-> Phi1
+    s1 -. "Δ₁" .-> Phi2
+    s2 -. "Δ₂" .-> Phi3
+
+```
 
 ## Przestrzeń stanów `S`
 
