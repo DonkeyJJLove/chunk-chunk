@@ -1123,22 +1123,16 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
 * funkcja
 
-  $$
-  \texttt{analyze_module_source} : \text{kod} ;\longrightarrow; {\texttt{MosaicStep}}
-  $$
+  $$\texttt{analyze_module_source} : \text{kod} ;\longrightarrow; {\texttt{MosaicStep}}$$
 
   buduje z modułu Pythona mozaikę $$\Phi$$,
 
 * każdy krok $$\Delta$$ (węzeł AST) ma przypisany:
 
   * wektor inwariantu
-    $$
-    r(\Delta) = [x9D] \in \mathbb{R}^9,
-    $$
+    $$r(\Delta) = [x9D] \in \mathbb{R}^9$$,
   * lokalną energię
-    $$
-    E(\Delta) \in \mathbb{R}_{\ge 0},
-    $$
+    $$E(\Delta) \in \mathbb{R}_{\ge 0}$$, 
   * opcjonalne znaczniki progów `‡` w polu `metadata["gates"]`.
 
 Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii $$E(\Delta)$$ – mozaika $$\Phi$$ daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
@@ -1175,18 +1169,10 @@ $$
 
 oraz że dla każdego $$\Delta_t$$ silnik potrafi przypisać:
 
-* wektor cech lokalnych
-  $$
-  z(\Delta_t) \in \mathbb{R}^k,
-  $$
-* inwariant
-  $$
-  r(\Delta_t) = [x9D] \in \mathbb{R}^9,
-  $$
-* energię
-  $$
-  E(\Delta_t) \in \mathbb{R}_{\ge 0}.
-  $$
+* wektor cech lokalnych z$$ (\Delta_t) \in \mathbb{R}^k$$,
+* inwariant $$ r(\Delta_t) = [x9D] \in \mathbb{R}^9$$,
+* energię $$ E(\Delta_t) \in \mathbb{R}_{\ge 0}$$.
+
 
 Mozaikę $$\Phi$$ interpretujemy wtedy jako odwzorowanie
 
