@@ -589,6 +589,8 @@ $$
 
 zbliżała się do $$R^*(K)$$, zamiast dryfować w stronę chaotycznego, niekontrolowanego wzrostu energii.
 
+---
+
 ## 2. Dowód przez konstrukcję: HMK-9D jako warstwa AST + microcode + YAML
 
 W tej części przechodzimy od czystej teorii do **dowodu przez konstrukcję**: pokazujemy, że protokół HMK-9D można zrealizować jako konkretny silnik Pythona, który:
@@ -1111,6 +1113,8 @@ if __name__ == "__main__":
             f"{step.energy:.2f}\t{step.lenses}\t{gates}"
         )
 ```
+
+---
 
 ## 3. Twierdzenie mozaikowej reprezentacji ryzyka (wersja implementacyjna)
 
