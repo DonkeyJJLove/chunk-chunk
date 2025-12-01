@@ -128,7 +128,7 @@ flowchart LR
      $$H = g \circ F,$$
    * idealna polityka
    
-     $$a^* $$
+     $$a^{*}$$
      i ryzyko
      $$R(F,g)$$
      z dolną granicą
