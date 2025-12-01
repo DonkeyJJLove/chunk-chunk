@@ -204,7 +204,7 @@ W klasycznych ujęciach uczenia maszynowego i teorii decyzji system opisuje się
 Złożenie
 
 $$
-H ;=; g \circ F : S \to A
+H := g \circ F : S \to A
 $$
 
 opisuje rzeczywiste zachowanie systemu, a funkcja straty
