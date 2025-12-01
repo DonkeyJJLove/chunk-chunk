@@ -127,6 +127,7 @@ flowchart LR
    * zachowanie
      $$H = g \circ F,$$
    * idealna polityka
+   
      $$a^*$$
      i ryzyko
      $$R(F,g)$$
