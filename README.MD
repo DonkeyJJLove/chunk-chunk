@@ -454,3 +454,127 @@ $$
 R(F,g) ;\ge; R^*(K).
 $$
 
+### 1.7. Mozaikowe pole DARPA jako pole sterowania
+
+Mając zdefiniowany kontrakt
+
+$$
+\big(S, \Sigma, A, F, g, H, a^*\big)
+$$
+
+oraz lokalne wielkości
+
+$$
+z(\Delta) \in \mathbb{R}^k, \qquad
+r(\Delta) \in \mathbb{R}^9, \qquad
+E(\Delta) \in \mathbb{R}_{\ge 0},
+$$
+
+możemy przejść od pojedynczych kroków $$\Delta$$ do poziomu **mozaiki epizodu**.
+
+Niech $$I$$ będzie zbiorem indeksów kroków w pewnym skończonym epizodzie (np. jednej rozmowie, jednym przebiegu systemu, jednej sesji GlitchLab). Dla każdego
+
+$$
+i \in I
+$$
+
+mamy krok
+
+$$
+\Delta_i : s_t \to s_{t+1}
+$$
+
+oraz odpowiadające mu wielkości
+
+$$
+z_i ;=; z(\Delta_i), \qquad
+r_i ;=; r(\Delta_i), \qquad
+E_i ;=; E(\Delta_i).
+$$
+
+Definiujemy wtedy **mozaikowe pole sterowania** jako odwzorowanie
+
+$$
+\Phi : I \to \mathbb{R}^k \times \mathbb{R}^9 \times \mathbb{R}_{\ge 0},
+\qquad
+\Phi(i) ;=; \big(z_i, r_i, E_i\big).
+$$
+
+Każdy indeks $$i$$ odpowiada pojedynczemu „kafelkowi” mozaiki – lokalnej decyzji typu `chunk–chunk→`, osadzonej w przestrzeni stanów $$S$$ i opisanej przez:
+
+* $$z_i$$ – **lokalną geometrię sygnału** (co się faktycznie dzieje w tym fragmencie trajektorii),
+* $$r_i$$ – **konfigurację inwariantu 9D** $$[x9D]$$ (które wymiary są obciążone: czas, sens, relacja, energia, rola, mandat, abstrakcja, przewidywanie, decyzja–token),
+* $$E_i$$ – **lokalny koszt** tego kroku (łączący błąd decyzyjny, energię poznawczą i koszt systemowy).
+
+Globalną energię mozaiki w epizodzie definiujemy jako sumę lokalnych wkładów:
+
+$$
+E_{\text{total}} ;=; \sum_{i \in I} E_i.
+$$
+
+Jeżeli część decyzyjna energii $$E_i$$ jest dobrana tak, aby przybliżać lokalną stratę
+
+$$
+L\big(H(s_i), a^*(s_i)\big),
+$$
+
+to średnia energia na krok
+
+$$
+\widehat{R}*{\text{ep}}(F,g)
+;;:=;;
+\frac{1}{\lvert I \rvert}
+\sum*{i \in I} E_i
+$$
+
+jest **empiryczną mozaikową aproksymacją** klasycznego ryzyka $$R(F,g)$$ w tym epizodzie:
+
+$$
+\widehat{R}_{\text{ep}}(F,g)
+;;\approx;;
+R(F,g),
+$$
+
+a suma
+
+$$
+E_{\text{total}}
+;;=;;
+\lvert I \rvert \cdot \widehat{R}_{\text{ep}}(F,g)
+$$
+
+może być odczytywana jako „ile kosztowała” dana trajektoria – w sensie błędu, energii poznawczej i zasobów technicznych.
+
+W tym sensie zależność
+
+$$
+E_{\text{total}} ;\approx; R(F,g)
+$$
+
+nie oznacza równości analitycznej, lecz **związek między dwoma poziomami opisu**:
+
+* $$R(F,g)$$ – poziom **statystyczny**, definiowany względem rozkładu $$P$$ na całej przestrzeni stanów $$S$$ (granica przy nieskończonej liczbie epizodów),
+* $$E_{\text{total}}$$ i $$\widehat{R}_{\text{ep}}(F,g)$$ – poziom **mozaikowy**, liczony na konkretnym epizodzie jako suma i średnia z energii kroków $$E_i$$.
+
+Dzięki temu HMK-9D pozwala nie tylko stwierdzić, że „system ma ryzyko $$R(F,g)$$”, ale też zobaczyć **gdzie** w mozaice trajektorii to ryzyko się materializuje: w jakich krokach, pod jakimi mostami (np. `Plan–Pauza`, `Wioska–Miasto`, `Human–AI`), przy jakim obciążeniu osi $$[x9D]$$.
+
+W duchu „mosaic warfare” sterowanie systemem polega wtedy nie na pojedynczej globalnej komendzie, lecz na **przełączaniu i przegrupowywaniu kafelków** mozaiki $$\Phi$$:
+
+* zmianie kolejności i routingu kroków $$\Delta_i$$,
+* zmianie reżimów (progi `‡`, inne ważenie współrzędnych w $$r_i$$),
+* wprowadzaniu lub usuwaniu całych klas kroków (np. agentów, modułów, polityk),
+
+tak, aby konfiguracja mozaiki minimalizowała $$E_{\text{total}}$$ w granicach wyznaczonych przez dolną granicę $$R^*(K)$$:
+
+$$
+E_{\text{total}} ;\ge; \lvert I \rvert \cdot R^*(K),
+$$
+
+a praktycznie – aby empiryczna miara
+
+$$
+\widehat{R}_{\text{ep}}(F,g)
+$$
+
+zbliżała się do $$R^*(K)$$, zamiast dryfować w stronę chaotycznego, niekontrolowanego wzrostu energii.
+
