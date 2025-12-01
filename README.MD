@@ -114,55 +114,32 @@ flowchart LR
 
 ``` 
 
-1. **Poziom kontraktu (nagie S, Σ, A, F, g, H, a*)**
+1. **Poziom kontraktu (nagie S, Σ, A, F, g, H, a\*).**
+   Ustalone są:
 
-   Tu wszystko gra koncepcyjnie:
+   * przestrzeń stanów $$S$$,
+   * alfabet obserwacji $$\Sigma$$,
+   * przestrzeń działań $$A$$,
+   * funkcja kompresji
+     $$F : S \to \Sigma,$$
+   * polityka decyzyjna
+     $$g : \Sigma \to A,$$
+   * zachowanie
+     $$H = g \circ F,$$
+   * idealna polityka
+     $$a^*$$
+     i ryzyko
+     $$R(F,g)$$
+     z dolną granicą
+     $$R^*(K).$$
 
-   * $$S, \Sigma, A$$ – zdefiniowane,
-   * $$F : S \to \Sigma$$ – kompresja,
-   * $$g : \Sigma \to A$$ – polityka,
-   * $$H = g \circ F$$ – zachowanie,
-   * ryzyko $$R(F,g)$$ z dolną granicą $$R^*(K)$$ – jak w klasyce.
+2. **Poziom kroków Δ (chunk–chunk→).**
+   Strumień stanów jest porcjowany na minimalne przejścia
 
-   Jedyne, co bym **doprecyzował notacyjnie**, to tę linijkę:
+   $$\Delta_i : s_i \to s_{i+1},$$
 
-   > * idealna polityka
-   >   $$a*$$ i ryzyko $$R(F,g)$$ z dolną granicą $$R^*(K)$$.
+   tak aby każdy krok odpowiadał pojedynczemu zdarzeniu w sensie protokołu `chunk–chunk→`.
 
-   W całym tekście używasz już poprawnej postaci $$a^*$$ (np. $$a^*(s)$$), więc tutaj dla spójności warto mieć:
-
-
-   * idealna polityka 
-     $$a^*$$ i ryzyko $$R(F,g)$$ z dolną granicą $$R^*(K)$$.
-
-   (Logicznie jest OK, to tylko kwestia zapisu z nadkreśleniem, żeby nie wyglądało jak zwykłe „a z gwiazdką”.)
-
-2. **Poziom kroków Δ (chunk–chunk→)**
-
-   > Strumień stanów jest porcjowany na minimalne przejścia
-   > $$\Delta_i : s_t \to s_{t+1},$$
-
-   Tutaj też treściowo jest dobrze: mówisz „dla każdego kroku mamy przejście ze stanu do kolejnego”.
-
-   Dla **czystości indeksów** masz dwie opcje:
-
-   a) Jeśli „i” to po prostu numer kroku, to najbardziej klasyczne będzie:
-
-   $$
-   \Delta_i : s_i \to s_{i+1}.
-   $$
-
-   b) Jeśli „t” ma oznaczać czas, a „i” jest tylko etykietą kroku w epizodzie, możesz zostawić:
-
-   $$
-   \Delta_i : s_t \to s_{t+1},
-   $$
-
-   ale wtedy w dalszym tekście trzeba pilnować, żeby nie mieszać indeksów „i” i „t” w definicjach typu $$z_i, r_i, E_i$$ (czyli: albo wszędzie „i”, albo wszędzie „t”).
-
-   Logicznie: oba zapisy znaczą to samo, chodzi tylko o **spójność symboli**.
-
----
 
 3. **Poziom inwariantu 9D.**
    Dla każdego kroku wyznaczane są:
