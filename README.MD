@@ -521,12 +521,9 @@ $$
 
 to średnia energia na krok
 
-$$
-\widehat{R}_{\text{ep}}(F,g)
-:= 
-\frac{1}{\lvert I \rvert}
-\sum_{i \in I} E_i
-$$
+\[
+\widehat{R}_{\text{ep}}(F,g) \approx R(F,g)
+\]
 
 jest **empiryczną mozaikową aproksymacją** klasycznego ryzyka $$R(F,g)$$ w tym epizodzie:
 
