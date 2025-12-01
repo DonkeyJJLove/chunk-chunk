@@ -1169,21 +1169,15 @@ oraz że dla każdego (\Delta_t) silnik potrafi przypisać:
 
 * wektor cech lokalnych
 
-  $$
-  z(\Delta_t) \in \mathbb{R}^k
-  $$
+  $$z(\Delta_t) \in \mathbb{R}^k$$
 
 * inwariant
 
-  $$
-  r(\Delta_t) = [x9D] \in \mathbb{R}^9
-  $$
+  $$r(\Delta_t) = [x9D] \in \mathbb{R}^9$$
 
 * energię
 
-  $$
-  E(\Delta_t) \in \mathbb{R}_{\ge 0}
-  $$
+  $$E(\Delta_t) \in \mathbb{R}_{\ge 0}$$
 
 Mozaikę (\Phi) interpretujemy wtedy jako odwzorowanie
 
