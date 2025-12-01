@@ -126,7 +126,8 @@ flowchart LR
      $$g : \Sigma \to A,$$
    * zachowanie
      $$H = g \circ F,$$
-   * idealna polityka 
+   * idealna polityka
+   
    $$a^{*}$$
    i ryzyko 
    $$R(F,g)$$
