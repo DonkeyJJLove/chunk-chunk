@@ -554,6 +554,7 @@ $$
 
 może być odczytywana jako „ile kosztowała” dana trajektoria – w sensie błędu, energii poznawczej i zasobów technicznych.
 
+
 W tym sensie zależność
 
 $$
