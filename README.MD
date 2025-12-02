@@ -1220,7 +1220,7 @@ Definiujemy:
 $$
 E_{\text{total}}^{\text{ep}}
 := \sum_{i \in I_{\text{ep}}} E_i
-$$
+$$,
 
 * **średnią energię na krok**
 
