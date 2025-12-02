@@ -1267,7 +1267,6 @@ def estimate_mosaic_risk(episodes: Iterable[List[MosaicStep]]) -> float:
 
 Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implementacją** odpowiednio estymatorów $\widehat{R}*{\text{ep}}(F,g)$ oraz $\widehat{R}*{\text{mosaic}}(F,g)$ dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
 
-
 ---
 
 ### 3.3. Warunek kalibracji energii
