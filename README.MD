@@ -1261,7 +1261,7 @@ def estimate_mosaic_risk(episodes: Iterable[List[MosaicStep]]) -> float:
 ```
 
 Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implementacją** odpowiednio
-(\widehat{R}*{\text{ep}}(F,g)) i (\widehat{R}*{\text{mosaic}}(F,g)) dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
+$$(\widehat{R}*{\text{ep}}(F,g)) i (\widehat{R}*{\text{mosaic}}(F,g))$$ dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
 
 ---
 
@@ -1272,7 +1272,11 @@ Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek *
 1. Dla każdego kroku $$(\Delta_i)$$ istnieje stan $$(s_i)$$ taki, że działanie $$(H(s_i))$$ oraz idealne $$(a^*(s_i))$$ są zdefiniowane.
 2. Energia kroku $$(E(\Delta_i))$$ jest kalibrowana tak, aby zachodziło przybliżenie
 
-   $$E(\Delta_i)\approxL\big(H(s_i), a^*(s_i)\big)$$
+$$
+E(\Delta_i)
+\;\approx\;
+L\big(H(s_i), a^*(s_i)\big)
+$$
 
    w tym sensie, że istnieje stała $$(C \ge 0)$$ z
 
