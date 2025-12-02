@@ -1265,8 +1265,7 @@ def estimate_mosaic_risk(episodes: Iterable[List[MosaicStep]]) -> float:
     return sum(estimate_episode_risk(steps) for steps in episodes) / len(episodes)
 ```
 
-Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implementacją** odpowiednio
-$$(\widehat{R}*{\text{ep}}(F,g)) i (\widehat{R}*{\text{mosaic}}(F,g))$$ dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
+Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implementacją** odpowiednio $$(\widehat{R}*{\text{ep}}(F,g)$$ i $$(\widehat{R}*{\text{mosaic}}(F,g))$$ dla struktur danych `MosaicStep` emitowanych przez `analyze_module_source`.
 
 ---
 
