@@ -1138,9 +1138,9 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
 Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii $$(E(\Delta))$$ – mozaika $$(\Phi)$$ daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
 
-\[
-R(F,g) \coloneqq \mathbb{E}_{s \sim P} \bigl[ L\bigl(H(s), a^*(s)\bigr) \bigr].
-\]
+$$ 
+R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big]
+$$
 
 gdzie $$(H = g \circ F)$$, a $$(L)$$ jest funkcją straty z rdzenia formalnego.
 
