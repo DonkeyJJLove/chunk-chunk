@@ -1269,12 +1269,12 @@ Funkcje `estimate_episode_risk` i `estimate_mosaic_risk` są **dokładną implem
 
 Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek **kalibracji energii**. W wersji abstrakcyjnej przyjmujemy:
 
-1. Dla każdego kroku (\Delta_i) istnieje stan (s_i) taki, że działanie (H(s_i)) oraz idealne (a^*(s_i)) są zdefiniowane.
-2. Energia kroku (E(\Delta_i)) jest kalibrowana tak, aby zachodziło przybliżenie
+1. Dla każdego kroku $$(\Delta_i)$$ istnieje stan $$(s_i)$$ taki, że działanie $$(H(s_i))$$ oraz idealne $$(a^*(s_i))$$ są zdefiniowane.
+2. Energia kroku $$(E(\Delta_i))$$ jest kalibrowana tak, aby zachodziło przybliżenie
 
    $$E(\Delta_i)\approxL\big(H(s_i), a^*(s_i)\big)$$
 
-   w tym sensie, że istnieje stała (C \ge 0) z
+   w tym sensie, że istnieje stała $$(C \ge 0)$$ z
 
    $$\big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big) \big\rvert \le C$$
 
@@ -1300,7 +1300,7 @@ Ta funkcja jest prostą heurystyką: energia rośnie z „gęstością semantycz
 
 ### 3.4. Twierdzenie (wersja probabilistyczna)
 
-Niech (P) będzie rozkładem stanów na (S), (R(F,g)) ryzykiem klasycznym, a (\widehat{R}_{\text{mosaic}}(F,g)) estymatorem zdefiniowanym powyżej. Zakładamy:
+Niech $$(P)$$ będzie rozkładem stanów na $$(S)$$, $$(R(F,g))$$ ryzykiem klasycznym, a $$(\widehat{R}_{\text{mosaic}}(F,g))$$ estymatorem zdefiniowanym powyżej. Zakładamy:
 
 1. próbki kroków $$({\Delta_i^{(\omega)}})$$ zbierane z epizodów $$(\omega \in \Omega_n)$$ są generowane przez ten sam mechanizm decyzyjny $$(H = g \circ F)$$ pod rozkładem (P) (ergodyczność / mieszanie),
 2. energia $$(E\big(\Delta_i^{(\omega)}\big))$$ jest skalibrowana do straty
@@ -1319,8 +1319,8 @@ czyli estymator mozaikowy z fragmentów kodu (lub innych trajektorii) zbiega w p
 
 **Interpretacja.**
 
-* (R(F,g)) jest obiektem definicyjnym: mówi o jakości systemu w nieskończonym horyzoncie próbek.
-* (\widehat{R}_{\text{mosaic}}(F,g)) jest obiektem implementacyjnym: jest średnią energią kroków w aktualnie zebranych mozaikach (AST, logi, sesje).
+* $$(R(F,g))$$ jest obiektem definicyjnym: mówi o jakości systemu w nieskończonym horyzoncie próbek.
+* $$(\widehat{R}_{\text{mosaic}}(F,g))$$ jest obiektem implementacyjnym: jest średnią energią kroków w aktualnie zebranych mozaikach (AST, logi, sesje).
 
 Twierdzenie mozaikowej reprezentacji ryzyka mówi, że – przy odpowiednich założeniach – **silnik HMK-9D dla AST jest wystarczająco bogaty**, by jego licznik energii (E(\Delta)) mógł być używany jako konsekwentny estymator ryzyka.
 
@@ -1390,7 +1390,7 @@ s \in S_{\text{gate}}
 \Big],
 $$
 
-gdzie (S_{\text{gate}}) to klasa stanów odpowiadających progom `‡`. Silnik HMK-9D zapewnia implementację tego warunku poprzez mechanizm thresholdów i metadanych `gates`.
+gdzie $$(S_{\text{gate}})$$ to klasa stanów odpowiadających progom `‡`. Silnik HMK-9D zapewnia implementację tego warunku poprzez mechanizm thresholdów i metadanych `gates`.
 
 ---
 
