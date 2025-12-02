@@ -1218,8 +1218,9 @@ Definiujemy:
 * **energię epizodu**
 
 $$
-E_{\text{total}}^{\text{ep}}:=\sum_{i \in I_{\text{ep}}} E_i
-$$,
+E_{\text{total}}^{\text{ep}}
+:= \sum_{i \in I_{\text{ep}}} E_i
+$$
 
 * **średnią energię na krok**
 
