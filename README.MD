@@ -1346,7 +1346,7 @@ Definiujemy:
 
 $$
 E_{\text{gate}}^{\text{ep}}
-\;:=\;
+:=
 \sum_{i \in I_{\text{gate}}} E_i
 $$
 
@@ -1354,7 +1354,7 @@ $$
 
 $$
 \widehat{R}_{\text{gate}}^{\text{ep}}(F,g)
-\;:=\;
+:=
 \frac{1}{\lvert I_{\text{gate}} \rvert}
 \sum_{i \in I_{\text{gate}}} E_i
 $$
@@ -1363,13 +1363,12 @@ oraz estymator globalny
 
 $$
 \widehat{R}_{\text{gate}}(F,g)
-\;:=\;
+:=
 \frac{1}{\lvert \Omega \rvert}
 \sum_{\omega \in \Omega}
 \widehat{R}_{\text{gate}}^{(\omega)}(F,g)
 $$
 
-W implementacji odpowiada to prostemu filtrowaniu kroków z flagą `gates`:
 
 ```python
 def estimate_gate_risk(steps: List[MosaicStep], gate_name: str) -> float:
