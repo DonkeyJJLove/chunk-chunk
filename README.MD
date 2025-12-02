@@ -1213,14 +1213,13 @@ $$
 E_i:=E(\Delta_i),\qquad i \in I_{\text{ep}}
 $$
 
-Definiujemy:
-
-* **energię epizodu**
+Definiujemy **energię epizodu** jako
 
 $$
 E_{\text{total}}^{\text{ep}}
-:= \sum_{i \in I_{\text{ep}}} E_i
-$$,
+:= \sum_{i \in I_{\text{ep}}} E_i.
+$$
+
 
 * **średnią energię na krok**
 
