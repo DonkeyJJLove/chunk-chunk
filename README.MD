@@ -44,11 +44,15 @@ opisuje rozkład obciążenia w dziewięciu wymiarach: czasu, sensu, relacji, en
 
 Lokalna energia kroku może być odczytywana jako przybliżenie lokalnej straty:
 
-$$E(\Delta) ;\approx; L\big(H(s_t), a^*(s_t)\big),$$
+$$
+E(\Delta) \approx L\big(H(s_t), a^*(s_t)\big)
+$$
 
 a globalna energia mozaiki
 
-$$E_{\text{total}} ;=; \sum_{\Delta} E(\Delta)$$
+$$
+E_{\text{total}} := \sum_{\Delta} E(\Delta)
+$$
 
 staje się mozaikową aproksymacją globalnego ryzyka $$R(F,g)$$ — ale już **z informacją o tym, gdzie** w trajektorii ten koszt powstaje.
 
@@ -216,8 +220,9 @@ $$
 pozwala zdefiniować globalne ryzyko
 
 $$
-R(F,g) ;=; \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big],
+R(F,g) := \mathbb{E}_{s \sim P}\Big[L\big(H(s), a^*(s)\big)\Big]
 $$
+
 
 gdzie idealna polityka
 
