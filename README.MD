@@ -1342,20 +1342,20 @@ będzie zbiorem indeksów kroków, dla których w `metadata["gates"]` występuje
 
 * **energię progową**
 
-  $$
-  E_{\text{gate}}^{\text{ep}}
-  :=
-  \sum_{i \in I_{\text{gate}}} E_i,
-  $$
+$$
+E_{\text{gate}}^{\text{ep}}
+:=
+\sum_{i \in I_{\text{gate}}} E_i,
+$$
 
 * **średnią energię progową na krok progowy**
 
-  $$
-  \widehat{R}*{\text{gate}}^{\text{ep}}(F,g)
-  :=
-  \frac{1}{\lvert I*{\text{gate}} \rvert}
-  \sum_{i \in I_{\text{gate}}} E_i,
-  $$
+$$
+\widehat{R}*{\text{gate}}^{\text{ep}}(F,g)
+:=
+\frac{1}{\lvert I*{\text{gate}} \rvert}
+\sum_{i \in I_{\text{gate}}} E_i,
+$$
 
 oraz estymator globalny
 
