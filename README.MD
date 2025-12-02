@@ -1296,10 +1296,10 @@ Ta funkcja jest prostą heurystyką: energia rośnie z „gęstością semantycz
 
 Niech (P) będzie rozkładem stanów na (S), (R(F,g)) ryzykiem klasycznym, a (\widehat{R}_{\text{mosaic}}(F,g)) estymatorem zdefiniowanym powyżej. Zakładamy:
 
-1. próbki kroków ({\Delta_i^{(\omega)}}) zbierane z epizodów (\omega \in \Omega_n) są generowane przez ten sam mechanizm decyzyjny (H = g \circ F) pod rozkładem (P) (ergodyczność / mieszanie),
-2. energia (E\big(\Delta_i^{(\omega)}\big)) jest skalibrowana do straty
-   (L\big(H(s_i^{(\omega)}), a^*(s_i^{(\omega)})\big)) w sensie warunku z 3.3,
-3. liczba epizodów (\lvert \Omega_n \rvert) oraz liczba kroków w epizodzie rosną do nieskończoności, gdy (n \to \infty).
+1. próbki kroków $$({\Delta_i^{(\omega)}})$$ zbierane z epizodów $$(\omega \in \Omega_n)$$ są generowane przez ten sam mechanizm decyzyjny $$(H = g \circ F)$$ pod rozkładem (P) (ergodyczność / mieszanie),
+2. energia $$(E\big(\Delta_i^{(\omega)}\big))$$ jest skalibrowana do straty
+   $$(L\big(H(s_i^{(\omega)})$$, $$a^*(s_i^{(\omega)})\big))$$ w sensie warunku z 3.3,
+3. liczba epizodów $$(\lvert \Omega_n \rvert)$$ oraz liczba kroków w epizodzie rosną do nieskończoności, gdy $$(n \to \infty)$$.
 
 Wówczas – z prawa wielkich liczb – otrzymujemy zbieżność:
 
