@@ -1210,7 +1210,7 @@ $$
 a mozaika $$(\Phi)$$ dostarcza wartości
 
 $$
-E_i := E(\Delta_i),\qquad i \in I_{\text{ep}}.
+E_i := E(\Delta_i),\qquad i \in I_{\text{ep}}
 $$
 
 Definiujemy:
