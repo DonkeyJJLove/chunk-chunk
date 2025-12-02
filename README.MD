@@ -1190,8 +1190,8 @@ gdzie (I) indeksuje kroki (\Delta_i) w rozpatrywanym epizodzie lub rodzinie epiz
 
 Założenie probabilistyczne jest następujące:
 
-* zbiory kroków ({\Delta_i}_{i \in I}) w dużej rodzinie epizodów są próbkami trajektorii generowanych przez (H) względem rozkładu (P),
-* dla każdego kroku (\Delta_i) istnieje przyporządkowany stan (s_i) (lub jego reprezentacja w logu / kodzie) tak, że można porównać
+* zbiory kroków $$({\Delta_i}_{i \in I})$$ w dużej rodzinie epizodów są próbkami trajektorii generowanych przez $$(H)$$ względem rozkładu $$(P)$$,
+* dla każdego kroku $$(\Delta_i)$$ istnieje przyporządkowany stan $$(s_i)$$ (lub jego reprezentacja w logu / kodzie) tak, że można porównać
 
   $$
   E(\Delta_i)
@@ -1286,12 +1286,7 @@ Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek *
 
    w tym sensie, że istnieje stała (C \ge 0) z
 
-   $$
-   \big\lvert
-   E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big)
-   \big\rvert
-   \le C
-   $$
+   $$\big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big)\big\rvert \le C $$
 
    oraz że błąd ten nie jest systematycznie stronniczy przy uśrednianiu po epizodach.
 
