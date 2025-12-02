@@ -1278,15 +1278,11 @@ Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek *
 1. Dla każdego kroku (\Delta_i) istnieje stan (s_i) taki, że działanie (H(s_i)) oraz idealne (a^*(s_i)) są zdefiniowane.
 2. Energia kroku (E(\Delta_i)) jest kalibrowana tak, aby zachodziło przybliżenie
 
-   $$
-   E(\Delta_i)
-   \approx
-   L\big(H(s_i), a^*(s_i)\big)
-   $$
+   $$E(\Delta_i)\approxL\big(H(s_i), a^*(s_i)\big)$$
 
    w tym sensie, że istnieje stała (C \ge 0) z
 
-   $$ \big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big) \big\rvert \le C $$
+   $$\big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big) \big\rvert \le C$$
 
    oraz że błąd ten nie jest systematycznie stronniczy przy uśrednianiu po epizodach.
 
