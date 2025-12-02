@@ -1138,14 +1138,15 @@ W poprzedniej części zdefiniowany został silnik HMK-9D dla AST:
 
 Celem tej sekcji jest pokazanie, że – przy odpowiedniej kalibracji energii $$(E(\Delta))$$ – mozaika $$(\Phi)$$ daje **dyskretne, implementowalne przybliżenie** klasycznego ryzyka
 
-$$R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big]$$,
-
+$$
+R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big]
+$$,
 
 gdzie $$(H = g \circ F)$$, a $$(L)$$ jest funkcją straty z rdzenia formalnego.
 
 Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice $$(\Phi)$$ może służyć jako estymator ryzyka $$(R(F,g))$$, a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
 
-### 3.1. Ustawienie probabilistyczne: kroki (\Delta) jako próbki
+### 3.1. Ustawienie probabilistyczne: kroki $$(\Delta)$$ jako próbki
 
 Niech $$(P)$$ będzie rozkładem stanów na przestrzeni $$(S)$$, jak w części 1. Dla każdego stanu $$(s \in S)$$ idealna polityka $$(a^*(s))$$ i rzeczywiste zachowanie $$(H(s))$$ dają lokalną stratę
 
@@ -1206,7 +1207,7 @@ $$
 I_{\text{ep}} = {1, \dots, N},
 $$
 
-a mozaika (\Phi) dostarcza wartości
+a mozaika $$(\Phi)$$ dostarcza wartości
 
 $$
 E_i := E(\Delta_i),\qquad i \in I_{\text{ep}}.
