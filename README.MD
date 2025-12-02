@@ -1286,7 +1286,7 @@ Aby estymator mozaikowy odpowiadał klasycznemu ryzyku, potrzebny jest warunek *
 
    w tym sensie, że istnieje stała (C \ge 0) z
 
-   $$\big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big)\big\rvert \le C $$
+   $$ \big\lvert E(\Delta_i) - L\big(H(s_i), a^*(s_i)\big) \big\rvert \le C $$
 
    oraz że błąd ten nie jest systematycznie stronniczy przy uśrednianiu po epizodach.
 
