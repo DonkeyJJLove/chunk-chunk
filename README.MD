@@ -1143,11 +1143,11 @@ $$R(F,g) := \mathbb{E}_{s \sim P}\Big[ L\big(H(s), a^*(s)\big) \Big]$$,
 
 gdzie $$(H = g \circ F)$$, a $$(L)$$ jest funkcją straty z rdzenia formalnego.
 
-Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice $$(\Phi)$$ może służyć jako estymator ryzyka (R(F,g)), a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
+Mówimy o **twierdzeniu mozaikowej reprezentacji ryzyka**: z punktu widzenia implementacji oznacza ono, że suma i średnia energii kroków w mozaice $$(\Phi)$$ może służyć jako estymator ryzyka $$(R(F,g))$$, a więc kodowy silnik HMK-9D jest nie tylko narzędziem wizualizacji, ale także **operacyjnym licznikiem błędu**.
 
 ### 3.1. Ustawienie probabilistyczne: kroki (\Delta) jako próbki
 
-Niech (P) będzie rozkładem stanów na przestrzeni (S), jak w części 1. Dla każdego stanu (s \in S) idealna polityka (a^*(s)) i rzeczywiste zachowanie (H(s)) dają lokalną stratę
+Niech $$(P)$$ będzie rozkładem stanów na przestrzeni $$(S)$$, jak w części 1. Dla każdego stanu $$(s \in S)$$ idealna polityka $$(a^*(s))$$ i rzeczywiste zachowanie $$(H(s))$$ dają lokalną stratę
 
 $$
 L\big(H(s), a^*(s)\big) \in \mathbb{R}_{\ge 0}.
@@ -1193,11 +1193,7 @@ Założenie probabilistyczne jest następujące:
 * zbiory kroków $$({\Delta_i}_{i \in I})$$ w dużej rodzinie epizodów są próbkami trajektorii generowanych przez $$(H)$$ względem rozkładu $$(P)$$,
 * dla każdego kroku $$(\Delta_i)$$ istnieje przyporządkowany stan $$(s_i)$$ (lub jego reprezentacja w logu / kodzie) tak, że można porównać
 
-  $$
-  E(\Delta_i)
-  \quad\text{z}\quad
-  L\big(H(s_i), a^*(s_i)\big).
-  $$
+  $$E(\Delta_i)\quad\text{z}\quadL\big(H(s_i), a^*(s_i)\big)$$
 
 W implementacji HMK-9D dla AST „stanem” jest konkretny kontekst kodowy (moduł, klasa, funkcja), a krok (\Delta_i) odpowiada węzłowi AST oraz jego roli w systemie.
 
