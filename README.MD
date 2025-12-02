@@ -1217,20 +1217,11 @@ Definiujemy:
 
 * **energię epizodu**
 
-  $$
-  E_{\text{total}}^{\text{ep}}
-  :=
-  \sum_{i \in I_{\text{ep}}} E_i,
-  $$
+  $$E_{\text{total}}^{\text{ep}}:=\sum_{i \in I_{\text{ep}}} E_i$$,
 
 * **średnią energię na krok**
 
-  $$
-  \widehat{R}*{\text{ep}}(F,g)
-  :=
-  \frac{1}{\lvert I*{\text{ep}} \rvert}
-  \sum_{i \in I_{\text{ep}}} E_i.
-  $$
+  $$\widehat{R}*{\text{ep}}(F,g):=\frac{1}{\lvert I*{\text{ep}} \rvert}\sum_{i \in I_{\text{ep}}} E_i$$.
 
 Jeżeli dysponujemy rodziną epizodów indeksowanych przez (\omega \in \Omega) (np. modułów w repozytorium, sesji GlitchLab, wątków konwersacyjnych), to mozaikowy estymator ryzyka definiujemy jako
 
