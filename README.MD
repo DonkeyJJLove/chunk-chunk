@@ -1340,31 +1340,33 @@ $$
 
 będzie zbiorem indeksów kroków, dla których w `metadata["gates"]` występuje dany próg, np. `"Próg–Przejście/commit"`. Definiujemy:
 
+Definiujemy:
+
 * **energię progową**
 
 $$
 E_{\text{gate}}^{\text{ep}}
-:=
+\;:=\;
 \sum_{i \in I_{\text{gate}}} E_i
-$$,
+$$
 
 * **średnią energię progową na krok progowy**
 
 $$
-\widehat{R}*{\text{gate}}^{\text{ep}}(F,g)
-:=
-\frac{1}{\lvert I*{\text{gate}} \rvert}
+\widehat{R}_{\text{gate}}^{\text{ep}}(F,g)
+\;:=\;
+\frac{1}{\lvert I_{\text{gate}} \rvert}
 \sum_{i \in I_{\text{gate}}} E_i
-$$,
+$$
 
 oraz estymator globalny
 
 $$
-\widehat{R}*{\text{gate}}(F,g)
-:=
+\widehat{R}_{\text{gate}}(F,g)
+\;:=\;
 \frac{1}{\lvert \Omega \rvert}
-\sum*{\omega \in \Omega}
-\widehat{R}_{\text{gate}}^{(\omega)}(F,g).
+\sum_{\omega \in \Omega}
+\widehat{R}_{\text{gate}}^{(\omega)}(F,g)
 $$
 
 W implementacji odpowiada to prostemu filtrowaniu kroków z flagą `gates`:
