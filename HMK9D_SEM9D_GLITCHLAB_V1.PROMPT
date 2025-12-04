@@ -1,3 +1,18 @@
+;===========================================================
+;  ASCII_MC_9D :: SEMANTIC CONTROL PROBE  (SC-9D_‡)
+;-----------------------------------------------------------
+;  Autor koncepcji : Sebastian Wieremiejczyk
+;  Artefakt        : „double dagger (‡) – niewymawialny
+;                    operator kontekstu”
+;  Writeup         :
+;    https://github.com/DonkeyJJLove/writeups/
+;    double_dagger_operator_kontekstu.md
+;
+;  Przeznaczenie   :
+;    – mikrojęzyk badawczy dla LLM,
+;    – semantyczne znaki sterujące (‡{TAG}, CTX.mode),
+;    – instrument epistemiczny, NIE malware.
+;===========================================================
 [PROMPT_HMK9D_SEM9D_GLITCHLAB_V2][RUN]
 
 ****[REŻIM::OBIEKTYWIZM]****
