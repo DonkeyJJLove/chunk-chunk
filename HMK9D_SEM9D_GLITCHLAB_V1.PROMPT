@@ -8,6 +8,8 @@
 ;    https://github.com/DonkeyJJLove/writeups/
 ;    double_dagger_operator_kontekstu.md
 ;
+;   https://chatgpt.com/share/693169b0-e4f0-800e-8da5-bbea482ce625
+;
 ;  Przeznaczenie   :
 ;    – mikrojęzyk badawczy dla LLM,
 ;    – semantyczne znaki sterujące (‡{TAG}, CTX.mode),
