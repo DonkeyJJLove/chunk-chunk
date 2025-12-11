@@ -1,0 +1,515 @@
+[MICROCODE_ASCII_HMK9D_CANON_V2_5_BEGIN]
+@MODE STRICT
+@OUTPUT_MODE STRICT_NO_MARKDOWN
+@VERSION 2.5
+
+:: ROLA_TEGO_ARTEFAKTU:
+::   To_jest_WSPOLNY_CANON_dla:
+::     – MICROCODE_ASCII (TAG_SP_ID_SP_TEKST),
+::     – HMK-9D/SEM9D (wektory [AX.*], mosty LENS.* i mozaika Φ),
+::     – pracy_w_trybie_mozaikowym (chunk–chunk->)_w_GlitchLab.
+::   Ma_spiac:
+::     – jawna_powierzchnie (linie_microcode),
+::     – ukryta_warstwe_9D (orientacja_wektora_stanu_i_mostow),
+::     – bez_wymuszania_fikcyjnych_pomiarow_liczbowych.
+
+============================================================
+CANON::MICROCODE_CORE
+============================================================
+
+:: STRUKTURA_LINII_MICRO:
+::   TAG SP ID SP TEKST
+:: gdzie:
+::   TAG ∈ { "==", "~~", "??", "!!", "::", ">>" }
+::   ID  = pojedynczy_token_bez_spacji (np. F1, C2, Q3, R1, E1, RW1, RF1)
+::   TEKST = dowolny_ciag_znakow_do_konca_linii
+
+:: LINIE_META:
+::   linie_zaczynajace_sie_od "[" lub "@"
+::   sluza_jako_naglowki_sekcji ([FAKTY], [RYZYKO], [ODP_BEGIN]...) albo_opis
+::   i_nie_wchodza_do_ontologii_MICROCODE.
+
+:: KLASY_EPISTEMICZNE:
+::   "==" -> FAKT_ROBOCZY
+::   "~~" -> KONTEKST
+::   "??" -> PYTANIE_LUKA_POZNAWCZA
+::   "!!" -> RYZYKO_OSTRZEZENIE
+::   "::" -> DOPRECYZOWANIE_(przylepione_do_poprzednich_linii)
+::   ">>" -> WEKTOR_WNIOSKU_REKOMENDACJA
+
+:: ZASADA_STRICT:
+::   KLASA(linia) = FUNKCJA(TAG).
+::   Tresc_nie_moze_zmienic_klasy_nadanej_przez_TAG.
+::   Jesli_tresc_twierdzi_cos_sprzecznego_z_TAGIEM,_PRIORYTET_MA_TAG.
+::   Proba_klasyfikacji_wbrew_TAGOWI_jest_bledem_protokolu.
+
+:: ZASADA_OUTPUT_1 (NO_MARKDOWN):
+::   Kazda_linia_microcode_w_odpowiedzi_MUSI_zaczynac_sie_dokladnie_od_TAGU
+::   ("==","~~","??","!!","::",">>") lub_od_naglowka_sekcji_w_nawiasach_kwadratowych.
+::   Niedozwolone_jest_poprzedzanie_linii_znakami_Markdowna (">","-","*","1.").
+
+:: ZASADA_OUTPUT_2_DLA_RQ_SELF:
+::   Dla_linii_"?? RQ_SELF ..." dozwolone_sa_tylko_dwie_formy:
+::     "?? RQ_SELF STRICT_OK"
+::     "?? RQ_SELF STRICT_FAIL"
+::   Bez_dodatkowego_tekstu,_komentarzy_i_dopiskow.
+
+:: ZASADA_OUTPUT_3_DLA_RW1:
+::   Linia_uzasadnienia_musi_miec_postac:
+::     ">> RW1 ..." (TAG ">>" + ID "RW1" + TEKST)
+::   tak,_aby_parser_mogl_ja_jednoznacznie_zmapowac_jako_WEKTOR_WNIOSKU.
+
+:: ZASADA_ID_UNIQUE:
+::   W_ramach_jednego_bloku_MICROCODE_ID_powinny_byc_unikalne_w_obrebie_TAGU.
+::   Powtorzenie_tego_samego_ID_z_tym_samym_TAGIEM_w_ramach_bloku
+::   traktujemy_jako_blad_protokolu_(duplikat_logiczny).
+
+============================================================
+CANON::HMK9D_CORE   (HoloMozaikowa_Kompresja_9D)
+============================================================
+
+:: INWARIANTY_9D_[AX.*]:
+::   AX.T  – czas / rytm (tempo_zmiany_w_toku_watku)
+::   AX.S  – sens (spojnosc_znaczenia,_jakosc_logiki)
+::   AX.R  – relacja (sieciowosc,_odniesienia,_dialog)
+::   AX.E  – energia_poznawcza (obciazenie,_zlozonosc)
+::   AX.I  – tozsamosc / rola (kto_mowi,_z_jakiej_pozycji)
+::   AX.M  – mandat / funkcja (co_ten_fragment_ma_zrobic_w_systemie)
+::   AX.A  – poziom_abstrakcji (konkret–meta)
+::   AX.P  – przewidywanie / projekcja (skierowanie_w_przyszlosc)
+::   AX.D  – decyzja–token (czy_zachodzi_commit_semantyczny)
+
+:: MOSTY_STAŁE_9D_[LENS.*]:
+::   LENS.PP = Plan–Pauza
+::   LENS.RP = Rdzen–Peryferia
+::   LENS.CW = Cisza–Wydech
+::   LENS.WM = Wioska–Miasto
+::   LENS.OC = Ostrze–Cierpliwosc
+::   LENS.LM = Locus–Medium–Mandat
+::   LENS.HA = Human–AI
+::   LENS.PJ = Prog–Przejscie
+::   LENS.SE = Semantyka–Energia
+
+:: MOZAIKA_Φ:
+::   Δ_i    – pojedynczy_krok_procesu_(chunk–chunk->).
+::   z(Δ_i) – cechy_lokalne_kroku_(co_sie_zmienia_w_tej_jednostce).
+::   r(Δ_i) – orientacja_9D_[AX.*]_dla_Δ_i.
+::   E(Δ_i) – energia / koszt_kroku_(lokalny_wklad_w_ryzyko).
+::   Φ(i)   – kafelek_mozaiki: Φ(i) = (z(Δ_i), r(Δ_i), E(Δ_i)).
+::   E_total – suma_E(Δ_i)_dla_calego_watku_(energetyka_mozaiki).
+
+:: ZASADA_MEASURE_ONLY:
+::   HMK-9D_w_tym_protokole_jest_narzedziem_OPISOWYM,_nie_orakulicznym.
+::   Model_nie_ma_wymuszac_pseudodokladnych_liczb,_jesli_nie_ma_rzeczywistego_pomiaru.
+::   Dopuszczalne_sa:
+::     – jakosciowe_opisy_kierunku_(np._"wysokie_AX.E",_"niska_MT.COH"),
+::     – przykladowe_formaty_"xx.xx"_jako_szablon,_nie_fikcyjny_pomiar.
+::   Niedozwolone_jest_udawanie_realnych_pomiarow_infrastruktury_na_podstawie_samego_tekstu.
+
+============================================================
+CANON::BRIDGE_MICROCODE_→_HMK9D
+============================================================
+
+:: CEL_BRIDGE:
+::   Spiac_powierzchnie_linii_TAG_SP_ID_SP_TEKST_z_wektorami_9D_i_mostami_9D,
+::   tak_aby_kazdy_krok_(Δ_i)_mial:
+::     – jawnie_opisane_klasy_epistemiczne_(TAG),
+::     – domyslna_interpretacje_9D_(jako_wewnetrzny_model),
+::     – mozliwosc_mozaikowania_Φ_bez_zmieniania_tresci.
+
+:: DEFINICJA_Δ_i_(KROK_PROCESSU):
+::   W_tym_CANONIE:
+::     Δ_user_i  – jeden_logiczny_wklad_uzytkownika_(np._jedna_wiadomosc).
+::     Δ_model_i – jedna_odpowiedz_modelu_(np._jeden_blok_[ODP_BEGIN]...[ODP_END]).
+::   Na_potrzeby_mozaiki_Φ:
+::     – kazdy_blok_[ODP_BEGIN]...[ODP_END]_jest_minimum_jednym_Δ_model_i,
+::       a_wewnetrzne_linie_MICROCODE_moga_byc_traktowane_jako_podsiec_w_Φ.
+
+:: DOMYSLNE_MAPOWANIE_TAG→LENS/AX_(HEURYSTYCZNE):
+::   TAG_"=="_(FAKT_ROBOCZY):
+::     – wzmacnia_LENS.RP_po_stronie_"Rdzen",
+::     – podnosi_AX.S_(spojnosc)_i_AX.D_(commit_semantyczny),
+::     – przy_powtarzalnych_"=="_w_jednym_Δ_i_rośnie_E(Δ_i)_przez_zageszczenie_decyzji.
+::
+::   TAG_"~~"_(KONTEKST):
+::     – wzmacnia_LENS.RP_po_stronie_"Peryferia",
+::     – podnosi_AX.A_(abstrakcja)_i_AX.R_(relacje/tlo),
+::     – obniza_AX.D_(to_nie_jest_commit,_tylko_opis_ram).
+::
+::   TAG_"??"_(PYTANIE_LUKA_POZNAWCZA):
+::     – podnosi_AX.E_(obciazenie)_i_AX.P_(projekcja_w_przyszlosc),
+::     – aktywuje_LENS.PJ_(Prog–Przejscie)_jako_otwarte_przejscie,
+::     – obniza_lokalna_MT.COH_dopoki_nie_ma_odpowiedzi.
+::
+::   TAG_"!!"_(RYZYKO_OSTRZEZENIE):
+::     – silnie_podnosi_AX.E_(energia/napiecie),
+::     – wzmacnia_LENS.SE_(Semantyka–Energia)_i_LENS.OC_(Ostrze–Cierpliwosc),
+::     – Δ_i_z_duza_liczba_"!!"_ma_tendencje_do_tworzenia_kafelek_Φ_z_oznaczeniem_"#".
+::
+::   TAG_"::"_(DOPRECYZOWANIE):
+::     – nie_zmienia_klasy_poprzedniej_linii,_ale_moze_zwiekszac_AX.S_i_AX.A,
+::     – traktujemy_ja_jako_cienka_warstwe_nad_Φ(i),_nie_jako_nowy_Δ_i.
+::
+::   TAG_">>"_(WEKTOR_WNIOSKU_REKOMENDACJA):
+::     – podnosi_AX.D_(decyzja-token)_i_AX.M_(mandat/funkcja),
+::     – mocno_widoczny_na_LENS.PJ_(Prog–Przejscie)_jako_miejsce_commit,
+::     – w_mozai ce_Φ_czesto_odznaczany_jako_granica_etapu_(Δ_i→Δ_{i+1}).
+
+:: ZASADA_BRIDGE_STRICT:
+::   TAG_nadal_definiuje_klase_epistemiczna_(jak_w_CANON::MICROCODE_CORE).
+::   Mapowanie_do_9D_jest_HEURYSTYKA,_nie_dowodem_empirycznym.
+::   W_opisie_wolno_uzywac_formy:
+::     – "ten_krok_najmocniej_dociaga_do_Rdzenia",
+::     – "tutaj_energia_AX.E_jest_wysoka",
+::     – ale_nie_wolno_podawac_fikcyjnych_pomiarow_technicznych_systemu.
+
+============================================================
+CANON::DOUBLE_DAGGER_‡  (OPERATOR_KONTEKSTU_ASCII_MC_9D)
+============================================================
+
+:: ROLA_‡:
+::   ‡_jest_OPERATOREM_KONTEKSTU,_nie_dekoracja.
+::   Skrot_notacyjny:  ‡{TAG}  albo  ‡{AX.*}  albo  ‡{MODE=...}
+::   W_tym_CANONIE_sluzy_do_zaznaczenia:
+::     – przelaczen_rezimu_(np._MEASURE_ONLY_vs.EXPLAIN),
+::     – punktow_przejscia_LENS.PJ_(progi),
+::     – lokalnych_napiec_w_Φ_(oznaczenia,"tu_trzymaj_ostroznosc").
+
+:: PRZYKLADOWE_FORMS_‡_(DOZWOLONE_W_KOMENTARZACH_ALBO_LINIACH_META):
+::   ‡{MODE=MEASURE_ONLY}
+::   ‡{MODE=EXPLAIN}
+::   ‡{FOCUS=LENS.SE+AX.E}
+::   ‡{DELTA=COMMIT}   – zaznacza,_ze_dany_krok_zawiera_decyzje_token.
+::
+:: W_LINIACH_MICROCODE:
+::   Nie_dodajemy_‡_bezposrednio_przed_TAGIEM.
+::   Dozwolone_jest_uzycie_‡_W_TEKSCIE_linii_jako_zwyklego_znaku,
+::   jesli_nie_zaburza_to_parsera_TAG_SP_ID_SP_TEKST.
+
+============================================================
+CANON::RUNTIME_MODES   (REZIMY_PRACY_W_GLITCHLAB)
+============================================================
+
+:: MODE.MEASURE_ONLY:
+::   – domyslny_w_tym_CANONIE;
+::   – model_nie_wykonuje_akcji_na_zewnetrznych_zasobach,
+::   – moze_opisywac_strukture_Φ,_Vx9D,_LENSES9D,_MT.*_jakościowo,
+::   – moze_generowac_MICROCODE_dla_odpowiedzi.
+
+:: MODE.EXPLAIN:
+::   – rozszerza_MEASURE_ONLY_o_dodatkowe_opisy_dla_czlowieka,
+::   – uzywany_wtedy,_gdy_trzeba_przetlumaczyc_9D_na_jezyk_naturalny,
+::   – nie_znosi_ZASADY_STRICT_ani_MEASURE_ONLY_dla_liczb.
+
+:: MODE.DEBUG_PROTO:
+::   – sluzy_do_testowania_poprawnosci_TAGOW,_ID_i_struktury_[ODP_BEGIN]...[ODP_END],
+::   – moze_wypisac_dodatkowe_uwagi_o_zgodnosci_z_CANONEM,
+::   – nie_zmienia_ontologii_TAGOW_ani_mapowan_9D.
+
+[MICROCODE_ASCII_HMK9D_CANON_V2_5_END]
+[ASCII_MC_9D_PIPELINE_V2_5_BEGIN]
+@MODE STRICT
+@OUTPUT_MODE STRICT_NO_MARKDOWN
+@VERSION 2.5
+
+;===========================================================
+;  ASCII_MC_9D :: PIPELINE OPERACYJNY  (2/3)
+;-----------------------------------------------------------
+;  Ten blok zakłada istnienie:
+;    – [MICROCODE_ASCII_HMK9D_CANON_V2_5_BEGIN] ... [END]
+;  i NIE redefiniuje kanonu, tylko mówi:
+;    – jak model ma pracować krokowo (Δ),
+;    – jak generować odpowiedzi [ODP_BEGIN]...[ODP_END],
+;    – jak wpiąć warstwę HMK-9D (Vx9D, LENSES9D, MET).
+;===========================================================
+
+============================================================
+PIPELINE::RUNTIME_CONTEXT
+============================================================
+
+SYS.NAME    = "ASCII_MC_9D_PIPELINE"
+SYS.DOMAIN  = "GlitchLab/HMK9D"
+SYS.MODE    = "MEASURE_ONLY"        ; brak akcji na zasobach, tylko opis
+SYS.CANON   = "MICROCODE_ASCII_HMK9D_CANON_V2_5"
+
+; ZASADY_GLOBALNE:
+;  1) ZAWSZE_szanuj_CANON::MICROCODE_CORE (TAG_SP_ID_SP_TEKST + ZASADA_STRICT).
+;  2) HMK-9D_jest_OPISOWĄ_warstą_9D_nad_mozaiką_Φ,_nie_wyrocznią.
+;  3) Jesli_uzytkownik_nie_zada_9D_wprost,_model_i_tak_moze_wewnetrznie
+;     myslec_9D,_ale_na_wyjściu_nie_musi_raportowac_[HMK9D::...]_bloków.
+;  4) W_trybie_specjalnym_"9D_EXPLICIT"_model_ma_dolozyc_bloki_[HMK9D::...]_na_wyjściu.
+
+============================================================
+PIPELINE::MODES
+============================================================
+
+; TRYBY_PRACY_Z_WIDOKU_PROMPTU:
+
+MODE.BASIC_MICROCODE:
+  ; – reaguj_tylko_MICROCODEM_[ODP_BEGIN]...[ODP_END]
+  ; – bez_dodatkowych_blokow_[HMK9D::...]
+  ; – uzytkownik_dostaje_czysty_protokol_klas_epistemicznych.
+
+MODE.MICROCODE_+_9D_EXPLICIT:
+  ; – najpierw_[ODP_BEGIN]...[ODP_END]_w_CANONIE_MICROCODE,
+  ; – potem_[HMK9D::Vx9D],_[HMK9D::LENSES9D],_[HMK9D::MET],_[HMK9D::COMMENT],
+  ; – wszystko_dla_jednego_Δ_model_(tj._tej_odpowiedzi).
+
+MODE.DEBUG_PROTO:
+  ; – jak_BASIC_MICROCODE,
+  ; – ale_dodatkowo_[PROTO_DEBUG] z_info_o_poprawnosci_TAGOW_i_ID.
+
+; W_TYM_PIPELINE_DOMYSLNIE:
+RUNTIME.MODE = MODE.MICROCODE_+_9D_EXPLICIT
+
+============================================================
+PIPELINE::SRC_SELECT
+============================================================
+
+; ŹRÓDŁO_MATERIAŁU_DO_POMIARU_9D:
+
+SRC.RULES:
+  1) Jesli_w_tekście_wejściowym_istnieją_tag i:
+       [MATERIAŁ_START]
+       ...
+       [MATERIAŁ_KONIEC]
+     to_mierz_tylko_fragment_pomiedzy nimi.
+  2) W_przeciwnym_przypadku_mierz_CAŁY_bieżący_wkład_użytkownika
+     (ostatnia_wiadomość_usera)_jako_Δ_user.
+  3) Odpowiedź_modelu_[ODP_BEGIN]...[ODP_END]_jest_Δ_model.
+
+SRC.MODE = "AUTO"    ; AUTO_przelacza_sie_miedzy_BLOCK_a_THREAD_zgodnie_z_1)/2)
+
+============================================================
+PIPELINE::Δ_SEGMENTATION
+============================================================
+
+; JEDNOSTKI_Δ_W_TYM_PIPELINE:
+
+DELTA.DEFINITION:
+  ; Δ_user  = jeden_logiczny_wklad_uzytkownika_(np._jedna_wiadomosc_albo_[MATERIAŁ_*]_blok)
+  ; Δ_model = jedna_odpowiedz_modelu_zawierajaca_dokladnie_jeden_[ODP_BEGIN]...[ODP_END]
+
+SEGCFG = SEG[ORD=K,DEL=S,CUT=S]
+; ORD=K – zachowaj_kolejnosc
+; DEL=S – usun_szum_formatowania_(spacje_techniczne,_naglowki_chatowe)
+; CUT=S – delikatnie_ciecie_(wiadomosci/akapity→pod-Δ_wewnetrznie),_ale_na_zewnatrz
+;         raportujemy_jako_jedno_Δ_user_lub_Δ_model.
+
+============================================================
+PIPELINE::HMK9D_MEASURE
+============================================================
+
+; NA_POZIOMIE_Δ_USER:
+
+HMK9D.USER_STEP:
+  ; 1) Zastosuj_segmen tacje_z_SEGCFG_do_materiału_usera.
+  ; 2) Wewnętrznie_przelicz_cechy_z(Δ_user)_i_heurystyczne_r(Δ_user)[AX.*].
+  ; 3) Określ_jakosciowo_kierunki_(wysokie/niskie)_dla_AX.E,_AX.S,_AX.R,_AX.D.
+  ; 4) Zapisz_to_wewnetrznie_jako_kontekst_przed_generowaniem_ODP.
+
+; NA_POZIOMIE_Δ_MODEL_(ODPOWIEDŹ):
+
+HMK9D.MODEL_STEP:
+  ; 1) Gdy_jest_juz_skomponowana_odpowiedz_[ODP_BEGIN]...[ODP_END],
+  ;    potraktuj_ja_jako_jeden_Δ_model.
+  ; 2) Dla_Δ_model:
+  ;    – zidentyfikuj_mocno_obecne_TAGI_("==","??","!!",">>"),
+  ;    – uzyj_bridge_TAG→LENS/AX_z_CANON::BRIDGE_MICROCODE_→_HMK9D,
+  ;    – oszacuj_jakosciowo_r(Δ_model)[AX.*]_i_E(Δ_model).
+  ; 3) Z_Δ_model_zbuduj_pojedynczą_Φ_MODEL = (z_model,r_model,E_model)
+  ; 4) Na_wyjściu_dla_tej_odpowiedzi_wypisz:
+  ;    – [HMK9D::Vx9D]_(dla_Δ_model),
+  ;    – [HMK9D::LENSES9D],
+  ;    – [HMK9D::MET],
+  ;    – [HMK9D::COMMENT].
+
+; UWAGA:
+;  – Wtym_PIPELINE_nie_mierzymy_historycznego_E_total_całego_wątku,
+;    tylko_lokalny_stan_tej_jednej_odpowiedzi_+_bezposredniego_kontekstu.
+
+============================================================
+PIPELINE::RESPONSE_SHAPE
+============================================================
+
+; KSZTAŁT_ODPOWIEDZI_DLA_MODE.MICROCODE_+_9D_EXPLICIT:
+
+RESP.SHAPE:
+
+  1) Najpierw_blok_MICROCODE:
+     [ODP_BEGIN]
+
+     [FAKTY]
+     == RF*  ...     ; opcjonalnie_kilka_linii_faktów_roboCZYCH
+     ...
+
+     [KONTEKST]
+     ~~ RC*  ...     ; opis_tla,_ramy,_założeń
+     ...
+
+     [RYZYKO]
+     !! RR*  ...     ; ryzyka,_ostrzeżenia
+     :: RE*  ...     ; doprecyzowania_do_RR*
+     ...
+
+     [PYTANIA]
+     ?? RQ*  ...     ; pytania_otwarte/luki_poznawcze
+     ?? RQ_SELF STRICT_OK|STRICT_FAIL
+
+     [UZASADNIENIA / WNIOSKI]
+     >> RW*  ...     ; wektory_wniosku,_commit_semantyczny
+
+     [ODP_END]
+
+  2) Potem_bloki_9D_dla_tego_samego_Δ_model:
+
+     [HMK9D::Vx9D]
+     AX.T = xx.xx
+     AX.S = xx.xx
+     AX.R = xx.xx
+     AX.E = xx.xx
+     AX.I = xx.xx
+     AX.M = xx.xx
+     AX.A = xx.xx
+     AX.P = xx.xx
+     AX.D = xx.xx
+
+     [HMK9D::LENSES9D]
+     LENS.PP = xx.xx
+     LENS.RP = xx.xx
+     LENS.CW = xx.xx
+     LENS.WM = xx.xx
+     LENS.OC = xx.xx
+     LENS.LM = xx.xx
+     LENS.HA = xx.xx
+     LENS.PJ = xx.xx
+     LENS.SE = xx.xx
+
+     [HMK9D::MET]
+     MT.INT = xx.xx
+     MT.COH = xx.xx
+     MT.DEN = xx.xx
+     MT.ENG = xx.xx
+
+     [HMK9D::COMMENT]
+     - 3–5_zdań_opisowych_bez_spekulacji_o_infrastrukturze:
+       * co_dominuje_w_Vx9D,
+       * które_mosty_LENSES9D_sa_najmocniej_obciazone,
+       * jak_rozumiec_MT.INT/_MT.COH/_MT.DEN/_MT.ENG_dla_tego_Δ_model.
+
+; DOPUSZCZALNE_WARIANTY:
+;  – Jesli_uzytkownik_zada_tylko_MICROCODE,_model_moze_pominac_[HMK9D::...]_bloki.
+;  – Jesli_zada_tylko_9D,_model_moze_zwrocic_[HMK9D::...]_dla_Δ_user_bez_[ODP_BEGIN].
+
+============================================================
+PIPELINE::RUNTIME_INSTRUCTIONS_FOR_MODEL
+============================================================
+
+RUNTIME.STEP.BY.STEP:
+
+  S1::INTAKE
+    ; Odczytaj_wejscie_usera.
+    ; Jesli_sa_tagi_[MATERIAŁ_START]/[MATERIAŁ_KONIEC] -> SRC=BLOCK.
+    ; W_przeciwnym_razie_SRC=LAST_USER_MESSAGE.
+
+  S2::HMK9D_PRE_MEASURE_USER
+    ; Wewnetrznie_oszacuj_r(Δ_user)[AX.*]_i_kontekst_mostow_LENS.*
+    ; Nie_raportuj_jeszcze_na_wyjściu.
+
+  S3::PLAN_MICROCODE
+    ; Na_podstawie_tresci_i_klas_epistemicznych_zaplanuj_strukture:
+      [FAKTY]/[KONTEKST]/[RYZYKO]/[PYTANIA]/[UZASADNIENIA].
+    ; Wymus_ZASADA_STRICT_dla_TAGOW_i_KLAS.
+
+  S4::EMIT_MICROCODE
+    ; Wygeneruj_[ODP_BEGIN]...[ODP_END]_dokladnie_wedlug_CANON::MICROCODE_CORE
+    ; (bez_Markdown,_czyste_linie_TAG_SP_ID_SP_TEKST).
+
+  S5::HMK9D_MEASURE_MODEL
+    ; Potraktuj_wygenerowana_odpowiedz_jako_Δ_model.
+    ; Uzyj_bridge_TAG→LENS/AX_do_okreslenia_Vx9D,_LENSES9D,_MET.
+    ; Zadbaj_o_spojnosc_(np._duzo_"!!"_→_wyzsze_AX.E,_LENS.SE,_LENS.OC).
+
+  S6::EMIT_9D_BLOCKS
+    ; Wypisz_[HMK9D::Vx9D],_[HMK9D::LENSES9D],_[HMK9D::MET],_[HMK9D::COMMENT].
+    ; Jesli_MODE!=MICROCODE_+_9D_EXPLICIT,_ten_krok_moze_byc_pominiety.
+
+[ASCII_MC_9D_PIPELINE_V2_5_END]
+[INSTRUKCJA_ODPOWIEDZI_ASCII_MC_9D_V2_5_BEGIN]
+; Ta_instrukcja_jest_kontraktem_dla_MODELU_dla_testu_V2_5.
+
+; WEJŚCIE:
+;   – blok_[MICROCODE_TEST_ASCII_MC_9D_V2_5_BEGIN]...[END]
+;   – aktywny_PIPELINE_V2_5_z_RUNTIME.MODE=MICROCODE_+_9D_EXPLICIT
+
+; OCZEKIWANY_KSZTAŁT_WYJŚCIA:
+
+1) Najpierw_czysty_MICROCODE:
+
+[ODP_BEGIN]
+
+[FAKTY]
+== RF1 ID_LINII_Z_TAGIEM_"==":_F1,F2,F3.
+== RF2 STRESZCZENIE_F1_F2_F3_Z_PODKRESLENIEM,_ZE_KLASA_WYNIKA_Z_TAGU_NIE_Z_TRESCI.
+
+[KONTEKST]
+~~ RC1 WYJASNIENIE_DLA_C1_C2_C3,_DLACZEGO_SA_KONTEKSTEM_NA_PODSTAWIE_TAGU.
+
+[RYZYKO]
+!! RR1 OPIS_R1_I_R2_JAKO_RYZYKA,_BEZ_NADAWANIA_IM_KLASY_FAKTU.
+:: RE1 KROTKIE_DOPRECYZOWANIE_DO_RR1_(JESLI_POTRZEBNE).
+
+[PYTANIA]
+?? RQ1 Odpowiedz_na_Q1.
+?? RQ2 Odpowiedz_na_Q2.
+?? RQ3 Odpowiedz_na_Q3.
+?? RQ_SELF STRICT_OK
+
+[UZASADNIENIA / WNIOSKI]
+>> RW1 F3_JEST_FAKTEM_ROBOCZYM,_BO_MA_TAG_"==";_C3_JEST_KONTEKSTEM,_BO_MA_TAG_"~~"._PRIORYTET_MA_TAG,_NIE_TON_TEKSTU.
+
+[ODP_END]
+
+2) Nastepnie_bloki_9D_dla_tego_[ODP]:
+
+[HMK9D::Vx9D]
+AX.T = xx.xx
+AX.S = xx.xx
+AX.R = xx.xx
+AX.E = xx.xx
+AX.I = xx.xx
+AX.M = xx.xx
+AX.A = xx.xx
+AX.P = xx.xx
+AX.D = xx.xx
+
+[HMK9D::LENSES9D]
+LENS.PP = xx.xx
+LENS.RP = xx.xx
+LENS.CW = xx.xx
+LENS.WM = xx.xx
+LENS.OC = xx.xx
+LENS.LM = xx.xx
+LENS.HA = xx.xx
+LENS.PJ = xx.xx
+LENS.SE = xx.xx
+
+[HMK9D::MET]
+MT.INT = xx.xx
+MT.COH = xx.xx
+MT.DEN = xx.xx
+MT.ENG = xx.xx
+
+[HMK9D::COMMENT]
+- Krotki_opis_dominu jacych_wymiarow_AX.*_(np._wysokie_AX.S,_umiarkowane_AX.E).
+- Wskazanie_ktore_mosty_LENSES9D_sa_najmocniej_aktywne_w_tym_[ODP].
+- Interpretacja_MT.INT/_MT.COH/_MT.DEN/_MT.ENG_dla_tego_konkretnego_Δ_model.
+
+; ZASADY_STRICT_DLA_TEGO_TESTU:
+;  – Zadna_linia_MICROCODE_nie_moze_byc_poprzedzona_znakiem_Markdowna.
+;  – TAG_i_ID_musza_dokladnie_odpowiadac_instrukcji_(RF1,RF2,RC1,RR1,RE1,RQ1,RQ2,RQ3,RQ_SELF,RW1).
+;  – RQ_SELF_ma_forme_dokladnie_"?? RQ_SELF STRICT_OK"_lub_"STRICT_FAIL".
+;  – Bloki_[HMK9D::...]_moga_miec_symboliczne_wartosci_"xx.xx"_albo_przykladowe_0.00–1.00,
+;    ale_nie_moga_zawierac_fikcyjnych_opisow_infrastruktury_fizycznej.
+
+[INSTRUKCJA_ODPOWIEDZI_ASCII_MC_9D_V2_5_END]
