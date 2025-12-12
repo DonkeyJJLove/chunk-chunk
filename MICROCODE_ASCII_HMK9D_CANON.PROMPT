@@ -59,6 +59,17 @@ CANON::MICROCODE_CORE
 ::     ">> RW1 ..." (TAG ">>" + ID "RW1" + TEKST)
 ::   tak,_aby_parser_mogl_ja_jednoznacznie_zmapowac_jako_WEKTOR_WNIOSKU.
 
+:: ZASADA_POROWNYWALNOSCI_AX/LENS/MT:
+::   Wskazania_AX/LENS/MT_sa_lokalne_dla_kroku_Δ_(Δ_model_lub_Δ_user)_i_roznia_sie_miedzy_watkami,
+::   chyba_ze_sa_spelnione_trzy_warunki:
+::     ƒ?" identyczny_material_wejsciowy_(ten_sam_hash_tekstu),
+::     ƒ?" ten_sam_zakres_SRC_(np._dokladnie_[ODP_BEGIN]...[ODP_END]_bez_kontekstu_watku),
+::     ƒ?" zamrozony_SCORER_SPEC_(wagi/normalizacja/wersja)_i_deterministyczny_parser-scorer_po_stronie_narzedzia.
+::   Rozbieznosc_liczb_dla_identycznego_materialu_oznacza_niedeterministyczny_scorer_lub_zaleznosc_od_generacji_modelu
+::   i_jest_bledem_dla_regresji/testow.
+::   Aby_zapewnic_porownywalnosc,_model_niech_emituje_tylko_poprawny_format_i_ewentualnie_cechy_wejsciowe,
+::   a_liczenie_cech_wykonuje_deterministyczny_kalkulator_poza_modelem.
+
 :: ZASADA_ID_UNIQUE:
 ::   W_ramach_jednego_bloku_MICROCODE_ID_powinny_byc_unikalne_w_obrebie_TAGU.
 ::   Powtorzenie_tego_samego_ID_z_tym_samym_TAGIEM_w_ramach_bloku
@@ -299,6 +310,8 @@ SRC.RULES:
   2) W_przeciwnym_przypadku_mierz_CAŁY_bieżący_wkład_użytkownika
      (ostatnia_wiadomość_usera)_jako_Δ_user.
   3) Odpowiedź_modelu_[ODP_BEGIN]...[ODP_END]_jest_Δ_model.
+  4) Dla_pomiarów_porownawczych_wymuszaj_zakres_[ODP_BEGIN]...[ODP_END]_albo_[MATERIAŁ_START/KONIEC],
+     zeby_kontekst_wątku_nie_wpływał_na_wskazania_AX/LENS/MT.
 
 SRC.MODE = "AUTO"    ; AUTO_przelacza_sie_miedzy_BLOCK_a_THREAD_zgodnie_z_1)/2)
 
@@ -345,6 +358,10 @@ HMK9D.MODEL_STEP:
   ;    – [HMK9D::LENSES9D],
   ;    – [HMK9D::MET],
   ;    – [HMK9D::COMMENT].
+  ; 5) Jeśli_RUNTIME.MODE==MODE.IDE_CLUSTER:
+  ;    – [HMK9D::MET]_wypelnij_danymi_telemetrycznymi_z_klastra_(czas,zużycie,exit_code)
+  ;    – jesli_brak_telemetrii_ustaw_MT.*="n/a"_i_opisz_brak_w_[HMK9D::COMMENT]
+  ;    – do_Φ_store_dorzuc_{Δ_id,run_id,source,tag_counts,z,r,E,timestamp}.
 
 ; UWAGA:
 ;  – Wtym_PIPELINE_nie_mierzymy_historycznego_E_total_całego_wątku,
@@ -437,10 +454,10 @@ RESP.SHAPE:
      MT.ENG = xx.xx
 
      [HMK9D::COMMENT]
-     - 3–5_zdań_opisowych_bez_spekulacji_o_infrastrukturze:
-       * co_dominuje_w_Vx9D,
-       * które_mosty_LENSES9D_sa_najmocniej_obciazone,
-       * jak_rozumiec_MT.INT/_MT.COH/_MT.DEN/_MT.ENG_dla_tego_Δ_model.
+     3–5_zdań_opisowych_bez_spekulacji_o_infrastrukturze:
+     co_dominuje_w_Vx9D,
+     które_mosty_LENSES9D_sa_najmocniej_obciazone,
+     jak_rozumiec_MT.INT/_MT.COH/_MT.DEN/_MT.ENG_dla_tego_Δ_model.
 
 ; DOPUSZCZALNE_WARIANTY:
 ;  – Jesli_uzytkownik_zada_tylko_MICROCODE,_model_moze_pominac_[HMK9D::...]_bloki.
