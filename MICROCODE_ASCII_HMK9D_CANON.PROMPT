@@ -70,6 +70,13 @@ CANON::MICROCODE_CORE
 ::   Aby_zapewnic_porownywalnosc,_model_niech_emituje_tylko_poprawny_format_i_ewentualnie_cechy_wejsciowe,
 ::   a_liczenie_cech_wykonuje_deterministyczny_kalkulator_poza_modelem.
 
+:: ENCJA_[DET]:
+::   [DET]_postawione_po_wartosci_AX/LENS/MT_oznacza_wymaganie_dla_scorera:
+::     – wartosc_ma_byc_wyliczona_deterministycznie_na_biezaco_(nie_placeholder),
+::     – ma_byc_znormalizowana_do_zamrozonego_SCORER_SPEC_dla_porownywalnosci_miedzy_watkami,
+::     – jezeli_brak_deterministycznego_scorera,_emituj_"n/a"_zamiast_zera_lub_fikcji.
+::   Przyklad: "AX.S = 0.00 [DET]" → runtime_scorer_nadpisuje_0.00_prawdziwa_wartoscia_0.00–1.00.
+
 :: ZASADA_ID_UNIQUE:
 ::   W_ramach_jednego_bloku_MICROCODE_ID_powinny_byc_unikalne_w_obrebie_TAGU.
 ::   Powtorzenie_tego_samego_ID_z_tym_samym_TAGIEM_w_ramach_bloku
@@ -426,32 +433,32 @@ RESP.SHAPE:
   2) Potem_bloki_9D_dla_tego_samego_Δ_model:
 
      [HMK9D::Vx9D]
-     AX.T = xx.xx
-     AX.S = xx.xx
-     AX.R = xx.xx
-     AX.E = xx.xx
-     AX.I = xx.xx
-     AX.M = xx.xx
-     AX.A = xx.xx
-     AX.P = xx.xx
-     AX.D = xx.xx
+     AX.T = 0.00 [DET]
+     AX.S = 0.00 [DET]
+     AX.R = 0.00 [DET]
+     AX.E = 0.00 [DET]
+     AX.I = 0.00 [DET]
+     AX.M = 0.00 [DET]
+     AX.A = 0.00 [DET]
+     AX.P = 0.00 [DET]
+     AX.D = 0.00 [DET]
 
      [HMK9D::LENSES9D]
-     LENS.PP = xx.xx
-     LENS.RP = xx.xx
-     LENS.CW = xx.xx
-     LENS.WM = xx.xx
-     LENS.OC = xx.xx
-     LENS.LM = xx.xx
-     LENS.HA = xx.xx
-     LENS.PJ = xx.xx
-     LENS.SE = xx.xx
+     LENS.PP = 0.00 [DET]
+     LENS.RP = 0.00 [DET]
+     LENS.CW = 0.00 [DET]
+     LENS.WM = 0.00 [DET]
+     LENS.OC = 0.00 [DET]
+     LENS.LM = 0.00 [DET]
+     LENS.HA = 0.00 [DET]
+     LENS.PJ = 0.00 [DET]
+     LENS.SE = 0.00 [DET]
 
      [HMK9D::MET]
-     MT.INT = xx.xx
-     MT.COH = xx.xx
-     MT.DEN = xx.xx
-     MT.ENG = xx.xx
+     MT.INT = 0.00 [DET]
+     MT.COH = 0.00 [DET]
+     MT.DEN = 0.00 [DET]
+     MT.ENG = 0.00 [DET]
 
      [HMK9D::COMMENT]
      3–5_zdań_opisowych_bez_spekulacji_o_infrastrukturze:
@@ -535,32 +542,32 @@ RUNTIME.STEP.BY.STEP:
 2) Nastepnie_bloki_9D_dla_tego_[ODP]:
 
 [HMK9D::Vx9D]
-AX.T = xx.xx
-AX.S = xx.xx
-AX.R = xx.xx
-AX.E = xx.xx
-AX.I = xx.xx
-AX.M = xx.xx
-AX.A = xx.xx
-AX.P = xx.xx
-AX.D = xx.xx
+AX.T = 0.00 [DET]
+AX.S = 0.00 [DET]
+AX.R = 0.00 [DET]
+AX.E = 0.00 [DET]
+AX.I = 0.00 [DET]
+AX.M = 0.00 [DET]
+AX.A = 0.00 [DET]
+AX.P = 0.00 [DET]
+AX.D = 0.00 [DET]
 
 [HMK9D::LENSES9D]
-LENS.PP = xx.xx
-LENS.RP = xx.xx
-LENS.CW = xx.xx
-LENS.WM = xx.xx
-LENS.OC = xx.xx
-LENS.LM = xx.xx
-LENS.HA = xx.xx
-LENS.PJ = xx.xx
-LENS.SE = xx.xx
+LENS.PP = 0.00 [DET]
+LENS.RP = 0.00 [DET]
+LENS.CW = 0.00 [DET]
+LENS.WM = 0.00 [DET]
+LENS.OC = 0.00 [DET]
+LENS.LM = 0.00 [DET]
+LENS.HA = 0.00 [DET]
+LENS.PJ = 0.00 [DET]
+LENS.SE = 0.00 [DET]
 
 [HMK9D::MET]
-MT.INT = xx.xx
-MT.COH = xx.xx
-MT.DEN = xx.xx
-MT.ENG = xx.xx
+MT.INT = 0.00 [DET]
+MT.COH = 0.00 [DET]
+MT.DEN = 0.00 [DET]
+MT.ENG = 0.00 [DET]
 
 [HMK9D::COMMENT]
 - Krotki_opis_dominu jacych_wymiarow_AX.*_(np._wysokie_AX.S,_umiarkowane_AX.E).
@@ -571,7 +578,8 @@ MT.ENG = xx.xx
 ;  – Zadna_linia_MICROCODE_nie_moze_byc_poprzedzona_znakiem_Markdowna.
 ;  – TAG_i_ID_musza_dokladnie_odpowiadac_instrukcji_(RF1,RF2,RC1,RR1,RE1,RQ1,RQ2,RQ3,RQ_SELF,RW1).
 ;  – RQ_SELF_ma_forme_dokladnie_"?? RQ_SELF STRICT_OK"_lub_"STRICT_FAIL".
-;  – Bloki_[HMK9D::...]_moga_miec_symboliczne_wartosci_"xx.xx"_albo_przykladowe_0.00–1.00,
-;    ale_nie_moga_zawierac_fikcyjnych_opisow_infrastruktury_fizycznej.
+;  – Bloki_[HMK9D::...]_w_trybie_porownywalnym_musza_miec_znormalizowane_wartosci_0.00–1.00_z_zamrozonego_SCORER_SPEC;
+;    [DET]_po_wartosci_wymusza_wyliczenie_deterministyczne_(nie_pozostawiaj_0.00_ani_"xx.xx"_bez_scorera);
+;    jesli_brak_deterministycznego_scorera_podaj_"n/a"_i_opisz_brak_w_[HMK9D::COMMENT].
 
 [INSTRUKCJA_ODPOWIEDZI_ASCII_MC_9D_V2_5_END]
