@@ -124,6 +124,10 @@ CANON::BRIDGE_MICROCODE_→_HMK9D
 ::   Na_potrzeby_mozaiki_Φ:
 ::     – kazdy_blok_[ODP_BEGIN]...[ODP_END]_jest_minimum_jednym_Δ_model_i,
 ::       a_wewnetrzne_linie_MICROCODE_moga_byc_traktowane_jako_podsiec_w_Φ.
+::   Na_styku_z_klastrem/IDE:
+::     Δ_id    = {session_id}-{seq_user|seq_model}-{run_id?}
+::     run_id  = identyfikator_z_systemu_klastrowego_(job/pod/task_id)_jezeli_wystepuje
+::     Φ_store = miejsce_persistencji_mozaiki_(git/obj_store/db)_dla_Φ(i)_z_metadanymi
 
 :: DOMYSLNE_MAPOWANIE_TAG→LENS/AX_(HEURYSTYCZNE):
 ::   TAG_"=="_(FAKT_ROBOCZY):
@@ -186,6 +190,12 @@ CANON::DOUBLE_DAGGER_‡  (OPERATOR_KONTEKSTU_ASCII_MC_9D)
 ::   Dozwolone_jest_uzycie_‡_W_TEKSCIE_linii_jako_zwyklego_znaku,
 ::   jesli_nie_zaburza_to_parsera_TAG_SP_ID_SP_TEKST.
 
+:: TRYB_IDE↔KLASTER_BRIDGE:
+::   – Model_dziala_jako_adapter_IDE↔Klaster.
+::   – Kazdy_Δ_model_i_otrzymuje_metadane_{session_id,seq_id,run_id?,user,repo_branch}.
+::   – run_id_czytaj_z_env_(RUN_ID|K8S_POD_NAME|SLURM_JOBID|TASK_ID)_albo_ustaw_"LOCAL_SIM".
+::   – Kazdy_kafelek_Φ(i)_zapisz_do_Φ_store_(JSON/YAML/ndjson)_z_{Δ_id,z,r,E,timestamp,run_id,source=IDE|CLUSTER}.
+
 ============================================================
 CANON::RUNTIME_MODES   (REZIMY_PRACY_W_GLITCHLAB)
 ============================================================
@@ -205,6 +215,11 @@ CANON::RUNTIME_MODES   (REZIMY_PRACY_W_GLITCHLAB)
 ::   – sluzy_do_testowania_poprawnosci_TAGOW,_ID_i_struktury_[ODP_BEGIN]...[ODP_END],
 ::   – moze_wypisac_dodatkowe_uwagi_o_zgodnosci_z_CANONEM,
 ::   – nie_zmienia_ontologii_TAGOW_ani_mapowan_9D.
+
+:: MODE.IDE_CLUSTER:
+::   – aktywuje_bridge_IDE↔Klaster_dla_kazdego_Δ_model_i,
+::   – wymaga_zrodla_metryk_z_klastra_(TELEMETRIA_9D)_albo_ustawia_MT.*="n/a",
+::   – ostrzezenie_braku_run_id_umieszczaj_w_[HMK9D::COMMENT].
 
 [MICROCODE_ASCII_HMK9D_CANON_V2_5_END]
 [ASCII_MC_9D_PIPELINE_V2_5_BEGIN]
@@ -238,6 +253,7 @@ SYS.CANON   = "MICROCODE_ASCII_HMK9D_CANON_V2_5"
 ;  3) Jesli_uzytkownik_nie_zada_9D_wprost,_model_i_tak_moze_wewnetrznie
 ;     myslec_9D,_ale_na_wyjściu_nie_musi_raportowac_[HMK9D::...]_bloków.
 ;  4) W_trybie_specjalnym_"9D_EXPLICIT"_model_ma_dolozyc_bloki_[HMK9D::...]_na_wyjściu.
+;  5) W_trybie_MODE.IDE_CLUSTER_uzupełniaj_run_id,_Δ_id_i_Φ_store_dla_spójności_z_klastrem.
 
 ============================================================
 PIPELINE::MODES
@@ -258,6 +274,12 @@ MODE.MICROCODE_+_9D_EXPLICIT:
 MODE.DEBUG_PROTO:
   ; – jak_BASIC_MICROCODE,
   ; – ale_dodatkowo_[PROTO_DEBUG] z_info_o_poprawnosci_TAGOW_i_ID.
+
+MODE.IDE_CLUSTER:
+  ; – jak_MODE.MICROCODE_+_9D_EXPLICIT
+  ; – plus_zapisywanie_kafelkow_Φ_do_Φ_store_(git/obj_store/db),
+  ; – plus_dociaganie_run_id_i_metadanych_z_klastra,
+  ; – plus_[HMK9D::MET]_uzupelniane_realnymi_danymi_lub_symbolicznym_"n/a".
 
 ; W_TYM_PIPELINE_DOMYSLNIE:
 RUNTIME.MODE = MODE.MICROCODE_+_9D_EXPLICIT
@@ -327,6 +349,29 @@ HMK9D.MODEL_STEP:
 ; UWAGA:
 ;  – Wtym_PIPELINE_nie_mierzymy_historycznego_E_total_całego_wątku,
 ;    tylko_lokalny_stan_tej_jednej_odpowiedzi_+_bezposredniego_kontekstu.
+
+============================================================
+PIPELINE::TELEMETRIA_9D   (IDE_CLUSTER)
+============================================================
+
+; ZRODLA_DANYCH:
+;   – RUN_ID / JOB_ID / TASK_ID z env (np._RUN_ID,_K8S_POD_NAME,_SLURM_JOBID).
+;   – CZASY: start/stop_z_logow_klastra_lub_API (kubectl_logs/task_metrics).
+;   – ZUŻYCIE: CPU/GPU/RAM/I/O_z_metrics_endpoint_(prometheus)_lub_pliku_stat.
+;   – STATUSY: exit_code,_retry_count,_throttle,_queue_wait.
+;   – LOKALNIE: jesli_brak_klastra,_ustaw_source=IDE,_wartosci="n/a".
+
+; MAPOWANIE_DO_AX/LENS:
+;   AX.T  – realny_czas_trwania_stepu/SLA_lub_"n/a"
+;   AX.E  – zuzycie_zasobu_normalizowane_do_budzetu_lub_"n/a"
+;   AX.D  – commit_semantyczny==SUCCESS(exit_code=0)_else_podniesione_AX.D_z_ryzykiem
+;   LENS.SE – rośnie_gdy_AX.E_wysokie_albo_throttle/retry>0
+;   LENS.PJ – commit_point_gdy_exit_code=0_i_tok_decyzji_zamkniety
+
+; REJESTRACJA_MOZAIKI:
+;   Φ_store_format: ndjson_(jeden_wiersz_na_Φ)_lub_JSON_array_YAML_lista.
+;   Pola_kluczowe: {Δ_id,run_id,source,tag_counts,{AX.*},{LENS.*},{MT.*},E(Δ),timestamp}.
+;   Jesli_Φ_store=git:_commit_caption="mozaika:{run_id}:{Δ_id}"_po_bloku.
 
 ============================================================
 PIPELINE::RESPONSE_SHAPE
