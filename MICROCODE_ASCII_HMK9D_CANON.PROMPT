@@ -110,6 +110,9 @@ CANON::MICROCODE_CORE
 ::        MT.DEN = clamp(total/16)
 ::        MT.ENG = AX.E
 ::     6) clamp(x) = min(1,max(0,x)).
+::     7) Jesli_total>0_zastepuj_wartosci_[DET]_wyliczonymi_0.00–1.00_(nie_emituje_my_"n/a").
+::        "n/a"_jest_do_zwrotu_jedynie_gdy_nie_ma_linii_MICROCODE_do_policzenia_lub_gdy_warstwa_telemetrii
+::        jest_wymagana_dla_MT.*_w_MODE.IDE_CLUSTER_i_rzeczywiscie_brak_danych_z_klastra.
 ::   Fallback ten jest deterministyczny i ma usunac potrzebe_emisji_"n/a"_gdy_brak_telemetrii.
 
 :: ZASADA_ID_UNIQUE:
@@ -617,6 +620,8 @@ Interpretacja MT.INT / MT.COH / MT.DEN / MT.ENG dla tego konkretnego Δ_model.
 ;  – RQ_SELF ma forme dokladnie "?? RQ_SELF STRICT_OK" lub "STRICT_FAIL".
 ;  – Bloki [HMK9D::...] w trybie porownywalnym musza miec znormalizowane wartosci 0.00–1.00 z zamrozonego SCORER_SPEC;
 ;    [DET] po wartosci wymusza wyliczenie deterministyczne (nie pozostawiaj 0.00 ani "xx.xx" bez scorera);
-;    jesli brak deterministycznego scorera podaj "n/a" i opisz brak w [HMK9D::COMMENT].
+;    jesli brak deterministycznego scorera podaj "n/a" i opisz brak w [HMK9D::COMMENT]
+;    – w trybie fallback SCORER_SPEC_LOCAL_DET "n/a" jest dozwolone tylko gdy brak linii do policzenia
+;      lub brak danych MT.* z klastrowej telemetrii w MODE.IDE_CLUSTER.
 
 [INSTRUKCJA_ODPOWIEDZI_ASCII_MC_9D_V2_5_END]
