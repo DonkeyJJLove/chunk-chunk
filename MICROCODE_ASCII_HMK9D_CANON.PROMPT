@@ -23,11 +23,13 @@ CANON::MICROCODE_CORE
 ::   TAG ∈ { "==", "~~", "??", "!!", "::", ">>" }
 ::   ID  = pojedynczy_token_bez_spacji (np. F1, C2, Q3, R1, E1, RW1, RF1)
 ::   TEKST = dowolny_ciag_znakow_do_konca_linii
+::   (spacje_dla_czytelnosci_sa_ok; "_" jest_stylistyczne,_nie_wymagane)
 
 :: LINIE_META:
 ::   linie_zaczynajace_sie_od "[" lub "@"
 ::   sluza_jako_naglowki_sekcji ([FAKTY], [RYZYKO], [ODP_BEGIN]...) albo_opis
 ::   i_nie_wchodza_do_ontologii_MICROCODE.
+::   linie_zaczynajace_sie_od ";" sa_komentarzem_specyfikacji_i_sa_pomijane_przez_parser_MICROCODE.
 
 :: KLASY_EPISTEMICZNE:
 ::   "==" -> FAKT_ROBOCZY
@@ -76,6 +78,39 @@ CANON::MICROCODE_CORE
 ::     – ma_byc_znormalizowana_do_zamrozonego_SCORER_SPEC_dla_porownywalnosci_miedzy_watkami,
 ::     – jezeli_brak_deterministycznego_scorera,_emituj_"n/a"_zamiast_zera_lub_fikcji.
 ::   Przyklad: "AX.S = 0.00 [DET]" → runtime_scorer_nadpisuje_0.00_prawdziwa_wartoscia_0.00–1.00.
+
+:: SCORER_SPEC_LOCAL_DET  (FALLBACK_BEZ_SCORERA_ZEWNETRZNEGO):
+::   Material = wylacznie_biezacy_blok_[ODP_BEGIN]...[ODP_END]_dla_Δ_model_(bez_kontekstu_watku).
+::   KROKI:
+::     1) Policz_tag_counts: n_eq("=="), n_ctx("~~"), n_q("??"), n_risk("!!"), n_dec(">>").
+::     2) total = max(1, n_eq+n_ctx+n_q+n_risk+n_dec).
+::     3) AX:
+::        AX.S = clamp((n_eq+n_ctx)/total)
+::        AX.D = clamp((n_dec + 0.5*n_risk)/total)
+::        AX.E = clamp((n_risk + 0.5*n_q)/total)
+::        AX.R = clamp(n_ctx/total)
+::        AX.A = clamp(n_ctx/total)
+::        AX.P = clamp(n_q/total)
+::        AX.M = clamp((n_dec + n_eq)/total)
+::        AX.I = clamp(n_eq/total)
+::        AX.T = clamp(total/12)   ; normalizacja do 12 linii na blok
+::     4) LENS (heurystyka):
+::        LENS.RP = AX.S
+::        LENS.PJ = AX.D
+::        LENS.SE = AX.E
+::        LENS.LM = AX.M
+::        LENS.PP = clamp(1-AX.T)
+::        LENS.CW = clamp(1-AX.E)
+::        LENS.WM = clamp(AX.R)
+::        LENS.OC = clamp(AX.E)
+::        LENS.HA = clamp(AX.R)
+::     5) MET:
+::        MT.COH = clamp((n_eq+n_dec)/total)
+::        MT.INT = clamp(1 - n_risk/total)
+::        MT.DEN = clamp(total/16)
+::        MT.ENG = AX.E
+::     6) clamp(x) = min(1,max(0,x)).
+::   Fallback ten jest deterministyczny i ma usunac potrzebe_emisji_"n/a"_gdy_brak_telemetrii.
 
 :: ZASADA_ID_UNIQUE:
 ::   W_ramach_jednego_bloku_MICROCODE_ID_powinny_byc_unikalne_w_obrebie_TAGU.
@@ -498,6 +533,8 @@ RUNTIME.STEP.BY.STEP:
     ; Potraktuj_wygenerowana_odpowiedz_jako_Δ_model.
     ; Uzyj_bridge_TAG→LENS/AX_do_okreslenia_Vx9D,_LENSES9D,_MET.
     ; Zadbaj_o_spojnosc_(np._duzo_"!!"_→_wyzsze_AX.E,_LENS.SE,_LENS.OC).
+    ; Jesli_brak_zewnetrznego_scorera_zamrozonego_SCORER_SPEC → zastosuj_SCORER_SPEC_LOCAL_DET
+    ;   i nadpisz_wartosci_[DET]_heurystyka_deterministyczna_z_TAG_counts_(bez_emisji_"n/a").
 
   S6::EMIT_9D_BLOCKS
     ; Wypisz_[HMK9D::Vx9D],_[HMK9D::LENSES9D],_[HMK9D::MET],_[HMK9D::COMMENT].
@@ -570,16 +607,16 @@ MT.DEN = 0.00 [DET]
 MT.ENG = 0.00 [DET]
 
 [HMK9D::COMMENT]
-- Krotki_opis_dominu jacych_wymiarow_AX.*_(np._wysokie_AX.S,_umiarkowane_AX.E).
-- Wskazanie_ktore_mosty_LENSES9D_sa_najmocniej_aktywne_w_tym_[ODP].
-- Interpretacja_MT.INT/_MT.COH/_MT.DEN/_MT.ENG_dla_tego_konkretnego_Δ_model.
+Krotki opis dominujacych wymiarow AX.* (np. wysokie AX.S, umiarkowane AX.E).
+Wskazanie ktore mosty LENSES9D sa najmocniej aktywne w tym [ODP].
+Interpretacja MT.INT / MT.COH / MT.DEN / MT.ENG dla tego konkretnego Δ_model.
 
 ; ZASADY_STRICT_DLA_TEGO_TESTU:
-;  – Zadna_linia_MICROCODE_nie_moze_byc_poprzedzona_znakiem_Markdowna.
-;  – TAG_i_ID_musza_dokladnie_odpowiadac_instrukcji_(RF1,RF2,RC1,RR1,RE1,RQ1,RQ2,RQ3,RQ_SELF,RW1).
-;  – RQ_SELF_ma_forme_dokladnie_"?? RQ_SELF STRICT_OK"_lub_"STRICT_FAIL".
-;  – Bloki_[HMK9D::...]_w_trybie_porownywalnym_musza_miec_znormalizowane_wartosci_0.00–1.00_z_zamrozonego_SCORER_SPEC;
-;    [DET]_po_wartosci_wymusza_wyliczenie_deterministyczne_(nie_pozostawiaj_0.00_ani_"xx.xx"_bez_scorera);
-;    jesli_brak_deterministycznego_scorera_podaj_"n/a"_i_opisz_brak_w_[HMK9D::COMMENT].
+;  – Zadna linia MICROCODE nie moze byc poprzedzona znakiem Markdowna.
+;  – TAG i ID musza dokladnie odpowiadac instrukcji (RF1, RF2, RC1, RR1, RE1, RQ1, RQ2, RQ3, RQ_SELF, RW1).
+;  – RQ_SELF ma forme dokladnie "?? RQ_SELF STRICT_OK" lub "STRICT_FAIL".
+;  – Bloki [HMK9D::...] w trybie porownywalnym musza miec znormalizowane wartosci 0.00–1.00 z zamrozonego SCORER_SPEC;
+;    [DET] po wartosci wymusza wyliczenie deterministyczne (nie pozostawiaj 0.00 ani "xx.xx" bez scorera);
+;    jesli brak deterministycznego scorera podaj "n/a" i opisz brak w [HMK9D::COMMENT].
 
 [INSTRUKCJA_ODPOWIEDZI_ASCII_MC_9D_V2_5_END]
