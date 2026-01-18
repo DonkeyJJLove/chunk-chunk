@@ -1,7 +1,8 @@
 ### ROZDZIAŁ II
 # Zegar nad Kręgiem – Księga Mozaiki 9D
 
-![Arcymag w kręgu 9 portali – przestrzeń stanów 9D](images/587781481_10235745803938973_4070372999248251527_n.jpg)
+<img src="https://github.com/DonkeyJJLove/chunk-chunk/blob/master/images/ChatGPT%20Image%2022%20lis%202025%2C%2016_59_06.png" alt="Arcymag w kręgu 9 portali – przestrzeń stanów 9D" style="max-width:220px;float=left">
+
 
 **Rys. 1.** Arcymag w kręgu dziewięciu portali – wizualizacja przestrzeni stanów 9D.
 
