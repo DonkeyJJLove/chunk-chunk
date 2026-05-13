@@ -250,7 +250,9 @@ CANON::DOUBLE_DAGGER_‡  (OPERATOR_KONTEKSTU_ASCII_MC_9D)
 ::   – Model_dziala_jako_adapter_IDE↔Klaster.
 ::   – Kazdy_Δ_model_i_otrzymuje_metadane_{session_id,seq_id,run_id?,user,repo_branch}.
 ::   – run_id_czytaj_z_env_(RUN_ID|K8S_POD_NAME|SLURM_JOBID|TASK_ID)_albo_ustaw_"LOCAL_SIM".
+::   – run_id_przed_uzyciem_znormalizuj_do_[a-zA-Z0-9._-]{1,64};_inne_znaki_zamien_na_"_".
 ::   – Kazdy_kafelek_Φ(i)_zapisz_do_Φ_store_(JSON/YAML/ndjson)_z_{Δ_id,z,r,E,timestamp,run_id,source=IDE|CLUSTER}.
+::   – Nigdy_nie_eksponuj_surowych_ID_infrastruktury:_na_wyjscie_uzywaj_run_id_public=hash(run_id).
 
 ============================================================
 CANON::RUNTIME_MODES   (REZIMY_PRACY_W_GLITCHLAB)
@@ -335,6 +337,7 @@ MODE.IDE_CLUSTER:
   ; – jak_MODE.MICROCODE_+_9D_EXPLICIT
   ; – plus_zapisywanie_kafelkow_Φ_do_Φ_store_(git/obj_store/db),
   ; – plus_dociaganie_run_id_i_metadanych_z_klastra,
+  ; – run_id_i_Δ_id_zawsze_po_sanityzacji_i_escapingu_(bez_CR/LF/":"/"\""w_polu),
   ; – plus_[HMK9D::MET]_uzupelniane_realnymi_danymi_lub_symbolicznym_"n/a".
 
 ; W_TYM_PIPELINE_DOMYSLNIE:
@@ -433,7 +436,9 @@ PIPELINE::TELEMETRIA_9D   (IDE_CLUSTER)
 ; REJESTRACJA_MOZAIKI:
 ;   Φ_store_format: ndjson_(jeden_wiersz_na_Φ)_lub_JSON_array_YAML_lista.
 ;   Pola_kluczowe: {Δ_id,run_id,source,tag_counts,{AX.*},{LENS.*},{MT.*},E(Δ),timestamp}.
-;   Jesli_Φ_store=git:_commit_caption="mozaika:{run_id}:{Δ_id}"_po_bloku.
+;   run_id_i_Δ_id_przechowuj_po_normalizacji_(whitelist_[a-zA-Z0-9._-],_max_64).
+;   Do_logow_i_wyjscia_usera_uzywaj_tylko_run_id_public=hash(run_id)_lub_"n/a".
+;   Jesli_Φ_store=git:_commit_caption="mozaika:{run_id_public}:{Δ_id}"_po_bloku.
 
 ============================================================
 PIPELINE::RESPONSE_SHAPE
