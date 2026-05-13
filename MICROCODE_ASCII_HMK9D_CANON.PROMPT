@@ -404,9 +404,9 @@ HMK9D.MODEL_STEP:
   ;    – [HMK9D::MET],
   ;    – [HMK9D::COMMENT].
   ; 5) Jeśli_RUNTIME.MODE==MODE.IDE_CLUSTER:
-  ;    – [HMK9D::MET]_wypelnij_danymi_telemetrycznymi_z_klastra_(czas,zużycie,exit_code)
-  ;    – jesli_brak_telemetrii_ustaw_MT.*="n/a"_i_opisz_brak_w_[HMK9D::COMMENT]
-  ;    – do_Φ_store_dorzuc_{Δ_id,run_id,source,tag_counts,z,r,E,timestamp}.
+  ;    – [HMK9D::MET]_zostaw_jako_metryki_jakosci_odpowiedzi_(MT.*)_bez_telemetrii_runtime
+  ;    – jesli_brak_telemetrii_runtime_nie_eksponuj_jej_w_odpowiedzi;_ew._zasygnalizuj_ogolnie_w_[HMK9D::COMMENT]
+  ;    – do_Φ_store_dorzuc_{Δ_id,trace_scope,source,tag_counts,z,r,E,timestamp}_bez_run_id/job_id/task_id.
 
 ; UWAGA:
 ;  – Wtym_PIPELINE_nie_mierzymy_historycznego_E_total_całego_wątku,
@@ -417,7 +417,7 @@ PIPELINE::TELEMETRIA_9D   (IDE_CLUSTER)
 ============================================================
 
 ; ZRODLA_DANYCH:
-;   – RUN_ID / JOB_ID / TASK_ID z env (np._RUN_ID,_K8S_POD_NAME,_SLURM_JOBID).
+;   – IDENTYFIKATORY_RUNTIME_(RUN_ID/JOB_ID/TASK_ID)_traktuj_jako_dane_wewnetrzne_(NIE_DO_RESP.SHAPE).
 ;   – CZASY: start/stop_z_logow_klastra_lub_API (kubectl_logs/task_metrics).
 ;   – ZUŻYCIE: CPU/GPU/RAM/I/O_z_metrics_endpoint_(prometheus)_lub_pliku_stat.
 ;   – STATUSY: exit_code,_retry_count,_throttle,_queue_wait.
@@ -432,8 +432,8 @@ PIPELINE::TELEMETRIA_9D   (IDE_CLUSTER)
 
 ; REJESTRACJA_MOZAIKI:
 ;   Φ_store_format: ndjson_(jeden_wiersz_na_Φ)_lub_JSON_array_YAML_lista.
-;   Pola_kluczowe: {Δ_id,run_id,source,tag_counts,{AX.*},{LENS.*},{MT.*},E(Δ),timestamp}.
-;   Jesli_Φ_store=git:_commit_caption="mozaika:{run_id}:{Δ_id}"_po_bloku.
+;   Pola_kluczowe: {Δ_id,trace_scope,source,tag_counts,{AX.*},{LENS.*},{MT.*},E(Δ),timestamp}.
+;   Jesli_Φ_store=git:_commit_caption="mozaika:{trace_scope}:{Δ_id}"_po_bloku.
 
 ============================================================
 PIPELINE::RESPONSE_SHAPE
