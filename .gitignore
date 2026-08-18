@@ -1,2 +1,31 @@
+# IDE / local environments
 .idea/
+.vscode/
 .venv/
+venv/
+
+# Virtualenv layouts accidentally created at repository root
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Python generated state
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+dist/
+
+# Local secrets / runtime
+.env
+.env.*
+!.env.sample
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
