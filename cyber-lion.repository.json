@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "repository": {
+    "id": "DonkeyJJLove/chunk-chunk",
+    "url": "https://github.com/DonkeyJJLove/chunk-chunk",
+    "owner": "DonkeyJJLove",
+    "default_branch": "master",
+    "vcs_ref": null
+  },
+  "cyber_lion": {
+    "tile_id": "process-semantics.hmk9d",
+    "roles": ["ProcessSemanticsEngine", "TransitionMicrocode", "TrajectoryDiagnostics"],
+    "layers": ["SEM"],
+    "disposition": ["KEEP", "REFINE", "GENERALIZE", "INTEGRATE"]
+  },
+  "capabilities": [
+    "process.state",
+    "process.transition",
+    "trajectory.score",
+    "bridge.select",
+    "threshold.request"
+  ],
+  "authority": {
+    "maximum_level": "read",
+    "required_gates": ["cyber-lion.mand"]
+  },
+  "observability": {
+    "logs": ["state.transition", "bridge.selection", "threshold.request"],
+    "metrics": ["trajectory.cost", "state.drift", "transition.count"],
+    "traces": ["state→bridge→threshold→proposal"]
+  },
+  "security": {
+    "trust_boundaries": [
+      "semantic state != runtime authority",
+      "bridge selection != permission",
+      "threshold crossing may request gate but cannot apply gate",
+      "process score is diagnostic rather than empirical ground truth"
+    ]
+  },
+  "epistemic": {
+    "status": "FORMALISED",
+    "confidence": 0.8
+  }
+}
