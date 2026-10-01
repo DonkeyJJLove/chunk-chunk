@@ -1,0 +1,19 @@
+{
+  "schema": "lion.repository-standardization/v1",
+  "repository": "DonkeyJJLove/chunk-chunk",
+  "baseline": {
+    "head": "793d6f7fdd249f11ab872bc264700124fc573e67",
+    "tree": "2ca47b55d5f71e603f2037367a4a825c2745bd55"
+  },
+  "global_standard_owner": "DonkeyJJLove/ai_platform:LION/standards/README.md",
+  "rename_map": [
+    {
+      "from": "README.MD",
+      "to": "README.md"
+    }
+  ],
+  "additional_repairs": [],
+  "unresolved": [],
+  "delete_effect": "NONE",
+  "authority_effect": "NONE"
+}
