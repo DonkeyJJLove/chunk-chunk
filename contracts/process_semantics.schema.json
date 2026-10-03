@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "lion://process-semantics/v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "spec_id",
+    "source_ref",
+    "source_digest",
+    "protocol_version",
+    "axes",
+    "bridge_ids",
+    "consumer_refs",
+    "runtime_identifier_policy",
+    "authority_effect",
+    "execution_effect",
+    "spec_digest"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "lion.process-semantics/v1"
+    },
+    "spec_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "protocol_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "axes": {
+      "const": [
+        "T",
+        "S",
+        "R",
+        "E",
+        "I",
+        "F",
+        "A",
+        "P",
+        "D"
+      ]
+    },
+    "bridge_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "consumer_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "runtime_identifier_policy": {
+      "const": "INTERNAL_ONLY"
+    },
+    "authority_effect": {
+      "const": "NONE"
+    },
+    "execution_effect": {
+      "const": "NONE"
+    },
+    "spec_digest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}
