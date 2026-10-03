@@ -99,6 +99,21 @@
         "currentness": "LOCAL_OWNER"
       },
       {
+        "path": "REPOSITORY_STANDARDIZATION_R1.json",
+        "class": "MACHINE_READABLE_ARCHITECTURE",
+        "currentness": "LOCAL_OWNER"
+      },
+      {
+        "path": "contracts/process_semantics.py",
+        "class": "CONTRACT",
+        "currentness": "LOCAL_OWNER"
+      },
+      {
+        "path": "contracts/process_semantics.schema.json",
+        "class": "SCHEMA",
+        "currentness": "LOCAL_OWNER"
+      },
+      {
         "path": "doc/9D_process_design.md",
         "class": "HUMAN_ARCHITECTURE_DOCUMENT",
         "currentness": "LOCAL_OWNER"
@@ -106,11 +121,6 @@
       {
         "path": "hmk9d_protocol.yaml",
         "class": "SCHEMA",
-        "currentness": "LOCAL_OWNER"
-      },
-      {
-        "path": "REPOSITORY_STANDARDIZATION_R1.json",
-        "class": "MACHINE_READABLE_ARCHITECTURE",
         "currentness": "LOCAL_OWNER"
       }
     ],
