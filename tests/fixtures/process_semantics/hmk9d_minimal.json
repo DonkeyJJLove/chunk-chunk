@@ -1,0 +1,37 @@
+{
+  "schema_id": "lion.process-semantics/v1",
+  "spec_id": "hmk9d:glitchlab:v1",
+  "source_ref": "hmk9d_protocol.yaml",
+  "source_digest": "a59f5cb776a4dfcdac601d822a71268988c66801c6f72731b450bf87f845f22b",
+  "protocol_version": "0.1.0",
+  "axes": [
+    "T",
+    "S",
+    "R",
+    "E",
+    "I",
+    "F",
+    "A",
+    "P",
+    "D"
+  ],
+  "bridge_ids": [
+    "CORE_PERIPH",
+    "EDGE_PATIENCE",
+    "HUMAN_AI",
+    "LOCUS_MEDIUM_MANDATE",
+    "PLAN_PAUSE",
+    "SEMANTICS_ENERGY",
+    "SILENCE_EXHALE",
+    "THRESHOLD_TRANSITION",
+    "VILLAGE_CITY"
+  ],
+  "consumer_refs": [
+    "DonkeyJJLove/ai_platform",
+    "DonkeyJJLove/glitchlab"
+  ],
+  "runtime_identifier_policy": "INTERNAL_ONLY",
+  "authority_effect": "NONE",
+  "execution_effect": "NONE",
+  "spec_digest": "304e3b5b9a2cd92fbc7e5805f5345d914063661968dca950526189a3c6433040"
+}
