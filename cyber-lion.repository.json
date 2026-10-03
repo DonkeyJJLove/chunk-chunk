@@ -69,12 +69,15 @@
     "global_owner": "DonkeyJJLove/ai_platform",
     "semantic_exports": [
       "process_semantics",
-      "hmk9d"
+      "hmk9d",
+      "semantic_transition_candidate",
+      "trajectory_semantics"
     ],
     "semantic_imports": [
       "architecture",
       "contracts",
-      "currentness"
+      "currentness",
+      "semantic_relevance"
     ],
     "repository_dependencies": [
       "DonkeyJJLove/ai_platform"
